@@ -71,7 +71,12 @@ static void MX_WWDG_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	// Check what is cause our system to reset
+	if(__HAL_RCC_GET_FLAG(RCC_FLAG_PINRST)) // this is press reset btn
+	{
+		// do something about error
+		__HAL_RCC_CLEAR_RESET_FLAGS(); // Clear Flag
+	}
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -114,12 +119,16 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  if (HAL_GPIO_ReadPin(S1_GPIO_Port, S1_Pin) == GPIO_PIN_RESET)
 	  {
+		  // WWGD window timeout
+		  // (1/32000000)*4096*8*(63+1) == 0.065s
 		  // Refresh at 70ms - MCU should reset
 		  HAL_Delay(70);
 		  HAL_WWDG_Refresh(&hwwdg);
 	  }
 	  else if(HAL_GPIO_ReadPin(S2_GPIO_Port, S2_Pin) == GPIO_PIN_RESET)
 	  {
+		  // WWGD window window time
+		  // (1/32000000)*4096*8*(36+1) == 0.038s
 		  // Refresh at 20ms - MCU should reset
 		  HAL_Delay(20);
 		  HAL_WWDG_Refresh(&hwwdg);
@@ -138,6 +147,8 @@ int main(void)
 		  HAL_WWDG_Refresh(&hwwdg);
 	  }
 	  // Refresh IWDG
+	  // Window time out
+	  // (1/37000)*64*4096 = 7s
 	  HAL_IWDG_Refresh(&hiwdg);
   }
   /* USER CODE END 3 */
