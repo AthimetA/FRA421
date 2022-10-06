@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "W2812B.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -76,7 +76,7 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-
+W2812BStructure LED[8]={0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -160,17 +160,27 @@ Error_Handler();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   GPIOB->OTYPER = GPIOB->OTYPER | GPIO_PIN_5;
+  W2812B_Init(&hspi1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-	  HAL_Delay(1000);
+//	  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+//	  HAL_Delay(1000);
+	  static int h =0;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		HAL_Delay(1);
+		for (int i = 0; i < 8; i++) {
+
+			HToRGB((h + 192*i) % 1536, &LED[i]);
+		}
+		h++;
+		h%=1536;
+	  W2812B_UpdateData(LED);
   }
   /* USER CODE END 3 */
 }
