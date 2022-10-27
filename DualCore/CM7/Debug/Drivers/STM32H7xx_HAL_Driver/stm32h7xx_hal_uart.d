@@ -1,5 +1,5 @@
 Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart.o: \
- C:/Users/AlphaP/Documents/STM32WPForEmbeddded/DualCore/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
+ D:/STM32project/FRA421/DualCore/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
