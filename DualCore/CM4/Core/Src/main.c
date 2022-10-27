@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "string.h"
+#include <stdlib.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -155,7 +156,7 @@ int main(void)
 	  register int i,j;
 
 	 	 //sim Write array task
-	 	  for(int j=0;j<5000;j++)
+	 	  for(j=0;j<5000;j++)
 	 	  {
 	 		  uint32_t Random =rand();
 	 		  for(i=0;i<500;i++)

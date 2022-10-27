@@ -71,7 +71,7 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-
+SharedMemory  *const*checkVal = &SRAM4;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -174,7 +174,8 @@ Error_Handler();
 	  {
 		  if(SRAM4->DATA[i]!=SRAM4->DATA[0])
 		  {
-			  for(;;);
+//			  for(;;);
+			  HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 		  }
 	  }
 	  HAL_Delay(1); // sim Task
@@ -183,14 +184,15 @@ Error_Handler();
 #ifdef TASK2_WITH_HSEM
 		register int i;
 
-		if (HAL_HSEM_Take(5, 0) == HAL_OK) {
+		if (HAL_HSEM_Take(5, 5) == HAL_OK) {
 
 			for (i = 0; i < 500; i++) {
 				if (SRAM4->DATA[i] != SRAM4->DATA[0]) {
-					for (;;);
+//					for (;;);
+					  HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 				}
 			}
-			HAL_HSEM_Release(5,0);
+			HAL_HSEM_Release(5,5);
 		}
 		HAL_Delay(1); // sim Task
 #endif

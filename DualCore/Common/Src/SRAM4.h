@@ -9,7 +9,7 @@
 #define SRC_SRAM4_H_
 #define SHARED_MEMORY_ADDRESS 0x38000000
 //#define TASK2_NO_HSEM
-//#define TASK2_WITH_HSEM
+#define TASK2_WITH_HSEM
 typedef struct
 {
 	uint32_t State1;
