@@ -10,6 +10,7 @@
 
 #include "stm32h7xx_hal.h"
 
+void BMPDecoder(uint8_t dataIn, uint8_t *array);
 
 
 
