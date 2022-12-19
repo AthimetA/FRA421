@@ -50,6 +50,9 @@ struct
 	int Stop;
 	int Standby;
 }Enter ={0};
+
+uint32_t ramDemo = 1;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,15 +112,17 @@ int main(void)
   {
 	  //simulate task
 	  __HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_1,400);
+	  ramDemo++;
 	  HAL_Delay(3000);
 	  __HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_1,2800);
+	  ramDemo++;
 	  HAL_Delay(3000);
 
 	  if(Enter.Sleep)
 	  {
 		  HAL_SuspendTick();
-		  HAL_NVIC_ClearPendingIRQ(EXTI4_15_IRQn);
-		  __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_13);
+		  HAL_NVIC_ClearPendingIRQ(EXTI4_15_IRQn); //Clear IT that is already in or in execution
+		  __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_13); //Clear IT flag
 		  HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFE);
 		  //CPU PAUSE HERE
 		  HAL_ResumeTick();
@@ -130,9 +135,9 @@ int main(void)
 		HAL_SuspendTick();
 		HAL_NVIC_ClearPendingIRQ(EXTI4_15_IRQn);
 		__HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_13);
-		HAL_PWR_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFE);
+		HAL_PWR_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFE);
 		//CPU PAUSE HERE
-		SystemClock_Config();
+		SystemClock_Config(); // Since all peripheral is down the setting is lost so we need to set config again.
 		HAL_ResumeTick();
 		Enter.Stop =0;
 	   }
@@ -140,7 +145,7 @@ int main(void)
 	  if(Enter.Standby)
 	  {
 		  HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN2);
-		  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+		  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU); // Use to check if our mcu wake up not sys reset
 		  //we can read __HAL_PWR_GET_FLAG(PWR_FLAG_WU) to identify reset cause
 		  //or read PWR->CSR
 		  HAL_PWR_EnterSTANDBYMode();

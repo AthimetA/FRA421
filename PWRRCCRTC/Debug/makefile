@@ -60,8 +60,8 @@ all: main-build
 main-build: PWRRCCRTC.elf secondary-outputs
 
 # Tool invocations
-PWRRCCRTC.elf PWRRCCRTC.map: $(OBJS) $(USER_OBJS) C:\Users\AlphaP\Documents\STM32WPForEmbeddded\PWRRCCRTC\STM32L010RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "PWRRCCRTC.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\AlphaP\Documents\STM32WPForEmbeddded\PWRRCCRTC\STM32L010RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PWRRCCRTC.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+PWRRCCRTC.elf PWRRCCRTC.map: $(OBJS) $(USER_OBJS) D:\STM32project\FRA421\PWRRCCRTC\STM32L010RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "PWRRCCRTC.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"D:\STM32project\FRA421\PWRRCCRTC\STM32L010RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PWRRCCRTC.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
