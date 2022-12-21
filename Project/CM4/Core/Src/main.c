@@ -23,6 +23,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "stdio.h"
+#include "RC522.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -65,6 +68,8 @@ ETH_TxPacketConfig TxConfig;
 
 ETH_HandleTypeDef heth;
 
+SPI_HandleTypeDef hspi1;
+
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
@@ -72,6 +77,27 @@ UART_HandleTypeDef huart3;
 GPIO_PinState testvar ;
 
 uint32_t timemsM4 = 0;
+
+float tsest = 0;
+
+uint8_t value = 0;
+char str1[17]={'\0'};
+char str2[17]={'\0'};
+char str3[17]={'\0'};
+char str4[17]={'\0'};
+char tmp_str[65]={'\0'};
+
+
+u_char status, cardstr[MAX_LEN+1];
+u_char card_data[17];
+uint32_t delay_val = 1000; //ms
+uint16_t result = 0;
+u_char UID[5];
+
+// a private key to scramble data writing/reading to/from RFID card:
+u_char Mx1[7][5]={{0x12,0x45,0xF2,0xA8},{0xB2,0x6C,0x39,0x83},{0x55,0xE5,0xDA,0x18},
+		  	  	  	{0x1F,0x09,0xCA,0x75},{0x99,0xA2,0x50,0xEC},{0x2C,0x88,0x7F,0x3D}};
+u_char SectorKey[7];
 
 /* USER CODE END PV */
 
@@ -118,6 +144,31 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
+  tsest = 1;
+
+  for (int i = 0; i < 16; i++){
+ 	  tmp_str[i] = 'A';
+  }
+  for (int i = 16; i < 32; i++){
+ 	  tmp_str[i] = 'B';
+  }
+  for (int i = 32; i < 48; i++){
+ 	  tmp_str[i] = 'C';
+  }
+  for (int i = 48; i < 64; i++){
+ 	  tmp_str[i] = 'D';
+  }
+
+  // Reset RC522
+  HAL_GPIO_WritePin(RC522_Rst_GPIO_Port, RC522_Rst_Pin, GPIO_PIN_SET);
+  tsest = 2;
+  HAL_Delay(100);
+  MFRC522_Init();
+  HAL_Delay(1000);
+  tsest = 3;
+
+  status = Read_MFRC522(VersionReg);
+
   /* USER CODE END Init */
 
   /* USER CODE BEGIN SysInit */
@@ -135,10 +186,31 @@ int main(void)
   while (1)
   {
 
+//	  for (int i = 0; i < 16; i++) {
+//		  cardstr[i] = 0;
+//	  }
+	  status = 99;
+	  // Find cards
+	  status = MFRC522_Request(PICC_REQIDL, cardstr);
+	  if(status == MI_OK) {
+		  result = 0;
+		  result++;
+		  status = MFRC522_Anticoll(cardstr);
+		  if(status == MI_OK) {
+			  result++;
+			  UID[0] = cardstr[0];
+			  UID[1] = cardstr[1];
+			  UID[2] = cardstr[2];
+			  UID[3] = cardstr[3];
+			  UID[4] = cardstr[4];
+		  }
+	  }
+
       if(HAL_GetTick() - timemsM4 > 1000)
       {
           timemsM4 = HAL_GetTick();
           HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+
       }
 
 		 testvar = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
@@ -208,6 +280,54 @@ void MX_ETH_Init(void)
 }
 
 /**
+  * @brief SPI1 Initialization Function
+  * @param None
+  * @retval None
+  */
+void MX_SPI1_Init(void)
+{
+
+  /* USER CODE BEGIN SPI1_Init 0 */
+
+  /* USER CODE END SPI1_Init 0 */
+
+  /* USER CODE BEGIN SPI1_Init 1 */
+
+  /* USER CODE END SPI1_Init 1 */
+  /* SPI1 parameter configuration*/
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 0x0;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi1.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
+  hspi1.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
+  hspi1.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi1.Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi1.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
+  hspi1.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
+  hspi1.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
+  hspi1.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+  hspi1.Init.IOSwap = SPI_IO_SWAP_DISABLE;
+  if (HAL_SPI_Init(&hspi1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
   * @brief USART3 Initialization Function
   * @param None
   * @retval None
@@ -267,10 +387,14 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LD1_Pin|RC522_Rst_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
@@ -281,12 +405,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LD1_Pin */
-  GPIO_InitStruct.Pin = LD1_Pin;
+  /*Configure GPIO pins : LD1_Pin RC522_Rst_Pin */
+  GPIO_InitStruct.Pin = LD1_Pin|RC522_Rst_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD1_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : RC522_CS_Pin */
+  GPIO_InitStruct.Pin = RC522_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RC522_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;
