@@ -65,15 +65,10 @@ void Error_Handler(void);
 #define STLINK_RX_GPIO_Port GPIOD
 #define STLINK_TX_Pin GPIO_PIN_9
 #define STLINK_TX_GPIO_Port GPIOD
-#define RC522_CS_Pin GPIO_PIN_14
-#define RC522_CS_GPIO_Port GPIOD
-#define RC522_Rst_Pin GPIO_PIN_5
-#define RC522_Rst_GPIO_Port GPIOB
 #define LD2_Pin GPIO_PIN_1
 #define LD2_GPIO_Port GPIOE
 void   MX_ETH_Init(void);
 void   MX_USART3_UART_Init(void);
-void   MX_SPI1_Init(void);
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

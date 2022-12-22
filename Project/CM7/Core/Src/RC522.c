@@ -69,7 +69,7 @@ u_char Read_MFRC522(u_char addr) {
 //  rx_bits = MSS_SPI_transfer_frame( &g_mss_spi1, ((((addr << 1) & 0x7E) | 0x80) << 8) | 0x00 );
   //HAL_SPI_TransmitReceive(&hspi2, ((((addr << 1) & 0x7E) | 0x80) << 8) | 0x00 , rx_bits, 1, 500);
 //HAL_SPI_Transmit(&hspi2, (unsigned char*) ((((addr<<1) & 0x7E) | 0x80)), 1, 500);
-HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
+  HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
 
   HAL_SPI_Receive(&MFRC522_PORT, &rx_bits, 1, 500);
   // clear the select line-- we are done here
@@ -166,8 +166,8 @@ void MFRC522_Init(void)
   Write_MFRC522(ModeReg, 0x3D);       // CRC Initial value 0x6363
 
   // interrupts, still playing with these
-  // Write_MFRC522(CommIEnReg, 0xFF);
-  // Write_MFRC522(DivlEnReg, 0xFF);
+//   Write_MFRC522(CommIEnReg, 0xFF);
+//   Write_MFRC522(DivlEnReg, 0xFF);
 
   // turn antenna on
   AntennaOn();
