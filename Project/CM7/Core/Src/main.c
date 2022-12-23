@@ -69,7 +69,6 @@ ETH_TxPacketConfig TxConfig;
 ETH_HandleTypeDef heth;
 
 SPI_HandleTypeDef hspi1;
-SPI_HandleTypeDef hspi2;
 
 UART_HandleTypeDef huart3;
 
@@ -79,8 +78,11 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 uint32_t timemsM7= 0;
 
+uint32_t timemsM7_LED = 0;
+
 uint16_t testSizeM7 = 1;
 uint8_t testDataM7 = 4;
+u_char test_bits = 0;
 
 float tsest = 0;
 
@@ -112,7 +114,6 @@ static void MX_GPIO_Init(void);
 static void MX_ETH_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
-static void MX_SPI2_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -186,31 +187,17 @@ Error_Handler();
   MX_ETH_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
-  MX_SPI2_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
-  for (int i = 0; i < 16; i++){
-	  tmp_str[i] = 'A';
-  }
-  for (int i = 16; i < 32; i++){
-	  tmp_str[i] = 'B';
-  }
-  for (int i = 32; i < 48; i++){
-	  tmp_str[i] = 'C';
-  }
-  for (int i = 48; i < 64; i++){
-	  tmp_str[i] = 'D';
-  }
-
   // Reset RC522
   HAL_GPIO_WritePin(RC522_Rst_GPIO_Port, RC522_Rst_Pin, GPIO_PIN_SET);
-  tsest = 2;
+  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
   HAL_Delay(100);
   MFRC522_Init();
-  tsest = 3;
 
-  status = Read_MFRC522(VersionReg);
+//  status = Read_MFRC522(VersionReg);
 
   /* USER CODE END 2 */
 
@@ -219,7 +206,7 @@ Error_Handler();
   while (1)
   {
 
-      if(HAL_GetTick() - timemsM7 > 100)
+      if(HAL_GetTick() - timemsM7 > 1000)
       {
           timemsM7 = HAL_GetTick();
 
@@ -227,11 +214,13 @@ Error_Handler();
     	  {
 
     		  tsest+=1;
-
 //    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
-//			  HAL_SPI_Transmit(&hspi1, &testDataM7, testSizeM7, 1000);
-//			  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
-//        		  HAL_SPI_Transmit_IT(&hspi1, &testData, testSize);
+//    		  testDataM7 = 0x01;
+//    		  test_bits = (((testDataM7<<1) & 0x7E));
+//    		  HAL_SPI_Transmit(&MFRC522_PORT, &test_bits, 1, 500);
+//    		  testDataM7 = 0x0F;
+//    		  HAL_SPI_Transmit(&MFRC522_PORT, &testDataM7, 1, 500);
+//    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
 
     		  for (int i = 0; i < 16; i++)
     		  {
@@ -260,15 +249,11 @@ Error_Handler();
 
       }
 
-      if(HAL_GetTick() - timemsM7 > 1000)
+      if(HAL_GetTick() - timemsM7_LED > 1000)
       {
-          timemsM7 = HAL_GetTick();
+    	  timemsM7_LED = HAL_GetTick();
           HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-
-          if(hspi2.State == HAL_SPI_STATE_READY)
-    	  {
-        	  HAL_SPI_Transmit(&hspi2, &testDataM7, testSizeM7, 1000);
-    	  }
+//          HAL_GPIO_TogglePin(Test_Sig_GPIO_Port, Test_Sig_Pin);
       }
 
 
@@ -351,8 +336,7 @@ void PeriphCommonClock_Config(void)
 
   /** Initializes the peripherals clock
   */
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_SPI2
-                              |RCC_PERIPHCLK_SPI1;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_SPI1;
   PeriphClkInitStruct.PLL3.PLL3M = 1;
   PeriphClkInitStruct.PLL3.PLL3N = 24;
   PeriphClkInitStruct.PLL3.PLL3P = 2;
@@ -440,13 +424,13 @@ static void MX_SPI1_Init(void)
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi1.Init.CRCPolynomial = 0x0;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
   hspi1.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
   hspi1.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
   hspi1.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
@@ -463,54 +447,6 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
-
-}
-
-/**
-  * @brief SPI2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_SPI2_Init(void)
-{
-
-  /* USER CODE BEGIN SPI2_Init 0 */
-
-  /* USER CODE END SPI2_Init 0 */
-
-  /* USER CODE BEGIN SPI2_Init 1 */
-
-  /* USER CODE END SPI2_Init 1 */
-  /* SPI2 parameter configuration*/
-  hspi2.Instance = SPI2;
-  hspi2.Init.Mode = SPI_MODE_MASTER;
-  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi2.Init.DataSize = SPI_DATASIZE_4BIT;
-  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
-  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi2.Init.CRCPolynomial = 0x0;
-  hspi2.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-  hspi2.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
-  hspi2.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
-  hspi2.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
-  hspi2.Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
-  hspi2.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
-  hspi2.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
-  hspi2.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
-  hspi2.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
-  hspi2.Init.IOSwap = SPI_IO_SWAP_DISABLE;
-  if (HAL_SPI_Init(&hspi2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN SPI2_Init 2 */
-
-  /* USER CODE END SPI2_Init 2 */
 
 }
 
@@ -621,6 +557,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, USB_OTG_FS_PWR_EN_Pin|RC522_CS_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : LD3_Pin RC522_Rst_Pin */
   GPIO_InitStruct.Pin = LD3_Pin|RC522_Rst_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -641,9 +580,32 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(USB_OTG_FS_OVCR_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : Test_Sig_Pin */
+  GPIO_InitStruct.Pin = Test_Sig_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(Test_Sig_GPIO_Port, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
+
+//void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+//{
+//	if(hspi == &hspi1)
+//	{
+//		   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
+//	}
+//}
+//
+//void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
+//{
+//	if(hspi == &hspi1)
+//	{
+//		   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
+//	}
+//}
 
 /* USER CODE END 4 */
 

@@ -69,6 +69,8 @@ void Error_Handler(void);
 #define RC522_CS_GPIO_Port GPIOD
 #define USB_OTG_FS_OVCR_Pin GPIO_PIN_7
 #define USB_OTG_FS_OVCR_GPIO_Port GPIOG
+#define Test_Sig_Pin GPIO_PIN_12
+#define Test_Sig_GPIO_Port GPIOG
 #define RC522_Rst_Pin GPIO_PIN_5
 #define RC522_Rst_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */

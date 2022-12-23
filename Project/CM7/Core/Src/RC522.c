@@ -36,8 +36,18 @@ void Write_MFRC522(u_char addr, u_char val) {
   //HAL_SPI_TransmitReceive(&hspi2, (((addr << 1) & 0x7E) << 8) |  val , rx_bits, 1, 500);
   HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
   HAL_SPI_Transmit(&MFRC522_PORT, &val, 1, 500);
+
+////  HAL_SPI_Transmit_IT(&MFRC522_PORT, &addr_bits, 1);
+//  HAL_SPI_Transmit_DMA(&MFRC522_PORT, &addr_bits, 1);
+//  HAL_SPI_Transmit_DMA(&MFRC522_PORT, &val, 1);
+//
+////  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
+////  HAL_SPI_Transmit_IT(&MFRC522_PORT, &val, 1);
+
   // clear the select line-- we are done here
 //  MSS_SPI_clear_slave_select( &g_mss_spi1, MSS_SPI_SLAVE_0 );
+//  volatile uint32_t ticks;
+//  for(ticks=0; ticks < 1000; ++ticks);
   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
 
   // burn some time
@@ -72,12 +82,17 @@ u_char Read_MFRC522(u_char addr) {
   HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
 
   HAL_SPI_Receive(&MFRC522_PORT, &rx_bits, 1, 500);
+//  HAL_SPI_Transmit_DMA(&MFRC522_PORT, &addr_bits, 1);
+//
+////  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
+//  HAL_SPI_Receive_DMA(&MFRC522_PORT, &rx_bits, 1);
+
   // clear the select line-- we are done here
 //  MSS_SPI_clear_slave_select( &g_mss_spi1, MSS_SPI_SLAVE_0 );
 
   // burn some time
-  // volatile uint32_t ticks;
-  // for(ticks=0; ticks < 5000; ++ticks);
+//   volatile uint32_t ticks;
+//   for(ticks=0; ticks < 1000; ++ticks);
   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
 
 	return (u_char) rx_bits; // return the rx bits, casting to an 8 bit int and chopping off the upper 24 bits
@@ -155,8 +170,16 @@ void MFRC522_Reset(void)
 void MFRC522_Init(void)
 {
 //  MSS_GPIO_set_output( MSS_GPIO_1, 1 );
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   MFRC522_Reset();
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
+  Write_MFRC522(CommIEnReg, 0x7F);
+  Write_MFRC522(DivlEnReg, 0x94);
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
+
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   // Timer: TPrescaler*TreloadVal/6.78MHz = 24ms
   Write_MFRC522(TModeReg, 0x80); // 0x8D);      // Tauto=1; f(Timer) = 6.78MHz/TPreScaler
   Write_MFRC522(TPrescalerReg, 0xA9); //0x34); // TModeReg[3..0] + TPrescalerReg
@@ -164,13 +187,17 @@ void MFRC522_Init(void)
   Write_MFRC522(TReloadRegH, 0xE8); //0);
   Write_MFRC522(TxAutoReg, 0x40);     // force 100% ASK modulation
   Write_MFRC522(ModeReg, 0x3D);       // CRC Initial value 0x6363
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
   // interrupts, still playing with these
 //   Write_MFRC522(CommIEnReg, 0xFF);
 //   Write_MFRC522(DivlEnReg, 0xFF);
 
+
   // turn antenna on
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   AntennaOn();
+//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 }
 //------------------------------------------------------------------
 /*
