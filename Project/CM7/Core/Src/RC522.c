@@ -176,7 +176,8 @@ void MFRC522_Init(void)
 
   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   Write_MFRC522(CommIEnReg, 0x7F);
-  Write_MFRC522(DivlEnReg, 0x94);
+//  Write_MFRC522(DivlEnReg, 0x14);
+  Write_MFRC522(DivlEnReg, 0x00);
   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
@@ -268,8 +269,12 @@ u_char MFRC522_ToCard(u_char command, u_char *sendData, u_char sendLen, u_char *
   }
 
   Write_MFRC522(CommIEnReg, irqEn|0x80);  // Interrupt request
+//  Write_MFRC522(CommIEnReg, 0x7F); //Edit Some
+
   ClearBitMask(CommIrqReg, 0x80);         // Clear all interrupt request bit
+
   SetBitMask(FIFOLevelReg, 0x80);         // FlushBuffer=1, FIFO Initialization
+
 
   Write_MFRC522(CommandReg, PCD_IDLE);    // NO action; Cancel the current command
 

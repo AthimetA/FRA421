@@ -76,6 +76,11 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
 
+GPIO_PinState testvar ;
+uint8_t testFlag;
+uint8_t testStatus;
+uint32_t testCount;
+
 uint32_t timemsM7= 0;
 
 uint32_t timemsM7_LED = 0;
@@ -197,7 +202,12 @@ Error_Handler();
   HAL_Delay(100);
   MFRC522_Init();
 
-//  status = Read_MFRC522(VersionReg);
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
+  status = Read_MFRC522(VersionReg);
+
+  testFlag = 1;
+  testStatus= 99;
+  testCount=0;
 
   /* USER CODE END 2 */
 
@@ -206,46 +216,71 @@ Error_Handler();
   while (1)
   {
 
-      if(HAL_GetTick() - timemsM7 > 1000)
+      if(HAL_GetTick() - timemsM7 > 100)
       {
-          timemsM7 = HAL_GetTick();
+         timemsM7 = HAL_GetTick();
 
-    	  if(hspi1.State == HAL_SPI_STATE_READY)
-    	  {
+      	 testvar = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
 
-    		  tsest+=1;
-//    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
-//    		  testDataM7 = 0x01;
-//    		  test_bits = (((testDataM7<<1) & 0x7E));
-//    		  HAL_SPI_Transmit(&MFRC522_PORT, &test_bits, 1, 500);
-//    		  testDataM7 = 0x0F;
-//    		  HAL_SPI_Transmit(&MFRC522_PORT, &testDataM7, 1, 500);
-//    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
+      	 if(testvar == GPIO_PIN_SET && testFlag == 1)
+      	 {
+      		testCount+=1;
+      		testStatus= 1;
+      		testFlag = 0;
+      		 HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
 
-    		  for (int i = 0; i < 16; i++)
-    		  {
-    			  cardstr[i] = 0;
-    		  }
-    		  status = 99;
-    		  // Find cards
-    		  status = MFRC522_Request(PICC_REQIDL, cardstr);
-    		  if(status == MI_OK)
-    		  {
-    			  result = 0;
-    			  result++;
-    			  status = MFRC522_Anticoll(cardstr);
-    			  if(status == MI_OK)
-    			  {
-    				  result++;
-    				  UID[0] = cardstr[0];
-    				  UID[1] = cardstr[1];
-    				  UID[2] = cardstr[2];
-    				  UID[3] = cardstr[3];
-    				  UID[4] = cardstr[4];
-    			  }
-    		  }
+      		 ////
+       	  if(hspi1.State == HAL_SPI_STATE_READY)
+       	  {
 
-    	  }
+       		  tsest+=1;
+   //    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
+   //    		  testDataM7 = 0x01;
+   //    		  test_bits = (((testDataM7<<1) & 0x7E));
+   //    		  HAL_SPI_Transmit(&MFRC522_PORT, &test_bits, 1, 500);
+   //    		  testDataM7 = 0x0F;
+   //    		  HAL_SPI_Transmit(&MFRC522_PORT, &testDataM7, 1, 500);
+   //    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
+
+       		  for (int i = 0; i < 16; i++)
+       		  {
+       			  cardstr[i] = 0;
+       		  }
+       		  status = 99;
+       		  // Find cards
+       		  status = MFRC522_Request(PICC_REQIDL, cardstr);
+       		  if(status == MI_OK)
+       		  {
+       			  result = 0;
+       			  result++;
+       			  status = MFRC522_Anticoll(cardstr);
+       			  if(status == MI_OK)
+       			  {
+       				  result++;
+       				  UID[0] = cardstr[0];
+       				  UID[1] = cardstr[1];
+       				  UID[2] = cardstr[2];
+       				  UID[3] = cardstr[3];
+       				  UID[4] = cardstr[4];
+       			  }
+       		  }
+
+       	  }
+       	  //////
+
+      	 }
+      	 else if (testvar == GPIO_PIN_RESET && testFlag == 0)
+      	 {
+      		testStatus=2;
+      		testFlag = 1;
+      		HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
+      	 }
+      	 else if (testvar == GPIO_PIN_SET && testFlag == 0)
+      	 {
+      		testStatus= 3;
+      		testFlag = 0;
+      	 }
+
 
       }
 
@@ -255,6 +290,7 @@ Error_Handler();
           HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 //          HAL_GPIO_TogglePin(Test_Sig_GPIO_Port, Test_Sig_Pin);
       }
+
 
 
     /* USER CODE END WHILE */
@@ -552,7 +588,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LD3_Pin|RC522_Rst_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD3_Pin|RC522_Rst_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, USB_OTG_FS_PWR_EN_Pin|RC522_CS_Pin, GPIO_PIN_RESET);
@@ -560,8 +596,14 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LD3_Pin RC522_Rst_Pin */
-  GPIO_InitStruct.Pin = LD3_Pin|RC522_Rst_Pin;
+  /*Configure GPIO pin : B1_Pin */
+  GPIO_InitStruct.Pin = B1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LD1_Pin LD3_Pin RC522_Rst_Pin */
+  GPIO_InitStruct.Pin = LD1_Pin|LD3_Pin|RC522_Rst_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
