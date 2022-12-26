@@ -1,5 +1,0 @@
-../Core/Src/W2812B.c:143:6:byteToW2812BEncode1	16	static
-../Core/Src/W2812B.c:150:6:byteToW2812BEncode2	16	static
-../Core/Src/W2812B.c:168:6:W2812B_Init	16	static
-../Core/Src/W2812B.c:173:6:W2812B_UpdateData	24	static
-../Core/Src/W2812B.c:182:6:HToRGB	24	static
