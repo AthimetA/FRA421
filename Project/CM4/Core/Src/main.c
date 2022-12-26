@@ -69,6 +69,8 @@ ETH_TxPacketConfig TxConfig;
 ETH_HandleTypeDef heth;
 
 SPI_HandleTypeDef hspi1;
+DMA_HandleTypeDef hdma_spi1_rx;
+DMA_HandleTypeDef hdma_spi1_tx;
 
 UART_HandleTypeDef huart3;
 
@@ -84,33 +86,27 @@ uint32_t timemsM4_LED = 0;
 
 uint16_t testSizeM4 = 1;
 uint8_t testDataM4 = 4;
-u_char test_bits = 0;
+uint8_t test_bits = 0;
 
 float tsest = 0;
 
-uint8_t value = 0;
-char str1[17]={'\0'};
-char str2[17]={'\0'};
-char str3[17]={'\0'};
-char str4[17]={'\0'};
-char tmp_str[65]={'\0'};
-
-
-u_char status, cardstr[MAX_LEN+1];
-u_char card_data[17];
+uint8_t status, cardstr[MAX_LEN+1];
+uint8_t card_data[17];
 uint32_t delay_val = 1000; //ms
 uint16_t result = 0;
-u_char UID[5];
+uint8_t UID[5];
+uint8_t UIDint[5];
 
 // a private key to scramble data writing/reading to/from RFID card:
-u_char Mx1[7][5]={{0x12,0x45,0xF2,0xA8},{0xB2,0x6C,0x39,0x83},{0x55,0xE5,0xDA,0x18},
+uint8_t Mx1[7][5]={{0x12,0x45,0xF2,0xA8},{0xB2,0x6C,0x39,0x83},{0x55,0xE5,0xDA,0x18},
 		  	  	  	{0x1F,0x09,0xCA,0x75},{0x99,0xA2,0x50,0xEC},{0x2C,0x88,0x7F,0x3D}};
-u_char SectorKey[7];
+uint8_t SectorKey[7];
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -161,6 +157,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
@@ -171,12 +168,11 @@ int main(void)
    MFRC522_Init();
 
    HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
-   status = Read_MFRC522(VersionReg);
+   status = MFRC522_Read_Data(VersionReg);
 
    testFlag = 1;
    testStatus= 99;
    testCount=0;
-
 
   /* USER CODE END 2 */
 
@@ -204,15 +200,6 @@ int main(void)
       		 HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
        	  if(hspi1.State == HAL_SPI_STATE_READY)
        	  {
-
-       		  tsest+=1;
-   //    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
-   //    		  testDataM7 = 0x01;
-   //    		  test_bits = (((testDataM7<<1) & 0x7E));
-   //    		  HAL_SPI_Transmit(&MFRC522_PORT, &test_bits, 1, 500);
-   //    		  testDataM7 = 0x0F;
-   //    		  HAL_SPI_Transmit(&MFRC522_PORT, &testDataM7, 1, 500);
-   //    		  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
        		  for (int i = 0; i < 16; i++)
        		  {
        			  cardstr[i] = 0;
@@ -232,7 +219,11 @@ int main(void)
        				  UID[1] = cardstr[1];
        				  UID[2] = cardstr[2];
        				  UID[3] = cardstr[3];
-       				  UID[4] = cardstr[4];
+       				UIDint[0] = cardstr[0];
+       				UIDint[1] = cardstr[1];
+       				UIDint[2] = cardstr[2];
+       				UIDint[3] = cardstr[3];
+       				UIDint[4] = cardstr[4];
        			  }
        		  }
        	  }
@@ -401,6 +392,25 @@ void MX_USART3_UART_Init(void)
   /* USER CODE BEGIN USART3_Init 2 */
 
   /* USER CODE END USART3_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+  /* DMA1_Stream1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
 
 }
 
