@@ -25,6 +25,12 @@ void Write_MFRC522(u_char addr, u_char val) {
   // set the select line so we can start transferring
 //  MSS_SPI_set_slave_select( &g_mss_spi1, MSS_SPI_SLAVE_0 );
   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
+
+
+  u_char TxBuff[2] = {addr_bits,val};
+
+
+
   // even though we are calling transfer frame once, we are really sending
   // two 8-bit frames smooshed together-- sending two 8 bit frames back to back
   // results in a spike in the select line which will jack with transactions
@@ -34,8 +40,9 @@ void Write_MFRC522(u_char addr, u_char val) {
   //   them as is
 //  rx_bits = MSS_SPI_transfer_frame( &g_mss_spi1, (((addr << 1) & 0x7E) << 8) |  val );
   //HAL_SPI_TransmitReceive(&hspi2, (((addr << 1) & 0x7E) << 8) |  val , rx_bits, 1, 500);
-  HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
-  HAL_SPI_Transmit(&MFRC522_PORT, &val, 1, 500);
+//  HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
+//  HAL_SPI_Transmit(&MFRC522_PORT, &val, 1, 500);
+   HAL_SPI_Transmit(&MFRC522_PORT, TxBuff, 2, 500);
 
 ////  HAL_SPI_Transmit_IT(&MFRC522_PORT, &addr_bits, 1);
 //  HAL_SPI_Transmit_DMA(&MFRC522_PORT, &addr_bits, 1);
@@ -69,6 +76,7 @@ u_char Read_MFRC522(u_char addr) {
   // set the select line so we can start transferring
 //  MSS_SPI_set_slave_select( &g_mss_spi1, MSS_SPI_SLAVE_0 );
   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
 
   // even though we are calling transfer frame once, we are really sending
   // two 8-bit frames smooshed together-- sending two 8 bit frames back to back
@@ -79,9 +87,20 @@ u_char Read_MFRC522(u_char addr) {
 //  rx_bits = MSS_SPI_transfer_frame( &g_mss_spi1, ((((addr << 1) & 0x7E) | 0x80) << 8) | 0x00 );
   //HAL_SPI_TransmitReceive(&hspi2, ((((addr << 1) & 0x7E) | 0x80) << 8) | 0x00 , rx_bits, 1, 500);
 //HAL_SPI_Transmit(&hspi2, (unsigned char*) ((((addr<<1) & 0x7E) | 0x80)), 1, 500);
-  HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
+//  HAL_SPI_Transmit(&MFRC522_PORT, &addr_bits, 1, 500);
+//  HAL_SPI_Receive(&MFRC522_PORT, &rx_bits, 1, 500);
 
-  HAL_SPI_Receive(&MFRC522_PORT, &rx_bits, 1, 500);
+  HAL_StatusTypeDef hal_status;
+  u_char Txbuff[2] = {addr_bits,0};
+  u_char Rxbuff[2];
+
+  hal_status = HAL_SPI_TransmitReceive(&MFRC522_PORT, Txbuff, Rxbuff, 2, 500);
+
+  if (hal_status == HAL_OK)
+      {
+	  	  rx_bits = Rxbuff[1];    // response is in the second byte
+      }
+
 //  HAL_SPI_Transmit_DMA(&MFRC522_PORT, &addr_bits, 1);
 //
 ////  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
@@ -93,6 +112,7 @@ u_char Read_MFRC522(u_char addr) {
   // burn some time
 //   volatile uint32_t ticks;
 //   for(ticks=0; ticks < 1000; ++ticks);
+  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_SET);
 
 	return (u_char) rx_bits; // return the rx bits, casting to an 8 bit int and chopping off the upper 24 bits
