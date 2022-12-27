@@ -14,25 +14,29 @@
 NSS_GPIO SPI_Nss_Get_GPIO(uint16_t slave_num)
 {
 	NSS_GPIO gpio;
-	switch (slave_num)
-	{
-		case 0:
-			gpio.port = NSS_0_PORT;
-			gpio.pin = NSS_0_PIN;
-			break;
-		case 1:
-			gpio.port = NSS_1_PORT;
-			gpio.pin = NSS_1_PIN;
-			break;
-		case 2:
-			gpio.port = NSS_2_PORT;
-			gpio.pin = NSS_2_PIN;
-			break;
-		case 3:
-			gpio.port = NSS_3_PORT;
-			gpio.pin = NSS_3_PIN;
-			break;
-	}
+//	switch (slave_num)
+//	{
+//		case 0:
+//			gpio.port = NSS_0_PORT;
+//			gpio.pin = NSS_0_PIN;
+//			break;
+//		case 1:
+//			gpio.port = NSS_1_PORT;
+//			gpio.pin = NSS_1_PIN;
+//			break;
+//		case 2:
+//			gpio.port = NSS_2_PORT;
+//			gpio.pin = NSS_2_PIN;
+//			break;
+//		case 3:
+//			gpio.port = NSS_3_PORT;
+//			gpio.pin = NSS_3_PIN;
+//			break;
+//	}
+
+	gpio.port = NSS_0_PORT;
+	gpio.pin = NSS_0_PIN;
+
 	return gpio;
 }
 

@@ -25,6 +25,7 @@
 
 #include "stdio.h"
 #include "RC522.h"
+#include "MC14515.h"
 
 /* USER CODE END Includes */
 
@@ -186,19 +187,23 @@ int main(void)
       {
     	  timemsM4_LED = HAL_GetTick();
           HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+
+          slave_num = (slave_num + 1)%16 ;
+          MC14515_Latch(slave_num);
       }
 
    	  //////
       if(HAL_GetTick() - timemsM4 > 100)
       {
-    	  timemsM4 = HAL_GetTick();
+    	 timemsM4 = HAL_GetTick();
       	 testvar = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
       	 if(testvar == GPIO_PIN_SET && testFlag == 1)
       	 {
       		testCount+=1;
       		testStatus= 1;
       		testFlag = 0;
-      		 HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+      		HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+
        	  if(hspi1.State == HAL_SPI_STATE_READY)
        	  {
        		  for (int i = 0; i < 16; i++)
@@ -433,10 +438,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LD1_Pin|RC522_Rst_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LD1_Pin|MC14515_D2_Pin|MC14515_D1_Pin|RC522_Rst_Pin
+                          |MC14515_INH_Pin|MC14515_D3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, MC14515_ST_Pin|MC14515_D4_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
@@ -450,8 +459,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD1_Pin RC522_Rst_Pin */
-  GPIO_InitStruct.Pin = LD1_Pin|RC522_Rst_Pin;
+  /*Configure GPIO pins : LD1_Pin MC14515_D2_Pin MC14515_D1_Pin RC522_Rst_Pin
+                           MC14515_INH_Pin MC14515_D3_Pin */
+  GPIO_InitStruct.Pin = LD1_Pin|MC14515_D2_Pin|MC14515_D1_Pin|RC522_Rst_Pin
+                          |MC14515_INH_Pin|MC14515_D3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -463,6 +474,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(RC522_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : MC14515_ST_Pin MC14515_D4_Pin */
+  GPIO_InitStruct.Pin = MC14515_ST_Pin|MC14515_D4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Test_Sig_Pin */
   GPIO_InitStruct.Pin = Test_Sig_Pin;

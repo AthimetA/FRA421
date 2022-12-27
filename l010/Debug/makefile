@@ -60,8 +60,8 @@ all: main-build
 main-build: FRA421_L010.elf secondary-outputs
 
 # Tool invocations
-FRA421_L010.elf FRA421_L010.map: $(OBJS) $(USER_OBJS) D:\STM32project\FRA421\l010\STM32L010RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "FRA421_L010.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"D:\STM32project\FRA421\l010\STM32L010RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FRA421_L010.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+FRA421_L010.elf FRA421_L010.map: $(OBJS) $(USER_OBJS) D:\STM32project\FRA421\L010\STM32L010RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "FRA421_L010.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"D:\STM32project\FRA421\L010\STM32L010RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FRA421_L010.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
