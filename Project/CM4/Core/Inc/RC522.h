@@ -133,18 +133,26 @@ extern SPI_HandleTypeDef MFRC522_PORT;
 #define     Reserved33            0x3E
 #define     Reserved34            0x3F
 //-----------------------------------------------
+
+typedef struct _NSS_GPIO
+{
+	GPIO_TypeDef *port;
+	uint16_t pin;
+}NSS_GPIO;
+
 // function definitions
-void MFRC522_Write_Data(uint8_t, uint8_t);
-uint8_t MFRC522_Read_Data(uint8_t);
-void SetBitMask(uint8_t, uint8_t);
-void ClearBitMask(uint8_t, uint8_t);
-void AntennaOn();
-void AntennaOff();
-void MFRC522_Reset();
-void MFRC522_Init();
-uint8_t MFRC522_Request(uint8_t, uint8_t*);
-uint8_t MFRC522_ToCard(uint8_t, uint8_t*, uint8_t, uint8_t*, uint*);
-uint8_t MFRC522_Anticoll(uint8_t*);
+NSS_GPIO SPI_Nss_Get_GPIO(uint16_t);
+void MFRC522_Write_Data(uint8_t, uint8_t, uint16_t);
+uint8_t MFRC522_Read_Data(uint8_t, uint16_t);
+void SetBitMask(uint8_t, uint8_t, uint16_t);
+void ClearBitMask(uint8_t, uint8_t, uint16_t);
+void AntennaOn(uint16_t);
+void AntennaOff(uint16_t);
+void MFRC522_Reset(uint16_t);
+void MFRC522_Init(uint16_t);
+uint8_t MFRC522_Request(uint8_t, uint8_t*, uint16_t);
+uint8_t MFRC522_ToCard(uint8_t, uint8_t*, uint8_t, uint8_t*, uint*, uint16_t);
+uint8_t MFRC522_Anticoll(uint8_t*, uint16_t);
 //void CalulateCRC(uint8_t*, uint8_t, uint8_t*);
 //uint8_t MFRC522_SelectTag(uint8_t*);
 //uint8_t MFRC522_Auth(uint8_t, uint8_t, uint8_t*, uint8_t*);

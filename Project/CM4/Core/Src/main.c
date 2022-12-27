@@ -90,6 +90,7 @@ uint8_t test_bits = 0;
 
 float tsest = 0;
 
+uint16_t slave_num = 0;
 uint8_t status, cardstr[MAX_LEN+1];
 uint8_t card_data[17];
 uint32_t delay_val = 1000; //ms
@@ -165,10 +166,10 @@ int main(void)
    HAL_GPIO_WritePin(RC522_Rst_GPIO_Port, RC522_Rst_Pin, GPIO_PIN_SET);
    HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
    HAL_Delay(100);
-   MFRC522_Init();
+   MFRC522_Init(slave_num);
 
    HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
-   status = MFRC522_Read_Data(VersionReg);
+   status = MFRC522_Read_Data(VersionReg,slave_num);
 
    testFlag = 1;
    testStatus= 99;
@@ -206,12 +207,12 @@ int main(void)
        		  }
        		  status = 99;
        		  // Find cards
-       		  status = MFRC522_Request(PICC_REQIDL, cardstr);
+       		  status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
        		  if(status == MI_OK)
        		  {
        			  result = 0;
        			  result++;
-       			  status = MFRC522_Anticoll(cardstr);
+       			  status = MFRC522_Anticoll(cardstr,slave_num);
        			  if(status == MI_OK)
        			  {
        				  result++;
