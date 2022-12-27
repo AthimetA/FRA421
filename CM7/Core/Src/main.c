@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "string.h"
+#include "card.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -70,7 +71,17 @@ UART_HandleTypeDef huart3;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
+static enum {
+	Drawn_Phase, Main_Phase, Battle_Phase, Chain_Phase, run_1_station
+		} STATE = Drawn_Phase;
+static enum {
 
+		}  = Drawn_Phase;
+uint8_t player1_monster = 0;
+uint8_t player2_monster = 0;
+uint8_t player1_TM = 0;
+uint8_t player2_TM = 0;
+uint8_t player = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -157,7 +168,59 @@ Error_Handler();
   while (1)
   {
     /* USER CODE END WHILE */
+	  /*if botton start, start*/
+	  switch(STATE){
+	  case Drawn_Phase:
+		  /*press botton*/
+		  STATE = Main_Phase;
+		  break;
+	  case Main_Phase:
+		  if (player == 0){
+			  if (/*monster card*/){
+				  if (player1_monster <3){
+					  print("can't replace monster");
+				  }
+				  player1_monster += 1;
+			  }
+			  else if(/*magic card*/){
+				  if(effect_type == destroy_all){
+					  /*clear monster data*/
+				  }
+				  else if(effect_type == destroy_enemy){
+					  /*clear monster enemy data*/
 
+				  }
+				  else if(effect_type == reborn){
+					  /*reborn from GY*/
+				  }
+				  else if(effect_type == summon){
+					  /*place > level 5 in some RFID by touch the card*/
+				  }
+				  else if(effect_type == change_position){
+					  /*change enemy monster def to atk*/
+					  if(monster == defense){
+						  /*change*/
+					  }
+				  }
+
+				  }
+			  else if(/*trap*/){
+				  if(effect_type == gain_point){
+					  /*clear monster data*/
+					  }
+				  else if(effect_type == negate_atk){
+					  /*clear monster enemy data*/
+					  }
+			  }
+		  }
+		  break;
+	  case Battle_Phase:
+		  /*case ATK vs DEF*/
+		  if (/*check */){
+
+		  }
+		  break;
+	  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
