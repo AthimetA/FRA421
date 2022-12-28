@@ -207,6 +207,11 @@ HSEM notification */
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
+		int16_t read = UARTReadChar(&UART2) ;
+		if(read != -1)
+		{
+			BMPDecoder(read, LCDBufferAddr());
+		}
 	}
 	/* USER CODE END 3 */
 }
