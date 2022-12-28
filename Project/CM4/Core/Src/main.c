@@ -93,16 +93,10 @@ float tsest = 0;
 
 uint16_t slave_num = 0;
 uint8_t status, cardstr[MAX_LEN+1];
-uint8_t card_data[17];
+uint8_t card_data[MAX_LEN+1];
 uint32_t delay_val = 1000; //ms
 uint16_t result = 0;
-uint8_t UID[5];
-uint8_t UIDint[5];
-
-// a private key to scramble data writing/reading to/from RFID card:
-uint8_t Mx1[7][5]={{0x12,0x45,0xF2,0xA8},{0xB2,0x6C,0x39,0x83},{0x55,0xE5,0xDA,0x18},
-		  	  	  	{0x1F,0x09,0xCA,0x75},{0x99,0xA2,0x50,0xEC},{0x2C,0x88,0x7F,0x3D}};
-uint8_t SectorKey[7];
+uint8_t UID[4];
 
 /* USER CODE END PV */
 
@@ -163,14 +157,21 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
-  // Reset RC522
-   HAL_GPIO_WritePin(RC522_Rst_GPIO_Port, RC522_Rst_Pin, GPIO_PIN_SET);
-   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
-   HAL_Delay(100);
-   MFRC522_Init(slave_num);
+  // Reset MC14515
+  MC14515_Set_Output_All_High();
 
-   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
-   status = MFRC522_Read_Data(VersionReg,slave_num);
+  // Reset MFRC522
+  HAL_GPIO_WritePin(RC522_Rst_GPIO_Port, RC522_Rst_Pin, GPIO_PIN_SET);
+  HAL_Delay(10);
+
+  // Init MFRC522
+  for (int i = 0; i < MFRC522_SLAVE_MAX; ++i)
+  {
+	MFRC522_Init(i);
+  }
+
+ // Test Code
+  status = MFRC522_Read_Data(VersionReg,slave_num);
 
    testFlag = 1;
    testStatus= 99;
@@ -214,7 +215,6 @@ int main(void)
        		  }
        		  status = 99;
        		  // Find cards
-//       		  MC14515_Latch(slave_num);
        		  status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
        		  if(status == MI_OK)
        		  {
@@ -227,10 +227,9 @@ int main(void)
        				  UID[0] = cardstr[0];
        				  UID[1] = cardstr[1];
        				  UID[2] = cardstr[2];
-       				  UID[3] = cardstr[3];
        			  }
        		  }
-//       		  MC14515_Set_Output_All_High();
+
        	  }
       	 }
       	 else if (testvar == GPIO_PIN_RESET && testFlag == 0)

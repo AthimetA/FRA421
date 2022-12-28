@@ -194,11 +194,11 @@ void MFRC522_Init(uint16_t nss_num)
   MFRC522_Reset(nss_num);
   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
-  MFRC522_Write_Data(CommIEnReg, 0x7F, nss_num);
-//  MFRC522_Write_Data(DivlEnReg, 0x14);
-  MFRC522_Write_Data(DivlEnReg, 0x00, nss_num);
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
+//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
+//  MFRC522_Write_Data(CommIEnReg, 0x7F, nss_num);
+////  MFRC522_Write_Data(DivlEnReg, 0x14);
+//  MFRC522_Write_Data(DivlEnReg, 0x00, nss_num);
+//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
   HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   // Timer: TPrescaler*TreloadVal/6.78MHz = 24ms

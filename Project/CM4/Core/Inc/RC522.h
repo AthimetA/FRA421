@@ -35,6 +35,12 @@ extern SPI_HandleTypeDef MFRC522_PORT;
 
 #endif
 
+#ifdef MC14515USE
+
+#define MFRC522_SLAVE_MAX 12
+
+#endif
+
 //Maximum length of the array
 #define MAX_LEN 16
 
