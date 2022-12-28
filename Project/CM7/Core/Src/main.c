@@ -23,7 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-
+#include "ST7735.h"
+#include "Uart.h"
 
 /* USER CODE END Includes */
 
@@ -82,6 +83,8 @@ uint32_t timemsM7= 0;
 
 uint32_t timemsM7_LED = 0;
 
+LCDHandle ST7735 = { 0 };
+UARTStucrture UART2 ={ 0 };
 
 /* USER CODE END PV */
 
@@ -169,7 +172,20 @@ Error_Handler();
   MX_USB_OTG_FS_PCD_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-
+//	ST7735.hspi = &hspi2;
+//	ST7735.CSPort = GPIOD;
+//	ST7735.CSPin = GPIO_PIN_14;
+//	ST7735.DCPort = GPIOD;
+//	ST7735.DCPin = GPIO_PIN_15;
+//	ST7735.RstPort = GPIOG;
+//	ST7735.RstPin = GPIO_PIN_9;
+//	LCD_init(&ST7735);
+//	LCD_flush(&ST7735);
+//	UART2.huart = &huart3;
+//	UART2.RxLen =255;
+//	UART2.TxLen =255;
+//	UARTInit(&UART2);
+//	UARTResetStart(&UART2);
 
   /* USER CODE END 2 */
 
@@ -498,6 +514,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -506,17 +523,27 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, LCD_CS_Pin|LCD_RST_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LCD_DC_Pin|LD3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(USB_OTG_FS_PWR_EN_GPIO_Port, USB_OTG_FS_PWR_EN_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : LD3_Pin */
-  GPIO_InitStruct.Pin = LD3_Pin;
+  /*Configure GPIO pins : LCD_CS_Pin LCD_RST_Pin */
+  GPIO_InitStruct.Pin = LCD_CS_Pin|LCD_RST_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LCD_DC_Pin LD3_Pin */
+  GPIO_InitStruct.Pin = LCD_DC_Pin|LD3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : USB_OTG_FS_PWR_EN_Pin */
   GPIO_InitStruct.Pin = USB_OTG_FS_PWR_EN_Pin;
