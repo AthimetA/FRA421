@@ -190,6 +190,7 @@ int main(void)
 
           slave_num = (slave_num + 1)%16 ;
           MC14515_Latch(slave_num);
+          MC14515_Set_Output_All_High();
       }
 
    	  //////

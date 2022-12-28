@@ -144,7 +144,6 @@ void MC14515_Latch(uint16_t selected_output)
 	// Set INH to Low
 	HAL_GPIO_WritePin(MC14515_INH_PORT, MC14515_INH_PIN, GPIO_PIN_RESET);
 
-//	HAL_Delay(1);
 	// Latch Data
 	HAL_GPIO_WritePin(MC14515_ST_PORT, MC14515_ST_PIN, GPIO_PIN_RESET);
 
@@ -152,11 +151,11 @@ void MC14515_Latch(uint16_t selected_output)
 
 void MC14515_Set_Output_All_High()
 {
+	// Set INH to High
+	HAL_GPIO_WritePin(MC14515_INH_PORT, MC14515_INH_PIN, GPIO_PIN_SET);
+
 	// Set ST to High ready to store data
 	HAL_GPIO_WritePin(MC14515_ST_PORT, MC14515_ST_PIN, GPIO_PIN_SET);
-
-	// Set INH to High
-	HAL_GPIO_WritePin(MC14515_INH_PORT, MC14515_INH_PIN, GPIO_PIN_RESET);
 
 	// Latch Data
 	HAL_GPIO_WritePin(MC14515_ST_PORT, MC14515_ST_PIN, GPIO_PIN_RESET);
