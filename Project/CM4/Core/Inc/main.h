@@ -69,14 +69,10 @@ void Error_Handler(void);
 #define STLINK_RX_GPIO_Port GPIOD
 #define STLINK_TX_Pin GPIO_PIN_9
 #define STLINK_TX_GPIO_Port GPIOD
-#define RC522_CS_Pin GPIO_PIN_14
-#define RC522_CS_GPIO_Port GPIOD
 #define MC14515_ST_Pin GPIO_PIN_6
 #define MC14515_ST_GPIO_Port GPIOC
 #define MC14515_D4_Pin GPIO_PIN_7
 #define MC14515_D4_GPIO_Port GPIOC
-#define Test_Sig_Pin GPIO_PIN_12
-#define Test_Sig_GPIO_Port GPIOG
 #define RC522_Rst_Pin GPIO_PIN_5
 #define RC522_Rst_GPIO_Port GPIOB
 #define MC14515_INH_Pin GPIO_PIN_8

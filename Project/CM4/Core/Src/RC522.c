@@ -189,18 +189,8 @@ void MFRC522_Reset(uint16_t nss_num)
 */
 void MFRC522_Init(uint16_t nss_num)
 {
-//  MSS_GPIO_set_output( MSS_GPIO_1, 1 );
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   MFRC522_Reset(nss_num);
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
-//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
-//  MFRC522_Write_Data(CommIEnReg, 0x7F, nss_num);
-////  MFRC522_Write_Data(DivlEnReg, 0x14);
-//  MFRC522_Write_Data(DivlEnReg, 0x00, nss_num);
-//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
-
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   // Timer: TPrescaler*TreloadVal/6.78MHz = 24ms
   MFRC522_Write_Data(TModeReg, 0x80, nss_num); // 0x8D);      // Tauto=1; f(Timer) = 6.78MHz/TPreScaler
   MFRC522_Write_Data(TPrescalerReg, 0xA9, nss_num); //0x34); // TModeReg[3..0] + TPrescalerReg
@@ -208,15 +198,17 @@ void MFRC522_Init(uint16_t nss_num)
   MFRC522_Write_Data(TReloadRegH, 0xE8, nss_num); //0);
   MFRC522_Write_Data(TxAutoReg, 0x40, nss_num);     // force 100% ASK modulation
   MFRC522_Write_Data(ModeReg, 0x3D, nss_num);       // CRC Initial value 0x6363
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
   // interrupts, still playing with these
 //   MFRC522_Write_Data(CommIEnReg, 0xFF);
 //   MFRC522_Write_Data(DivlEnReg, 0xFF);
-
+  //  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
+  //  MFRC522_Write_Data(CommIEnReg, 0x7F, nss_num);
+  ////  MFRC522_Write_Data(DivlEnReg, 0x14);
+  //  MFRC522_Write_Data(DivlEnReg, 0x00, nss_num);
+  //  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
   // turn antenna on
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
   AntennaOn(nss_num);
 //  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 }

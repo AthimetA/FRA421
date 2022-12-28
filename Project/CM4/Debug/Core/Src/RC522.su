@@ -6,6 +6,6 @@
 ../Core/Src/RC522.c:167:6:AntennaOff	16	static
 ../Core/Src/RC522.c:179:6:MFRC522_Reset	16	static
 ../Core/Src/RC522.c:190:6:MFRC522_Init	16	static
-../Core/Src/RC522.c:236:9:MFRC522_Request	32	static
-../Core/Src/RC522.c:264:9:MFRC522_ToCard	48	static
-../Core/Src/RC522.c:387:9:MFRC522_Anticoll	32	static
+../Core/Src/RC522.c:228:9:MFRC522_Request	32	static
+../Core/Src/RC522.c:256:9:MFRC522_ToCard	48	static
+../Core/Src/RC522.c:379:9:MFRC522_Anticoll	32	static

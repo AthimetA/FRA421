@@ -188,17 +188,39 @@ int main(void)
       {
     	  timemsM4_LED = HAL_GetTick();
           HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-
-//          slave_num = (slave_num + 1)%16 ;
-          slave_num = 0;
-//          MC14515_Latch(slave_num);
-//          MC14515_Set_Output_All_High();
       }
 
    	  //////
       if(HAL_GetTick() - timemsM4 > 100)
       {
-    	 timemsM4 = HAL_GetTick();
+    	timemsM4 = HAL_GetTick();
+    	slave_num = (slave_num + 1)%MFRC522_SLAVE_MAX ;
+		if(hspi1.State == HAL_SPI_STATE_READY)
+		{
+			for (int i = 0; i < 16; i++)
+			{
+				cardstr[i] = 0;
+			}
+			status = 0;
+			// Find cards
+			status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
+				if(status == MI_OK)
+				{
+				result = 0;
+				result++;
+				status = MFRC522_Anticoll(cardstr,slave_num);
+					if(status == MI_OK)
+					{
+					  result++;
+					  UID[0] = cardstr[0];
+					  UID[1] = cardstr[1];
+					  UID[2] = cardstr[2];
+					}
+				}
+		}
+
+
+
       	 testvar = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
       	 if(testvar == GPIO_PIN_SET && testFlag == 1)
       	 {
@@ -206,31 +228,32 @@ int main(void)
       		testStatus= 1;
       		testFlag = 0;
       		HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+//      		slave_num = (slave_num + 1)%3 ;
 
-       	  if(hspi1.State == HAL_SPI_STATE_READY)
-       	  {
-       		  for (int i = 0; i < 16; i++)
-       		  {
-       			  cardstr[i] = 0;
-       		  }
-       		  status = 99;
-       		  // Find cards
-       		  status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
-       		  if(status == MI_OK)
-       		  {
-       			  result = 0;
-       			  result++;
-       			  status = MFRC522_Anticoll(cardstr,slave_num);
-       			  if(status == MI_OK)
-       			  {
-       				  result++;
-       				  UID[0] = cardstr[0];
-       				  UID[1] = cardstr[1];
-       				  UID[2] = cardstr[2];
-       			  }
-       		  }
+//			if(hspi1.State == HAL_SPI_STATE_READY)
+//			{
+//				for (int i = 0; i < 16; i++)
+//				{
+//					cardstr[i] = 0;
+//				}
+//				status = 99;
+//				// Find cards
+//				status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
+//					if(status == MI_OK)
+//					{
+//					result = 0;
+//					result++;
+//					status = MFRC522_Anticoll(cardstr,slave_num);
+//						if(status == MI_OK)
+//						{
+//						  result++;
+//						  UID[0] = cardstr[0];
+//						  UID[1] = cardstr[1];
+//						  UID[2] = cardstr[2];
+//						}
+//					}
+//			}
 
-       	  }
       	 }
       	 else if (testvar == GPIO_PIN_RESET && testFlag == 0)
       	 {
@@ -432,7 +455,6 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
@@ -440,13 +462,7 @@ static void MX_GPIO_Init(void)
                           |MC14515_INH_Pin|MC14515_D3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RC522_CS_GPIO_Port, RC522_CS_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, MC14515_ST_Pin|MC14515_D4_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
@@ -466,26 +482,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : RC522_CS_Pin */
-  GPIO_InitStruct.Pin = RC522_CS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(RC522_CS_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pins : MC14515_ST_Pin MC14515_D4_Pin */
   GPIO_InitStruct.Pin = MC14515_ST_Pin|MC14515_D4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : Test_Sig_Pin */
-  GPIO_InitStruct.Pin = Test_Sig_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(Test_Sig_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;
