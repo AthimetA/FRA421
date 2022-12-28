@@ -10,35 +10,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include "RC522.h"
-
-NSS_GPIO SPI_Nss_Get_GPIO(uint16_t slave_num)
-{
-	NSS_GPIO gpio;
-//	switch (slave_num)
-//	{
-//		case 0:
-//			gpio.port = NSS_0_PORT;
-//			gpio.pin = NSS_0_PIN;
-//			break;
-//		case 1:
-//			gpio.port = NSS_1_PORT;
-//			gpio.pin = NSS_1_PIN;
-//			break;
-//		case 2:
-//			gpio.port = NSS_2_PORT;
-//			gpio.pin = NSS_2_PIN;
-//			break;
-//		case 3:
-//			gpio.port = NSS_3_PORT;
-//			gpio.pin = NSS_3_PIN;
-//			break;
-//	}
-
-	gpio.port = NSS_0_PORT;
-	gpio.pin = NSS_0_PIN;
-
-	return gpio;
-}
+#include "MC14515.h"
 
 //------------------------------------------------------
 /*
@@ -52,18 +24,40 @@ void MFRC522_Write_Data(uint8_t addr, uint8_t val, uint16_t nss_num) {
 	uint8_t addr_bits = (((addr<<1) & 0x7E));
 	uint8_t TxBuff[2] = {addr_bits,val};
 
+#ifdef MNSS
+
 	NSS_GPIO nss;
 	nss = SPI_Nss_Get_GPIO(nss_num);
 
 	// Slave select Low
 	HAL_GPIO_WritePin(nss.port, nss.pin, GPIO_PIN_RESET);
 
+#endif
+
+#ifdef MC14515USE
+
+	// Slave select Low
+	MC14515_Latch(nss_num);
+
+#endif
+
 	// Transmit Data
 	HAL_SPI_Transmit(&MFRC522_PORT, TxBuff, 2, 500);
 	//   HAL_SPI_Transmit_DMA(&MFRC522_PORT, TxBuff, 2);
 
+#ifdef MNSS
+
 	// Slave select High
 	HAL_GPIO_WritePin(nss.port, nss.pin, GPIO_PIN_SET);
+
+#endif
+
+#ifdef MC14515USE
+
+	// Slave select High
+	MC14515_Set_Output_All_High();
+
+#endif
 
 }
 //-----------------------------------------------
@@ -83,11 +77,22 @@ uint8_t MFRC522_Read_Data(uint8_t addr, uint16_t nss_num) {
 	uint8_t Rxbuff[2];
 	uint8_t rx_bits;
 
+#ifdef MNSS
+
 	NSS_GPIO nss;
 	nss = SPI_Nss_Get_GPIO(nss_num);
 
+	// Slave select Low
 	HAL_GPIO_WritePin(nss.port, nss.pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
+
+#endif
+
+#ifdef MC14515USE
+
+	// Slave select Low
+	MC14515_Latch(nss_num);
+
+#endif
 
 	hal_status = HAL_SPI_TransmitReceive(&MFRC522_PORT, Txbuff, Rxbuff, 2, 500);
 
@@ -96,8 +101,19 @@ uint8_t MFRC522_Read_Data(uint8_t addr, uint16_t nss_num) {
 		  rx_bits = Rxbuff[1];    // response is in the second byte
 	  }
 
-	HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
+#ifdef MNSS
+
+	// Slave select High
 	HAL_GPIO_WritePin(nss.port, nss.pin, GPIO_PIN_SET);
+
+#endif
+
+#ifdef MC14515USE
+
+	// Slave select High
+	MC14515_Set_Output_All_High();
+
+#endif
 
 	return (uint8_t) rx_bits; // return the rx bits, casting to an 8 bit int
 }
@@ -609,3 +625,36 @@ uint8_t MFRC522_Anticoll(uint8_t *serNum, uint16_t nss_num)
 //	// Clear MFCrypto1On bit
 //	ClearBitMask(Status2Reg, 0x08); // Status2Reg[7..0] bits are: TempSensClear I2CForceHS reserved reserved   MFCrypto1On ModemState[2:0]
 //} // End PCD_StopCrypto1()
+
+#ifdef MNSS
+
+NSS_GPIO SPI_Nss_Get_GPIO(uint16_t slave_num)
+{
+	NSS_GPIO gpio;
+	switch (slave_num)
+	{
+		case 0:
+			gpio.port = NSS_0_PORT;
+			gpio.pin = NSS_0_PIN;
+			break;
+		case 1:
+			gpio.port = NSS_1_PORT;
+			gpio.pin = NSS_1_PIN;
+			break;
+		case 2:
+			gpio.port = NSS_2_PORT;
+			gpio.pin = NSS_2_PIN;
+			break;
+		case 3:
+			gpio.port = NSS_3_PORT;
+			gpio.pin = NSS_3_PIN;
+			break;
+	}
+
+	gpio.port = NSS_0_PORT;
+	gpio.pin = NSS_0_PIN;
+
+	return gpio;
+}
+
+#endif

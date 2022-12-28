@@ -11,6 +11,8 @@
 #include "main.h"
 #include "stm32h7xx_hal.h"
 
+#define MC14515USE
+
 // SPI
 #define MFRC522_PORT hspi1
 extern SPI_HandleTypeDef MFRC522_PORT;
@@ -18,6 +20,8 @@ extern SPI_HandleTypeDef MFRC522_PORT;
 // Global Reset Pin
 #define MFRC522_GLOBAL_RST_PORT GPIOB
 #define MFRC522_GLOBAL_RST_PIN GPIO_PIN_5
+
+#ifdef MNSS
 
 // Slave select Pin (4 pin to Decoder)
 #define NSS_0_PORT GPIOD
@@ -28,6 +32,8 @@ extern SPI_HandleTypeDef MFRC522_PORT;
 #define NSS_2_PIN GPIO_PIN_14
 #define NSS_3_PORT GPIOD
 #define NSS_3_PIN GPIO_PIN_14
+
+#endif
 
 //Maximum length of the array
 #define MAX_LEN 16
@@ -134,14 +140,17 @@ extern SPI_HandleTypeDef MFRC522_PORT;
 #define     Reserved34            0x3F
 //-----------------------------------------------
 
+#ifdef MNSS
+
 typedef struct _NSS_GPIO
 {
 	GPIO_TypeDef *port;
 	uint16_t pin;
 }NSS_GPIO;
 
+#endif
+
 // function definitions
-NSS_GPIO SPI_Nss_Get_GPIO(uint16_t);
 void MFRC522_Write_Data(uint8_t, uint8_t, uint16_t);
 uint8_t MFRC522_Read_Data(uint8_t, uint16_t);
 void SetBitMask(uint8_t, uint8_t, uint16_t);
@@ -160,5 +169,10 @@ uint8_t MFRC522_Anticoll(uint8_t*, uint16_t);
 //uint8_t MFRC522_Write(uint8_t, uint8_t*);
 //void MFRC522_Halt();
 //void MFRC522_StopCrypto1(void);
+#ifdef MNSS
+
+NSS_GPIO SPI_Nss_Get_GPIO(uint16_t);
+
+#endif
 
 #endif /* SRC_RC522_H_ */

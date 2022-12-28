@@ -188,9 +188,10 @@ int main(void)
     	  timemsM4_LED = HAL_GetTick();
           HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 
-          slave_num = (slave_num + 1)%16 ;
-          MC14515_Latch(slave_num);
-          MC14515_Set_Output_All_High();
+//          slave_num = (slave_num + 1)%16 ;
+          slave_num = 0;
+//          MC14515_Latch(slave_num);
+//          MC14515_Set_Output_All_High();
       }
 
    	  //////
@@ -213,6 +214,7 @@ int main(void)
        		  }
        		  status = 99;
        		  // Find cards
+//       		  MC14515_Latch(slave_num);
        		  status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
        		  if(status == MI_OK)
        		  {
@@ -226,13 +228,9 @@ int main(void)
        				  UID[1] = cardstr[1];
        				  UID[2] = cardstr[2];
        				  UID[3] = cardstr[3];
-       				UIDint[0] = cardstr[0];
-       				UIDint[1] = cardstr[1];
-       				UIDint[2] = cardstr[2];
-       				UIDint[3] = cardstr[3];
-       				UIDint[4] = cardstr[4];
        			  }
        		  }
+//       		  MC14515_Set_Output_All_High();
        	  }
       	 }
       	 else if (testvar == GPIO_PIN_RESET && testFlag == 0)
