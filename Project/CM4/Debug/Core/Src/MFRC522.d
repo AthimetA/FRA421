@@ -1,4 +1,4 @@
-Core/Src/RC522.o: ../Core/Src/RC522.c ../Core/Inc/RC522.h \
+Core/Src/MFRC522.o: ../Core/Src/MFRC522.c ../Core/Inc/MFRC522.h \
  ../Core/Inc/main.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
@@ -34,8 +34,8 @@ Core/Src/RC522.o: ../Core/Src/RC522.c ../Core/Inc/RC522.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi_ex.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- ../Core/Inc/MC14515.h
-../Core/Inc/RC522.h:
+ ../Core/Inc/MC14515.h ../Core/Inc/MC14515.h
+../Core/Inc/MFRC522.h:
 ../Core/Inc/main.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -71,4 +71,5 @@ Core/Src/RC522.o: ../Core/Src/RC522.c ../Core/Inc/RC522.h \
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi_ex.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
+../Core/Inc/MC14515.h:
 ../Core/Inc/MC14515.h:

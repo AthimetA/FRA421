@@ -1,12 +1,12 @@
 /*
- * RC522.h
+ * MFRC522.h
  *
- *  Created on: Dec 21, 2022
+ *  Created on: Dec 29, 2022
  *      Author: AthimetA
  */
 
-#ifndef SRC_RC522_H_
-#define SRC_RC522_H_
+#ifndef INC_MFRC522_H_
+#define INC_MFRC522_H_
 
 #include "main.h"
 #include "stm32h7xx_hal.h"
@@ -37,7 +37,11 @@ extern SPI_HandleTypeDef MFRC522_PORT;
 
 #ifdef MC14515USE
 
+#include "MC14515.h"
+
 #define MFRC522_SLAVE_MAX 12
+#define MC14515HANDLER MC14515
+extern MC14515Handle MC14515HANDLER;
 
 #endif
 
@@ -156,6 +160,20 @@ typedef struct _NSS_GPIO
 
 #endif
 
+typedef union _FRA421_CARD
+{
+	struct _CardBit
+	{
+		uint8_t bit0;
+		uint8_t bit1;
+		uint8_t bit2;
+		uint8_t bit3;
+	}Cardbit;
+
+	uint32_t data;
+
+}Fra421_Card;
+
 // function definitions
 void MFRC522_Write_Data(uint8_t, uint8_t, uint16_t);
 uint8_t MFRC522_Read_Data(uint8_t, uint16_t);
@@ -181,4 +199,5 @@ NSS_GPIO SPI_Nss_Get_GPIO(uint16_t);
 
 #endif
 
-#endif /* SRC_RC522_H_ */
+
+#endif /* INC_MFRC522_H_ */

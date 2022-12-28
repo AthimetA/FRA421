@@ -127,5 +127,3 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* heth)
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

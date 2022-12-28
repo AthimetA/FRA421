@@ -1,0 +1,11 @@
+../Core/Src/MFRC522.c:16:6:MFRC522_Write_Data	24	static
+../Core/Src/MFRC522.c:64:9:MFRC522_Read_Data	40	static
+../Core/Src/MFRC522.c:122:6:SetBitMask	24	static
+../Core/Src/MFRC522.c:135:6:ClearBitMask	24	static
+../Core/Src/MFRC522.c:149:6:AntennaOn	16	static
+../Core/Src/MFRC522.c:161:6:AntennaOff	16	static
+../Core/Src/MFRC522.c:173:6:MFRC522_Reset	16	static
+../Core/Src/MFRC522.c:184:6:MFRC522_Init	16	static
+../Core/Src/MFRC522.c:222:9:MFRC522_Request	32	static
+../Core/Src/MFRC522.c:250:9:MFRC522_ToCard	48	static
+../Core/Src/MFRC522.c:373:9:MFRC522_Anticoll	32	static

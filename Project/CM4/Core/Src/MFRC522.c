@@ -1,15 +1,9 @@
-/*
- * MFRC522.c
- *
- *  Created on: Dec 21, 2022
- *      Author: AthimetA
- */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#include "RC522.h"
+#include "MFRC522.h"
 #include "MC14515.h"
 
 //------------------------------------------------------
@@ -37,7 +31,7 @@ void MFRC522_Write_Data(uint8_t addr, uint8_t val, uint16_t nss_num) {
 #ifdef MC14515USE
 
 	// Slave select Low
-	MC14515_Latch(nss_num);
+	MC14515_Latch(&MC14515HANDLER,nss_num);
 
 #endif
 
@@ -55,7 +49,7 @@ void MFRC522_Write_Data(uint8_t addr, uint8_t val, uint16_t nss_num) {
 #ifdef MC14515USE
 
 	// Slave select High
-	MC14515_Set_Output_All_High();
+	MC14515_Set_Output_All_High(&MC14515HANDLER);
 
 #endif
 
@@ -90,16 +84,16 @@ uint8_t MFRC522_Read_Data(uint8_t addr, uint16_t nss_num) {
 #ifdef MC14515USE
 
 	// Slave select Low
-	MC14515_Latch(nss_num);
+	MC14515_Latch(&MC14515HANDLER,nss_num);
 
 #endif
 
 	hal_status = HAL_SPI_TransmitReceive(&MFRC522_PORT, Txbuff, Rxbuff, 2, 500);
 
 	if (hal_status == HAL_OK)
-	  {
-		  rx_bits = Rxbuff[1];    // response is in the second byte
-	  }
+	{
+		rx_bits = Rxbuff[1];    // response is in the second byte
+	}
 
 #ifdef MNSS
 
@@ -111,7 +105,7 @@ uint8_t MFRC522_Read_Data(uint8_t addr, uint16_t nss_num) {
 #ifdef MC14515USE
 
 	// Slave select High
-	MC14515_Set_Output_All_High();
+	MC14515_Set_Output_All_High(&MC14515HANDLER);
 
 #endif
 
@@ -127,9 +121,9 @@ uint8_t MFRC522_Read_Data(uint8_t addr, uint16_t nss_num) {
  */
 void SetBitMask(uint8_t reg, uint8_t mask, uint16_t nss_num)
 {
-    uint8_t tmp;
-    tmp = MFRC522_Read_Data(reg, nss_num);
-    MFRC522_Write_Data(reg, tmp | mask, nss_num);  // set bit mask
+	uint8_t tmp;
+	tmp = MFRC522_Read_Data(reg, nss_num);
+	MFRC522_Write_Data(reg, tmp | mask, nss_num);  // set bit mask
 }
 //
 /*
@@ -137,12 +131,12 @@ void SetBitMask(uint8_t reg, uint8_t mask, uint16_t nss_num)
  * Description: clear RC522 register bit
  * Input parameters: reg - register address; mask - clear bit value
  * Return value: None
-*/
+ */
 void ClearBitMask(uint8_t reg, uint8_t mask, uint16_t nss_num)
 {
-    uint8_t tmp;
-    tmp = MFRC522_Read_Data(reg, nss_num);
-    MFRC522_Write_Data(reg, tmp & (~mask), nss_num);  // clear bit mask
+	uint8_t tmp;
+	tmp = MFRC522_Read_Data(reg, nss_num);
+	MFRC522_Write_Data(reg, tmp & (~mask), nss_num);  // clear bit mask
 }
 
 //-----------------------------------------------
@@ -154,19 +148,19 @@ void ClearBitMask(uint8_t reg, uint8_t mask, uint16_t nss_num)
  */
 void AntennaOn(uint16_t nss_num)
 {
-  SetBitMask(TxControlReg, 0x03,nss_num);
+	SetBitMask(TxControlReg, 0x03,nss_num);
 }
 
 
 /*
-  * Function Name: AntennaOff
-  * Description: Close antennas, each time you start or shut down the natural barrier between the transmitter should be at least 1ms interval
-  * Input: None
-  * Return value: None
+ * Function Name: AntennaOff
+ * Description: Close antennas, each time you start or shut down the natural barrier between the transmitter should be at least 1ms interval
+ * Input: None
+ * Return value: None
  */
 void AntennaOff(uint16_t nss_num)
 {
-  ClearBitMask(TxControlReg, 0x03,nss_num);
+	ClearBitMask(TxControlReg, 0x03,nss_num);
 }
 
 
@@ -178,7 +172,7 @@ void AntennaOff(uint16_t nss_num)
  */
 void MFRC522_Reset(uint16_t nss_num)
 {
-  MFRC522_Write_Data(CommandReg, PCD_RESETPHASE, nss_num);
+	MFRC522_Write_Data(CommandReg, PCD_RESETPHASE, nss_num);
 }
 //--------------------------------------------------
 /*
@@ -186,31 +180,31 @@ void MFRC522_Reset(uint16_t nss_num)
  * Description: Initialize RC522
  * Input: None
  * Return value: None
-*/
+ */
 void MFRC522_Init(uint16_t nss_num)
 {
-  MFRC522_Reset(nss_num);
+	MFRC522_Reset(nss_num);
 
-  // Timer: TPrescaler*TreloadVal/6.78MHz = 24ms
-  MFRC522_Write_Data(TModeReg, 0x80, nss_num); // 0x8D);      // Tauto=1; f(Timer) = 6.78MHz/TPreScaler
-  MFRC522_Write_Data(TPrescalerReg, 0xA9, nss_num); //0x34); // TModeReg[3..0] + TPrescalerReg
-  MFRC522_Write_Data(TReloadRegL, 0x03, nss_num); //30);
-  MFRC522_Write_Data(TReloadRegH, 0xE8, nss_num); //0);
-  MFRC522_Write_Data(TxAutoReg, 0x40, nss_num);     // force 100% ASK modulation
-  MFRC522_Write_Data(ModeReg, 0x3D, nss_num);       // CRC Initial value 0x6363
+	// Timer: TPrescaler*TreloadVal/6.78MHz = 24ms
+	MFRC522_Write_Data(TModeReg, 0x80, nss_num); // 0x8D);      // Tauto=1; f(Timer) = 6.78MHz/TPreScaler
+	MFRC522_Write_Data(TPrescalerReg, 0xA9, nss_num); //0x34); // TModeReg[3..0] + TPrescalerReg
+	MFRC522_Write_Data(TReloadRegL, 0x03, nss_num); //30);
+	MFRC522_Write_Data(TReloadRegH, 0xE8, nss_num); //0);
+	MFRC522_Write_Data(TxAutoReg, 0x40, nss_num);     // force 100% ASK modulation
+	MFRC522_Write_Data(ModeReg, 0x3D, nss_num);       // CRC Initial value 0x6363
 
-  // interrupts, still playing with these
-//   MFRC522_Write_Data(CommIEnReg, 0xFF);
-//   MFRC522_Write_Data(DivlEnReg, 0xFF);
-  //  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
-  //  MFRC522_Write_Data(CommIEnReg, 0x7F, nss_num);
-  ////  MFRC522_Write_Data(DivlEnReg, 0x14);
-  //  MFRC522_Write_Data(DivlEnReg, 0x00, nss_num);
-  //  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
+	// interrupts, still playing with these
+	//   MFRC522_Write_Data(CommIEnReg, 0xFF);
+	//   MFRC522_Write_Data(DivlEnReg, 0xFF);
+	//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_RESET);
+	//  MFRC522_Write_Data(CommIEnReg, 0x7F, nss_num);
+	////  MFRC522_Write_Data(DivlEnReg, 0x14);
+	//  MFRC522_Write_Data(DivlEnReg, 0x00, nss_num);
+	//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 
-  // turn antenna on
-  AntennaOn(nss_num);
-//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
+	// turn antenna on
+	AntennaOn(nss_num);
+	//  HAL_GPIO_WritePin(Test_Sig_GPIO_Port, Test_Sig_Pin, GPIO_PIN_SET);
 }
 //------------------------------------------------------------------
 /*
@@ -227,19 +221,19 @@ void MFRC522_Init(uint16_t nss_num)
  */
 uint8_t MFRC522_Request(uint8_t reqMode, uint8_t *TagType, uint16_t nss_num)
 {
-  uint8_t status;
-  uint backBits; // The received data bits
+	uint8_t status;
+	uint backBits; // The received data bits
 
-  MFRC522_Write_Data(BitFramingReg, 0x07, nss_num);   // TxLastBists = BitFramingReg[2..0]
+	MFRC522_Write_Data(BitFramingReg, 0x07, nss_num);   // TxLastBists = BitFramingReg[2..0]
 
-  TagType[0] = reqMode;
+	TagType[0] = reqMode;
 
-  status = MFRC522_ToCard(PCD_TRANSCEIVE, TagType, 1, TagType, &backBits, nss_num);
-  if ((status != MI_OK) || (backBits != 0x10)) {
-    status = MI_ERR;
-  }
+	status = MFRC522_ToCard(PCD_TRANSCEIVE, TagType, 1, TagType, &backBits, nss_num);
+	if ((status != MI_OK) || (backBits != 0x10)) {
+		status = MI_ERR;
+	}
 
-  return status;
+	return status;
 }
 
 //-----------------------------------------------
@@ -255,116 +249,116 @@ uint8_t MFRC522_Request(uint8_t reqMode, uint8_t *TagType, uint16_t nss_num)
  */
 uint8_t MFRC522_ToCard(uint8_t command, uint8_t *sendData, uint8_t sendLen, uint8_t *backData, uint *backLen, uint16_t nss_num)
 {
-  uint8_t status = MI_ERR;
-  uint8_t irqEn = 0x00;
-  uint8_t waitIRq = 0x00;
-  uint8_t lastBits;
-  uint8_t n;
-  uint i;
+	uint8_t status = MI_ERR;
+	uint8_t irqEn = 0x00;
+	uint8_t waitIRq = 0x00;
+	uint8_t lastBits;
+	uint8_t n;
+	uint i;
 
-  switch (command)
-  {
-    case PCD_AUTHENT:     // Certification cards close
-      {
-        irqEn = 0x12;
-        waitIRq = 0x10;
-        break;
-      }
-    case PCD_TRANSCEIVE:  // Transmit FIFO data
-      {
-        irqEn = 0x77;
-        waitIRq = 0x30;
-        break;
-      }
-    default:
-      break;
-  }
+	switch (command)
+	{
+	case PCD_AUTHENT:     // Certification cards close
+	{
+		irqEn = 0x12;
+		waitIRq = 0x10;
+		break;
+	}
+	case PCD_TRANSCEIVE:  // Transmit FIFO data
+	{
+		irqEn = 0x77;
+		waitIRq = 0x30;
+		break;
+	}
+	default:
+		break;
+	}
 
-  MFRC522_Write_Data(CommIEnReg, irqEn|0x80, nss_num);  // Interrupt request
-//  MFRC522_Write_Data(CommIEnReg, 0x7F); //Edit Some
+	MFRC522_Write_Data(CommIEnReg, irqEn|0x80, nss_num);  // Interrupt request
+	//  MFRC522_Write_Data(CommIEnReg, 0x7F); //Edit Some
 
-  ClearBitMask(CommIrqReg, 0x80, nss_num);         // Clear all interrupt request bit
+	ClearBitMask(CommIrqReg, 0x80, nss_num);         // Clear all interrupt request bit
 
-  SetBitMask(FIFOLevelReg, 0x80, nss_num);         // FlushBuffer=1, FIFO Initialization
+	SetBitMask(FIFOLevelReg, 0x80, nss_num);         // FlushBuffer=1, FIFO Initialization
 
 
-  MFRC522_Write_Data(CommandReg, PCD_IDLE, nss_num);    // NO action; Cancel the current command
+	MFRC522_Write_Data(CommandReg, PCD_IDLE, nss_num);    // NO action; Cancel the current command
 
-  // Writing data to the FIFO
-  for (i=0; i<sendLen; i++)
-  {
-    MFRC522_Write_Data(FIFODataReg, sendData[i], nss_num);
-  }
+	// Writing data to the FIFO
+	for (i=0; i<sendLen; i++)
+	{
+		MFRC522_Write_Data(FIFODataReg, sendData[i], nss_num);
+	}
 
-  // Execute the command
-  MFRC522_Write_Data(CommandReg, command, nss_num);
-  if (command == PCD_TRANSCEIVE)
-  {
-    SetBitMask(BitFramingReg, 0x80, nss_num);      // StartSend=1,transmission of data starts
-  }
+	// Execute the command
+	MFRC522_Write_Data(CommandReg, command, nss_num);
+	if (command == PCD_TRANSCEIVE)
+	{
+		SetBitMask(BitFramingReg, 0x80, nss_num);      // StartSend=1,transmission of data starts
+	}
 
-  // Waiting to receive data to complete
-  i = 2000;	// i according to the clock frequency adjustment, the operator M1 card maximum waiting time 25ms
-  do
-  {
-    // CommIrqReg[7..0]
-    // Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
-    n = MFRC522_Read_Data(CommIrqReg, nss_num);
-    i--;
-  }
-  while ((i!=0) && !(n&0x01) && !(n&waitIRq));
+	// Waiting to receive data to complete
+	i = 2000;	// i according to the clock frequency adjustment, the operator M1 card maximum waiting time 25ms
+	do
+	{
+		// CommIrqReg[7..0]
+		// Set1 TxIRq RxIRq IdleIRq HiAlerIRq LoAlertIRq ErrIRq TimerIRq
+		n = MFRC522_Read_Data(CommIrqReg, nss_num);
+		i--;
+	}
+	while ((i!=0) && !(n&0x01) && !(n&waitIRq));
 
-  ClearBitMask(BitFramingReg, 0x80, nss_num);      // StartSend=0
+	ClearBitMask(BitFramingReg, 0x80, nss_num);      // StartSend=0
 
-  if (i != 0)
-  {
-    if(!(MFRC522_Read_Data(ErrorReg, nss_num) & 0x1B))  // BufferOvfl Collerr CRCErr ProtecolErr
-    {
-      status = MI_OK;
-      if (n & irqEn & 0x01)
-      {
-        status = MI_NOTAGERR;             // ??
-      }
+	if (i != 0)
+	{
+		if(!(MFRC522_Read_Data(ErrorReg, nss_num) & 0x1B))  // BufferOvfl Collerr CRCErr ProtecolErr
+		{
+			status = MI_OK;
+			if (n & irqEn & 0x01)
+			{
+				status = MI_NOTAGERR;             // ??
+			}
 
-      if (command == PCD_TRANSCEIVE)
-      {
-        n = MFRC522_Read_Data(FIFOLevelReg, nss_num);
-        lastBits = MFRC522_Read_Data(ControlReg, nss_num) & 0x07;
-        if (lastBits)
-        {
-          *backLen = (n-1)*8 + lastBits;
-        }
-        else
-        {
-          *backLen = n*8;
-        }
+			if (command == PCD_TRANSCEIVE)
+			{
+				n = MFRC522_Read_Data(FIFOLevelReg, nss_num);
+				lastBits = MFRC522_Read_Data(ControlReg, nss_num) & 0x07;
+				if (lastBits)
+				{
+					*backLen = (n-1)*8 + lastBits;
+				}
+				else
+				{
+					*backLen = n*8;
+				}
 
-        if (n == 0)
-        {
-          n = 1;
-        }
-        if (n > MAX_LEN)
-        {
-          n = MAX_LEN;
-        }
+				if (n == 0)
+				{
+					n = 1;
+				}
+				if (n > MAX_LEN)
+				{
+					n = MAX_LEN;
+				}
 
-        // Reading the received data in FIFO
-        for (i=0; i<n; i++)
-        {
-          backData[i] = MFRC522_Read_Data(FIFODataReg, nss_num);
-        }
-      }
-    }
-    else {
-      //printf("~~~ buffer overflow, collerr, crcerr, or protecolerr\r\n");
-      status = MI_ERR;
-    }
-  }
-  else {
-    //printf("~~~ request timed out\r\n");
-  }
+				// Reading the received data in FIFO
+				for (i=0; i<n; i++)
+				{
+					backData[i] = MFRC522_Read_Data(FIFODataReg, nss_num);
+				}
+			}
+		}
+		else {
+			//printf("~~~ buffer overflow, collerr, crcerr, or protecolerr\r\n");
+			status = MI_ERR;
+		}
+	}
+	else {
+		//printf("~~~ request timed out\r\n");
+	}
 
-  return status;
+	return status;
 }
 
 
@@ -378,36 +372,36 @@ uint8_t MFRC522_ToCard(uint8_t command, uint8_t *sendData, uint8_t sendLen, uint
  */
 uint8_t MFRC522_Anticoll(uint8_t *serNum, uint16_t nss_num)
 {
-  uint8_t status;
-  uint8_t i;
-  uint8_t serNumCheck=0;
-  uint unLen;
+	uint8_t status;
+	uint8_t i;
+	uint8_t serNumCheck=0;
+	uint unLen;
 
 
-  //ClearBitMask(Status2Reg, 0x08);		//TempSensclear
-  //ClearBitMask(CollReg,0x80);			//ValuesAfterColl
-  MFRC522_Write_Data(BitFramingReg, 0x00, nss_num);		//TxLastBists = BitFramingReg[2..0]
+	//ClearBitMask(Status2Reg, 0x08);		//TempSensclear
+	//ClearBitMask(CollReg,0x80);			//ValuesAfterColl
+	MFRC522_Write_Data(BitFramingReg, 0x00, nss_num);		//TxLastBists = BitFramingReg[2..0]
 
-  serNum[0] = PICC_ANTICOLL;
-  serNum[1] = 0x20;
-  status = MFRC522_ToCard(PCD_TRANSCEIVE, serNum, 2, serNum, &unLen, nss_num);
+	serNum[0] = PICC_ANTICOLL;
+	serNum[1] = 0x20;
+	status = MFRC522_ToCard(PCD_TRANSCEIVE, serNum, 2, serNum, &unLen, nss_num);
 
-  if (status == MI_OK)
-  {
-    //Check card serial number
-    for (i=0; i<4; i++)
-    {
-      serNumCheck ^= serNum[i];
-    }
-    if (serNumCheck != serNum[i])
-    {
-      status = MI_ERR;
-    }
-  }
+	if (status == MI_OK)
+	{
+		//Check card serial number
+		for (i=0; i<4; i++)
+		{
+			serNumCheck ^= serNum[i];
+		}
+		if (serNumCheck != serNum[i])
+		{
+			status = MI_ERR;
+		}
+	}
 
-  //SetBitMask(CollReg, 0x80);		//ValuesAfterColl=1
+	//SetBitMask(CollReg, 0x80);		//ValuesAfterColl=1
 
-  return status;
+	return status;
 }
 //---------------------------------------------------
 
@@ -625,22 +619,22 @@ NSS_GPIO SPI_Nss_Get_GPIO(uint16_t slave_num)
 	NSS_GPIO gpio;
 	switch (slave_num)
 	{
-		case 0:
-			gpio.port = NSS_0_PORT;
-			gpio.pin = NSS_0_PIN;
-			break;
-		case 1:
-			gpio.port = NSS_1_PORT;
-			gpio.pin = NSS_1_PIN;
-			break;
-		case 2:
-			gpio.port = NSS_2_PORT;
-			gpio.pin = NSS_2_PIN;
-			break;
-		case 3:
-			gpio.port = NSS_3_PORT;
-			gpio.pin = NSS_3_PIN;
-			break;
+	case 0:
+		gpio.port = NSS_0_PORT;
+		gpio.pin = NSS_0_PIN;
+		break;
+	case 1:
+		gpio.port = NSS_1_PORT;
+		gpio.pin = NSS_1_PIN;
+		break;
+	case 2:
+		gpio.port = NSS_2_PORT;
+		gpio.pin = NSS_2_PIN;
+		break;
+	case 3:
+		gpio.port = NSS_3_PORT;
+		gpio.pin = NSS_3_PIN;
+		break;
 	}
 
 	gpio.port = NSS_0_PORT;

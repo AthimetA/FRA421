@@ -11,27 +11,19 @@
 #include "main.h"
 #include "stm32h7xx_hal.h"
 
-// PIN
-#define MC14515_ST_PORT GPIOC
-#define MC14515_ST_PIN GPIO_PIN_6
+typedef struct
+{
+	GPIO_TypeDef *STPort,*INHPort,*D1Port,*D2Port,*D3Port,*D4Port;
+	uint16_t STPin;
+	uint16_t INHPin;
+	uint16_t D1Pin;
+	uint16_t D2Pin;
+	uint16_t D3Pin;
+	uint16_t D4Pin;
+}MC14515Handle;
 
-#define MC14515_INH_PORT GPIOB
-#define MC14515_INH_PIN GPIO_PIN_8
-
-#define MC14515_D1_PORT GPIOB
-#define MC14515_D1_PIN GPIO_PIN_15
-
-#define MC14515_D2_PORT GPIOB
-#define MC14515_D2_PIN GPIO_PIN_12
-
-#define MC14515_D3_PORT GPIOB
-#define MC14515_D3_PIN GPIO_PIN_9
-
-#define MC14515_D4_PORT GPIOC
-#define MC14515_D4_PIN GPIO_PIN_7
-
-void MC14515_Latch(uint16_t);
-void MC14515_Set_Output_All_High();
-void MC14515_Test_Function();
+void MC14515_Latch(MC14515Handle *mc14515,uint16_t selected_output);
+void MC14515_Set_Output_All_High(MC14515Handle *mc14515);
+void MC14515_Test_Function(MC14515Handle *mc14515);
 
 #endif /* INC_MC14515_H_ */
