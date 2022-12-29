@@ -211,15 +211,18 @@ int main(void)
 					cardstr[i] = 0;
 					ptrRFIDMain->cardStr[i] = cardstr[i];
 				}
-				status = 0;
+				status = 99;
 				ptrRFIDMain->status = status;
+				ptrRFID->status =status;
 				// Find cards
 				status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
 				ptrRFIDMain->status = status;
+				ptrRFID->status =status;
 				if(status == MI_OK)
 				{
 					status = MFRC522_Anticoll(cardstr,slave_num);
 					ptrRFIDMain->status = status;
+					ptrRFID->status =status;
 					if(status == MI_OK)
 					{
 						// Update Ptr
