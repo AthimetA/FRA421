@@ -1,6 +1,6 @@
-../Core/Src/main.c:123:5:main	24	static
-../Core/Src/main.c:313:6:MX_ETH_Init	8	static
-../Core/Src/main.c:362:13:MX_SPI1_Init	8	static
-../Core/Src/main.c:408:13:MX_DMA_Init	16	static
-../Core/Src/main.c:429:13:MX_GPIO_Init	48	static
-../Core/Src/main.c:489:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:127:5:main	24	static
+../Core/Src/main.c:316:6:MX_ETH_Init	8	static
+../Core/Src/main.c:365:13:MX_SPI1_Init	8	static
+../Core/Src/main.c:411:13:MX_DMA_Init	16	static
+../Core/Src/main.c:432:13:MX_GPIO_Init	48	static
+../Core/Src/main.c:492:6:Error_Handler	4	static,ignoring_inline_asm

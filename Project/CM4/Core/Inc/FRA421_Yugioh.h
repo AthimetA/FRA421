@@ -29,7 +29,7 @@ typedef union _FRA421_CARD
 typedef struct _RFID
 {
 	uint16_t slaveAddr;
-	uint8_t RFIDstatus;
+	uint8_t status;
 	Fra421_Card cardMem;
 	Fra421_Card card;
 }RFID;

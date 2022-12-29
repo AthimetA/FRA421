@@ -76,8 +76,12 @@ DMA_HandleTypeDef hdma_spi1_tx;
 
 /* USER CODE BEGIN PV */
 
-MC14515Handle MC14515 = {0};
-RFIDHandle RFIDMain = {0};
+MC14515Handle MC14515;
+RFIDHandle RFIDMain;
+RFIDHandle *ptrRFIDMain;
+RFID *ptrRFID;
+Fra421_Card *ptrCard;
+Fra421_Card *ptrCardMem;
 
 GPIO_PinState testvar ;
 uint8_t testFlag;
@@ -188,13 +192,19 @@ int main(void)
 	}
 
 	// RFID Handle Init
+	ptrRFIDMain = &RFIDMain;
 	status = MFRC522_Read_Data(VersionReg,slave_num);
-//	RFIDMain.status = status;
-//	for (int  i = 0; i < RFID_NUM_MAX; ++i)
-//	{
-//		RFIDMain.RFID[i].slaveAddr = i;
-//		RFIDMain.RFID[i].RFIDstatus = status;
-//	}
+	ptrRFIDMain->status = status;
+	for (uint8_t  i = 0; i < RFID_NUM_MAX; ++i)
+	{
+		ptrRFID = &RFIDMain.RFID[i];
+		ptrRFID->slaveAddr = i;
+		ptrRFID->status = status;
+
+//		RFIDMain.RFID[i].status = status;
+//		RFIDMain.RFID[11].status = status;
+//		RFIDMain.RFID[i].status = 1;
+	}
 
 	testFlag = 1;
 	testStatus= 99;
@@ -217,24 +227,30 @@ int main(void)
 		if(HAL_GetTick() - timemsM4 > 100)
 		{
 			timemsM4 = HAL_GetTick();
+			// Update Slave number
 			slave_num = (slave_num + 1)%MFRC522_SLAVE_MAX ;
+			ptrRFIDMain->slaveNum = slave_num;
+			// Update RFID ptr
+			ptrRFID = &RFIDMain.RFID[RFIDMain.slaveNum];
 			if(hspi1.State == HAL_SPI_STATE_READY)
 			{
 				for (int i = 0; i < 16; i++)
 				{
+					// Clear cardstr
 					cardstr[i] = 0;
+					ptrRFIDMain->cardStr[i] = cardstr[i];
 				}
 				status = 0;
+				ptrRFIDMain->status = status;
 				// Find cards
 				status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
+				ptrRFIDMain->status = status;
 				if(status == MI_OK)
 				{
-					result = 0;
-					result++;
 					status = MFRC522_Anticoll(cardstr,slave_num);
+					ptrRFIDMain->status = status;
 					if(status == MI_OK)
 					{
-						result++;
 						UID[0] = cardstr[0];
 						UID[1] = cardstr[1];
 						UID[2] = cardstr[2];
@@ -243,6 +259,19 @@ int main(void)
 						CUID.Cardbit.bit1 = cardstr[1];
 						CUID.Cardbit.bit2 = cardstr[2];
 						CUID.Cardbit.bit3 = cardstr[3];
+						// Update Ptr
+						ptrCard = &RFIDMain.RFID[RFIDMain.slaveNum].card;
+						ptrCardMem = &RFIDMain.RFID[RFIDMain.slaveNum].cardMem;
+						// Update Card Memory
+						ptrCardMem->Cardbit.bit0 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit0;
+						ptrCardMem->Cardbit.bit1 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit1;
+						ptrCardMem->Cardbit.bit2 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit2;
+						ptrCardMem->Cardbit.bit3 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit3;
+						// Update Card
+						ptrCard->Cardbit.bit0 = cardstr[0];
+						ptrCard->Cardbit.bit1 = cardstr[1];
+						ptrCard->Cardbit.bit2 = cardstr[2];
+						ptrCard->Cardbit.bit3 = cardstr[3];
 					}
 				}
 			}
@@ -256,32 +285,6 @@ int main(void)
 				testStatus= 1;
 				testFlag = 0;
 				HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
-				//      		slave_num = (slave_num + 1)%3 ;
-
-				//			if(hspi1.State == HAL_SPI_STATE_READY)
-				//			{
-				//				for (int i = 0; i < 16; i++)
-				//				{
-				//					cardstr[i] = 0;
-				//				}
-				//				status = 99;
-				//				// Find cards
-				//				status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
-				//					if(status == MI_OK)
-				//					{
-				//					result = 0;
-				//					result++;
-				//					status = MFRC522_Anticoll(cardstr,slave_num);
-				//						if(status == MI_OK)
-				//						{
-				//						  result++;
-				//						  UID[0] = cardstr[0];
-				//						  UID[1] = cardstr[1];
-				//						  UID[2] = cardstr[2];
-				//						}
-				//					}
-				//			}
-
 			}
 			else if (testvar == GPIO_PIN_RESET && testFlag == 0)
 			{
