@@ -103,7 +103,6 @@ uint8_t card_data[MAX_LEN+1];
 uint32_t delay_val = 1000; //ms
 uint16_t result = 0;
 uint8_t UID[4];
-Fra421_Card CUID;
 
 /* USER CODE END PV */
 
@@ -255,10 +254,6 @@ int main(void)
 						UID[1] = cardstr[1];
 						UID[2] = cardstr[2];
 						UID[3] = cardstr[3];
-						CUID.Cardbit.bit0 = cardstr[0];
-						CUID.Cardbit.bit1 = cardstr[1];
-						CUID.Cardbit.bit2 = cardstr[2];
-						CUID.Cardbit.bit3 = cardstr[3];
 						// Update Ptr
 						ptrCard = &RFIDMain.RFID[RFIDMain.slaveNum].card;
 						ptrCardMem = &RFIDMain.RFID[RFIDMain.slaveNum].cardMem;
