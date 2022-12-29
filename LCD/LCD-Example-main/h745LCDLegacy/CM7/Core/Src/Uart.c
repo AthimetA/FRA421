@@ -7,6 +7,8 @@
 
 
 #include "stm32h7xx_hal.h"
+#include <stdlib.h>
+#include <string.h>
 #include "Uart.h"
 
 

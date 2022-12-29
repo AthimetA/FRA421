@@ -23,8 +23,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 #include "ST7735.h"
 #include "Uart.h"
+#include "BMPUartDecode.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

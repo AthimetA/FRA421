@@ -23,8 +23,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include <stdlib.h>
 #include "ST7735.h"
 #include "Uart.h"
+#include "BMPUartDecode.h"
 
 /* USER CODE END Includes */
 
@@ -85,6 +87,8 @@ uint32_t timemsM7_LED = 0;
 
 LCDHandle ST7735 = { 0 };
 UARTStucrture UART2 ={ 0 };
+
+uint32_t testCountM7= 0;
 
 /* USER CODE END PV */
 
@@ -210,8 +214,10 @@ HSEM notification */
 		int16_t read = UARTReadChar(&UART2) ;
 		if(read != -1)
 		{
+			testCountM7 +=1;
 			BMPDecoder(read, LCDBufferAddr());
 		}
+
 	}
 	/* USER CODE END 3 */
 }
