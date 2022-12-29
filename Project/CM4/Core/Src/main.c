@@ -83,26 +83,12 @@ RFID *ptrRFID;
 Fra421_Card *ptrCard;
 Fra421_Card *ptrCardMem;
 
-GPIO_PinState testvar ;
-uint8_t testFlag;
-uint8_t testStatus;
-uint32_t testCount;
-
 uint32_t timemsM4 = 0;
 uint32_t timemsM4_LED = 0;
-
-uint16_t testSizeM4 = 1;
-uint8_t testDataM4 = 4;
-uint8_t test_bits = 0;
-
-float tsest = 0;
 
 uint16_t slave_num = 0;
 uint8_t status, cardstr[MAX_LEN+1];
 uint8_t card_data[MAX_LEN+1];
-uint32_t delay_val = 1000; //ms
-uint16_t result = 0;
-uint8_t UID[4];
 
 /* USER CODE END PV */
 
@@ -199,31 +185,17 @@ int main(void)
 		ptrRFID = &RFIDMain.RFID[i];
 		ptrRFID->slaveAddr = i;
 		ptrRFID->status = status;
-
 //		RFIDMain.RFID[i].status = status;
 //		RFIDMain.RFID[11].status = status;
 //		RFIDMain.RFID[i].status = 1;
 	}
-
-	testFlag = 1;
-	testStatus= 99;
-	testCount=0;
-
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-
-		if(HAL_GetTick() - timemsM4_LED > 1000)
-		{
-			timemsM4_LED = HAL_GetTick();
-			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-		}
-
-		//////
-		if(HAL_GetTick() - timemsM4 > 100)
+		if(HAL_GetTick() - timemsM4 > 200)
 		{
 			timemsM4 = HAL_GetTick();
 			// Update Slave number
@@ -250,10 +222,6 @@ int main(void)
 					ptrRFIDMain->status = status;
 					if(status == MI_OK)
 					{
-						UID[0] = cardstr[0];
-						UID[1] = cardstr[1];
-						UID[2] = cardstr[2];
-						UID[3] = cardstr[3];
 						// Update Ptr
 						ptrCard = &RFIDMain.RFID[RFIDMain.slaveNum].card;
 						ptrCardMem = &RFIDMain.RFID[RFIDMain.slaveNum].cardMem;
@@ -270,35 +238,15 @@ int main(void)
 					}
 				}
 			}
-
-
-
-			testvar = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
-			if(testvar == GPIO_PIN_SET && testFlag == 1)
-			{
-				testCount+=1;
-				testStatus= 1;
-				testFlag = 0;
-				HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
-			}
-			else if (testvar == GPIO_PIN_RESET && testFlag == 0)
-			{
-				testStatus=2;
-				testFlag = 1;
-				HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
-			}
-			else if (testvar == GPIO_PIN_SET && testFlag == 0)
-			{
-				testStatus= 3;
-				testFlag = 0;
-			}
 		}
-		//////
-
-
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
+		if(HAL_GetTick() - timemsM4_LED > 1000)
+		{
+			timemsM4_LED = HAL_GetTick();
+			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+		}
 	}
 	/* USER CODE END 3 */
 }
