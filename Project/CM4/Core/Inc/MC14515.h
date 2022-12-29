@@ -22,8 +22,8 @@ typedef struct
 	uint16_t D4Pin;
 }MC14515Handle;
 
-void MC14515_Latch(MC14515Handle *mc14515,uint16_t selected_output);
-void MC14515_Set_Output_All_High(MC14515Handle *mc14515);
-void MC14515_Test_Function(MC14515Handle *mc14515);
+void MC14515_Latch(MC14515Handle *,uint16_t );
+void MC14515_Set_Output_All_High(MC14515Handle *);
+void MC14515_Test_Function(MC14515Handle *);
 
 #endif /* INC_MC14515_H_ */

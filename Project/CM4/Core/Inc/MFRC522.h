@@ -10,10 +10,12 @@
 
 #include "main.h"
 #include "stm32h7xx_hal.h"
+#include "FRA421_Yugioh.h"
 
 #define MC14515USE
 
 // SPI
+
 #define MFRC522_PORT hspi1
 extern SPI_HandleTypeDef MFRC522_PORT;
 
@@ -44,9 +46,6 @@ extern SPI_HandleTypeDef MFRC522_PORT;
 extern MC14515Handle MC14515HANDLER;
 
 #endif
-
-//Maximum length of the array
-#define MAX_LEN 16
 
 //MF522 Command word
 #define PCD_IDLE              0x00               //NO action; Cancel the current command
@@ -160,19 +159,14 @@ typedef struct _NSS_GPIO
 
 #endif
 
-typedef union _FRA421_CARD
-{
-	struct _CardBit
-	{
-		uint8_t bit0;
-		uint8_t bit1;
-		uint8_t bit2;
-		uint8_t bit3;
-	}Cardbit;
-
-	uint32_t data;
-
-}Fra421_Card;
+//typedef struct
+//{
+//	SPI_HandleTypeDef *hspi;
+//	uint8_t status;
+//	uint8_t cardStr[MAX_LEN+1];
+//	uint8_t cardData[MAX_LEN+1];
+//	uint16_t slaveNum;
+//}MFRC522Handle;
 
 // function definitions
 void MFRC522_Write_Data(uint8_t, uint8_t, uint16_t);

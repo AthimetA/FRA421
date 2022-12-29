@@ -32,7 +32,7 @@ Core/Src/MFRC522.o: ../Core/Src/MFRC522.c ../Core/Inc/MFRC522.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi_ex.h \
- ../Core/Inc/MC14515.h ../Core/Inc/MC14515.h
+ ../Core/Inc/FRA421_Yugioh.h ../Core/Inc/MC14515.h ../Core/Inc/MC14515.h
 ../Core/Inc/MFRC522.h:
 ../Core/Inc/main.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -67,5 +67,6 @@ Core/Src/MFRC522.o: ../Core/Src/MFRC522.c ../Core/Inc/MFRC522.h \
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi_ex.h:
+../Core/Inc/FRA421_Yugioh.h:
 ../Core/Inc/MC14515.h:
 ../Core/Inc/MC14515.h:
