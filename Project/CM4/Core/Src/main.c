@@ -192,7 +192,7 @@ int main(void)
 		ptrRFID = &RFIDMain.RFID[i];
 		ptrRFID->slaveAddr = i;
 		ptrRFID->status = status;
-//		ptrRFID->action = 0;
+		ptrRFID->action = 0;
 		//		RFIDMain.RFID[i].status = status;
 		//		RFIDMain.RFID[11].status = status;
 		//		RFIDMain.RFID[i].status = 1;
