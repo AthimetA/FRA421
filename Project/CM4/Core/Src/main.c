@@ -78,10 +78,15 @@ DMA_HandleTypeDef hdma_spi1_tx;
 
 MC14515Handle MC14515;
 RFIDHandle RFIDMain;
+
+// PTR for data edit
 RFIDHandle *ptrRFIDMain;
 RFID *ptrRFID;
+YUGIOH_Card *ptrYugiohCard;
 Fra421_Card *ptrCard;
-Fra421_Card *ptrCardMem;
+
+YUGIOH_Card *ptrYugiohCardMEM;
+Fra421_Card *ptrCardMEM;
 
 uint32_t timemsM4 = 0;
 uint32_t timemsM4_LED = 0;
@@ -185,9 +190,9 @@ int main(void)
 		ptrRFID = &RFIDMain.RFID[i];
 		ptrRFID->slaveAddr = i;
 		ptrRFID->status = status;
-//		RFIDMain.RFID[i].status = status;
-//		RFIDMain.RFID[11].status = status;
-//		RFIDMain.RFID[i].status = 1;
+		//		RFIDMain.RFID[i].status = status;
+		//		RFIDMain.RFID[11].status = status;
+		//		RFIDMain.RFID[i].status = 1;
 	}
 	/* USER CODE END 2 */
 
@@ -198,10 +203,9 @@ int main(void)
 		if(HAL_GetTick() - timemsM4 > 200)
 		{
 			timemsM4 = HAL_GetTick();
-			// Update Slave number
-			slave_num = (slave_num + 1)%MFRC522_SLAVE_MAX ;
+			// Update Slave number and Update RFID PTR
+			slave_num = (slave_num + 1) % MFRC522_SLAVE_MAX ;
 			ptrRFIDMain->slaveNum = slave_num;
-			// Update RFID ptr
 			ptrRFID = &RFIDMain.RFID[RFIDMain.slaveNum];
 			if(hspi1.State == HAL_SPI_STATE_READY)
 			{
@@ -225,19 +229,29 @@ int main(void)
 					ptrRFID->status =status;
 					if(status == MI_OK)
 					{
-						// Update Ptr
-						ptrCard = &RFIDMain.RFID[RFIDMain.slaveNum].card;
-						ptrCardMem = &RFIDMain.RFID[RFIDMain.slaveNum].cardMem;
-						// Update Card Memory
-						ptrCardMem->Cardbit.bit0 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit0;
-						ptrCardMem->Cardbit.bit1 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit1;
-						ptrCardMem->Cardbit.bit2 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit2;
-						ptrCardMem->Cardbit.bit3 = RFIDMain.RFID[RFIDMain.slaveNum].card.Cardbit.bit3;
-						// Update Card
+						// Update Card PTR
+						ptrCard =  &RFIDMain.RFID[RFIDMain.slaveNum].detectedCard;
+						// Update detected Card
 						ptrCard->Cardbit.bit0 = cardstr[0];
 						ptrCard->Cardbit.bit1 = cardstr[1];
 						ptrCard->Cardbit.bit2 = cardstr[2];
 						ptrCard->Cardbit.bit3 = cardstr[3];
+						// Update Card Memory
+						for (int i = CARD_BUFF_LEN; i >= 1 ; i--)
+						{
+							//							*(ptrYugiohCardMEM + i) = *(ptrYugiohCardMEM + i + 1);
+							ptrYugiohCardMEM = &RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i];
+							ptrYugiohCardMEM->cardData = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardData;
+							ptrYugiohCardMEM->cardSignature = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardSignature;
+							ptrYugiohCardMEM->cardState = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardState;
+							ptrYugiohCardMEM->cardType = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardType;
+						}
+//						YUGIOH_card_register(ptrYugiohCardMEM, ptrCard);
+						ptrYugiohCardMEM = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard;
+						ptrYugiohCardMEM->cardData = RFIDMain.RFID[RFIDMain.slaveNum].detectedCard.data;
+						ptrYugiohCardMEM->cardSignature = rand() % 256;
+						ptrYugiohCardMEM->cardState = rand() % 3;
+						ptrYugiohCardMEM->cardType = rand() % 2;
 					}
 				}
 			}

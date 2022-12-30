@@ -8,11 +8,15 @@
 #ifndef INC_FRA421_YUGIOH_H_
 #define INC_FRA421_YUGIOH_H_
 
+#include <stdlib.h>
+#include <stdint.h>
+
 //Maximum length of the array
 #define MAX_LEN 16
 
 //Number of RFID
 #define RFID_NUM_MAX 12
+#define CARD_BUFF_LEN 4
 
 typedef union _FRA421_CARD
 {
@@ -26,12 +30,22 @@ typedef union _FRA421_CARD
 	uint32_t data;
 }Fra421_Card;
 
+typedef struct _YUGIOH_CARD
+{
+	uint8_t cardSignature;
+	uint8_t cardType;
+	uint8_t cardState;
+	uint8_t Reserve;
+	uint32_t cardData;
+}YUGIOH_Card;
+
 typedef struct _RFID
 {
 	uint16_t slaveAddr;
 	uint8_t status;
-	Fra421_Card cardMem;
-	Fra421_Card card;
+	Fra421_Card detectedCard;
+	YUGIOH_Card mainCard; // This is the card that stand on the field
+	YUGIOH_Card bufferCard[CARD_BUFF_LEN]; // [0,1,2,3] Memory
 }RFID;
 
 typedef struct _RFIDHANDLE
@@ -43,5 +57,7 @@ typedef struct _RFIDHANDLE
 	RFID RFID[RFID_NUM_MAX];
 
 }RFIDHandle;
+
+void YUGIOH_card_register(YUGIOH_Card *YUGIOHCard, Fra421_Card *Card);
 
 #endif /* INC_FRA421_YUGIOH_H_ */
