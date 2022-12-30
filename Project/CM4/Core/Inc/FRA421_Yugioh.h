@@ -8,9 +8,7 @@
 #ifndef INC_FRA421_YUGIOH_H_
 #define INC_FRA421_YUGIOH_H_
 
-#include <stdlib.h>
 #include <stdint.h>
-
 //Maximum length of the array
 #define MAX_LEN 16
 
@@ -58,6 +56,6 @@ typedef struct _RFIDHANDLE
 
 }RFIDHandle;
 
-void YUGIOH_card_register(YUGIOH_Card *YUGIOHCard, Fra421_Card *Card);
+void YUGIOH_card_register(RFIDHandle *rfidmain);
 
 #endif /* INC_FRA421_YUGIOH_H_ */

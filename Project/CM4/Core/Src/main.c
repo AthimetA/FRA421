@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdlib.h>
 #include "stdio.h"
 #include "MC14515.h"
 #include "MFRC522.h"
@@ -94,6 +94,8 @@ uint32_t timemsM4_LED = 0;
 uint16_t slave_num = 0;
 uint8_t status, cardstr[MAX_LEN+1];
 uint8_t card_data[MAX_LEN+1];
+
+uint32_t testvar;
 
 /* USER CODE END PV */
 
@@ -194,6 +196,7 @@ int main(void)
 		//		RFIDMain.RFID[11].status = status;
 		//		RFIDMain.RFID[i].status = 1;
 	}
+	testvar = 0;
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -246,12 +249,21 @@ int main(void)
 							ptrYugiohCardMEM->cardState = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardState;
 							ptrYugiohCardMEM->cardType = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardType;
 						}
-//						YUGIOH_card_register(ptrYugiohCardMEM, ptrCard);
-						ptrYugiohCardMEM = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard;
-						ptrYugiohCardMEM->cardData = RFIDMain.RFID[RFIDMain.slaveNum].detectedCard.data;
-						ptrYugiohCardMEM->cardSignature = rand() % 256;
-						ptrYugiohCardMEM->cardState = rand() % 3;
-						ptrYugiohCardMEM->cardType = rand() % 2;
+						YUGIOH_card_register(&RFIDMain);
+//						ptrYugiohCardMEM = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard;
+//						ptrYugiohCardMEM->cardData = RFIDMain.RFID[RFIDMain.slaveNum].detectedCard.data;
+//						ptrYugiohCardMEM->cardSignature = testvar % 256;
+//						ptrYugiohCardMEM->cardState = testvar % 3;
+//						ptrYugiohCardMEM->cardType = testvar % 2;
+//
+//						if(ptrRFID->mainCard.cardData == 0)
+//						{
+//							ptrYugiohCard = &RFIDMain.RFID[RFIDMain.slaveNum].mainCard;
+//							ptrYugiohCard->cardData = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[0].cardData;
+//							ptrYugiohCard->cardSignature = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[0].cardSignature;
+//							ptrYugiohCard->cardState = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[0].cardState;
+//							ptrYugiohCard->cardType = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[0].cardType;
+//						}
 					}
 				}
 			}
@@ -261,6 +273,7 @@ int main(void)
 		/* USER CODE BEGIN 3 */
 		if(HAL_GetTick() - timemsM4_LED > 1000)
 		{
+			testvar += 1;
 			timemsM4_LED = HAL_GetTick();
 			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 		}

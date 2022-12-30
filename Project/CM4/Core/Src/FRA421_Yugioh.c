@@ -6,14 +6,28 @@
  */
 
 #include "FRA421_Yugioh.h"
+#include <stdlib.h>
+#include <string.h>
 
-void YUGIOH_card_register(YUGIOH_Card *YUGIOHCard, Fra421_Card *Card)
+void YUGIOH_card_register(RFIDHandle *rfidmain)
 {
-	// Assign Card Data
-	YUGIOHCard->cardData = Card->data;
+	RFID *ptrRFID = rfidmain->RFID;
+	Fra421_Card *ptrCard;
+	YUGIOH_Card *ptrYUGIOHCard;
 
-	// For now just random
-	YUGIOHCard->cardSignature = rand() % 256;
-	YUGIOHCard->cardState = rand() % 3;
-	YUGIOHCard->cardType = rand() % 2;
+	//	// PTR RFID pick slave
+	//	ptrRFID += rfidmain->slaveNum;
+	//	// PTR Card
+	//	ptrCard = &ptrRFID->detectedCard;
+	//	ptrYUGIOHCard = ptrRFID->bufferCard;
+
+	ptrRFID = &rfidmain->RFID[rfidmain->slaveNum];
+	ptrCard = &ptrRFID->detectedCard;
+	ptrYUGIOHCard = &ptrRFID->bufferCard;
+
+	ptrYUGIOHCard->cardData = ptrCard->data;
+	ptrYUGIOHCard->cardSignature = 1 % 256;
+	ptrYUGIOHCard->cardState = 2 % 3;
+	ptrYUGIOHCard->cardType = 2 % 2;
+
 }
