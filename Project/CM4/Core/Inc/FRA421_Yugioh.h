@@ -41,6 +41,7 @@ typedef struct _RFID
 {
 	uint16_t slaveAddr;
 	uint8_t status;
+	uint8_t action;
 	Fra421_Card detectedCard;
 	YUGIOH_Card mainCard; // This is the card that stand on the field
 	YUGIOH_Card bufferCard[CARD_BUFF_LEN]; // [0,1,2,3] Memory
@@ -56,6 +57,11 @@ typedef struct _RFIDHANDLE
 
 }RFIDHandle;
 
+
+void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst);
+void RFID_Clear_Card_Bufffer(RFID *rfid);
 void YUGIOH_card_register(RFIDHandle *rfidmain);
+void YUGIOH_card_Management(RFIDHandle *rfidmain);
+
 
 #endif /* INC_FRA421_YUGIOH_H_ */

@@ -192,6 +192,7 @@ int main(void)
 		ptrRFID = &RFIDMain.RFID[i];
 		ptrRFID->slaveAddr = i;
 		ptrRFID->status = status;
+//		ptrRFID->action = 0;
 		//		RFIDMain.RFID[i].status = status;
 		//		RFIDMain.RFID[11].status = status;
 		//		RFIDMain.RFID[i].status = 1;
@@ -250,6 +251,7 @@ int main(void)
 							ptrYugiohCardMEM->cardType = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardType;
 						}
 						YUGIOH_card_register(&RFIDMain);
+						YUGIOH_card_Management(&RFIDMain);
 //						ptrYugiohCardMEM = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard;
 //						ptrYugiohCardMEM->cardData = RFIDMain.RFID[RFIDMain.slaveNum].detectedCard.data;
 //						ptrYugiohCardMEM->cardSignature = testvar % 256;
