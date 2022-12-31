@@ -57,10 +57,13 @@ typedef struct _RFIDHANDLE
 
 }RFIDHandle;
 
-
 void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst);
 void RFID_Clear_Card_Bufffer(RFID *rfid);
 void YUGIOH_card_register(RFIDHandle *rfidmain);
+void YUGIOH_card_Buffer_Update(RFIDHandle *rfidmain);
+// Not done
+void YUGIOH_card_Load_Data(RFIDHandle *rfidmain);
+// Reserve
 void YUGIOH_card_Management(RFIDHandle *rfidmain);
 
 

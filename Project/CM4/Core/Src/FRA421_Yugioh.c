@@ -47,6 +47,29 @@ void YUGIOH_card_register(RFIDHandle *rfidmain)
 
 }
 
+void YUGIOH_card_Buffer_Update(RFIDHandle *rfidmain)
+{
+	// Assign RFID
+	RFID *ptrRFID = rfidmain->RFID;
+	ptrRFID = &rfidmain->RFID[rfidmain->slaveNum];
+
+	// Buffer Card src
+	YUGIOH_Card *ptrYugiohCard_Buffer_src = ptrRFID->bufferCard;
+	ptrYugiohCard_Buffer_src = &ptrRFID->bufferCard[CARD_BUFF_LEN-2];
+
+	// Buffer Card dst
+	YUGIOH_Card *ptrYugiohCard_Buffer_dst = ptrRFID->bufferCard;
+	ptrYugiohCard_Buffer_dst = &ptrRFID->bufferCard[CARD_BUFF_LEN-1];
+
+	for (int i = CARD_BUFF_LEN; i >= 1 ; i--)
+	{
+		YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
+		ptrYugiohCard_Buffer_src--;
+		ptrYugiohCard_Buffer_dst--;
+	}
+
+}
+
 void YUGIOH_card_Management(RFIDHandle *rfidmain)
 {
 	// Assign RFID

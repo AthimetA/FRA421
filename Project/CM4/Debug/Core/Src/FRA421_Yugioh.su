@@ -1,4 +1,5 @@
 ../Core/Src/FRA421_Yugioh.c:12:6:YUGIOH_card_copy	16	static
 ../Core/Src/FRA421_Yugioh.c:20:6:RFID_Clear_Card_Bufffer	32	static
 ../Core/Src/FRA421_Yugioh.c:32:6:YUGIOH_card_register	32	static
-../Core/Src/FRA421_Yugioh.c:50:6:YUGIOH_card_Management	40	static
+../Core/Src/FRA421_Yugioh.c:50:6:YUGIOH_card_Buffer_Update	32	static
+../Core/Src/FRA421_Yugioh.c:73:6:YUGIOH_card_Management	40	static
