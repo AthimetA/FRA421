@@ -19,11 +19,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "string.h"
-#include "card.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+//#include "card.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -72,18 +71,39 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
 static enum {
-	Drawn_Phase, Main_Phase, Battle_Phase, Chain_Phase, run_1_station
+	first_player, second_player
+} player_state = first_player;
+static enum {
+	Drawn_Phase, Main_Phase, Battle_Phase, Chain_Phase
 } STATE = Drawn_Phase;
 static enum {
 	selection, counter1, calculate, counter2
-} BATTLE = select;
-uint8_t player1_monster = 0;
-uint8_t player2_monster = 0;
-uint8_t player1_TM = 0;
-uint8_t player2_TM = 0;
-uint16_t playyer1_LP = 8000;
-uint16_t playyer2_LP = 8000;
-uint8_t player = 0;
+} BATTLE = selection;
+static enum {
+	player1_chain, player2_chain
+} CHAIN = player1_chain;
+static enum {
+	check_card, set_monster, set_spell, set_trap
+} MAIN = set_monster;
+
+uint32_t stack_chain[10] = { 0 };
+uint8_t end = 0;
+
+uint8_t button_ATK = 0;
+uint8_t button_DEF = 0;
+
+typedef struct _Player {
+	uint16_t life_point;
+	uint8_t monster[3];
+	uint8_t trapAndSpell[3];
+	uint16_t GY[10];
+	enum _button {
+		button1, button2
+	} button;
+} Player;
+
+Player player1 = { 4000, { 0 }, { 0 }, { 0 }, button1 };
+Player player2 = { 4000, { 0 }, { 0 }, { 0 }, button2 };
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -167,6 +187,14 @@ int main(void) {
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
+		switch (player_state) {
+		case first_player:
+			loop_game(&player1, &player2);
+			break;
+		case second_player:
+			loop_game(&player2, &player1);
+			break;
+		}
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
@@ -367,6 +395,7 @@ static void MX_USB_OTG_FS_PCD_Init(void) {
  * @retval None
  */
 static void MX_GPIO_Init(void) {
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 
 	/* GPIO Ports Clock Enable */
 	__HAL_RCC_GPIOC_CLK_ENABLE();
@@ -376,114 +405,262 @@ static void MX_GPIO_Init(void) {
 	__HAL_RCC_GPIOD_CLK_ENABLE();
 	__HAL_RCC_GPIOG_CLK_ENABLE();
 
+	/*Configure GPIO pins : NO2_Pin YES1_Pin */
+	GPIO_InitStruct.Pin = NO2_Pin | YES1_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	/*Configure GPIO pin : YES2_Pin */
+	GPIO_InitStruct.Pin = YES2_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(YES2_GPIO_Port, &GPIO_InitStruct);
+
+	/*Configure GPIO pin : NO1_Pin */
+	GPIO_InitStruct.Pin = NO1_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(NO1_GPIO_Port, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
-void loop_game( player_ATK, player_DEF) {
+void loop_game(Player *player_ATK, Player *player_DEF) {
+//	Player* ptr_atk = player_ATK;
 	switch (STATE) {
 	case Drawn_Phase:
 		/*press botton*/
-		STATE = Main_Phase;
+		if ((HAL_GPIO_ReadPin(YES1_GPIO_Port, YES1_Pin) == GPIO_PIN_RESET)
+				& (player_ATK->button == button1)) {
+			STATE = Main_Phase;
+		} else if ((HAL_GPIO_ReadPin(YES2_GPIO_Port, YES2_Pin) == GPIO_PIN_RESET)
+				& (player_ATK->button == button2)) {
+			STATE = Main_Phase;
+		}
+//		STATE = Main_Phase;
 		break;
 	case Main_Phase:
+		if (HAL_GPIO_ReadPin(YES2_GPIO_Port, YES1_Pin) == GPIO_PIN_RESET) {
+			player_ATK->life_point = 2000;
+			STATE = Drawn_Phase;
+		}
 		/*check card type and what is card*/
-		if (/*monster card*/) {
-			if (player_ATK.monster >= 3) {
-				print("can't add more monster");
-			} else {
-				player_ATK.monster += 1;
-			}
-		} else if (/*magic card*/) {
-			if (magic.effect_type == destroy_all) {
-				/*clear monster data*/
-				player_ATK.monster = 0;
-				player_DEF.monster = 0;
-				/*add monster to GY1 and GY2*/
-			} else if (effect_type == destroy_enemy) {
-				/*clear monster enemy data*/
-				player_DEF.monster = 0;
-			} else if (effect_type == reborn) {
-				/*reborn from GY*/
+		switch (MAIN) {
+		case check_card:
+			if (monster card) {
+				if (player_ATK.monster >= 3) {
+					print("can't add more monster");
+				} else {
+					/*chain*/
+					MAIN = set_monster;
 
-			} else if (effect_type == summon) {
-				/*place > level 5 in some RFID by touch the card*/
-			} else if (effect_type == change_position) {
-				/*change enemy monster def to atk*/
-				if (monster == defense) {
-					/*change*/
+				}
+			} else if (spell_card) {
+				if (player_ATK.trapAndSpell >= 3) {
+					print("can't add more spell");
+				} else {
+					/*chain*/
+					MAIN = set_spell;
+				}
+			} else if (trap_card) {
+				if (player_ATK.trapAndSpell >= 3) {
+					print("can't add more spell");
+				} else {
+					/*chain*/
+					MAIN = set_trap;
+				}
+			} else if (button_ATK == GPIO_PIN_RESET) {
+				STATE = Battle_Phase;
+			}
+			break;
+		case set_monster:
+			player_ATK.monster[card.position] = monster;
+			MAIN = check_card;
+			break;
+		case set_spell:
+			player_ATK.trapAndSpell[position] = spell;
+			if (spell duble) {
+				if (magic.effect_type == destroy_all) {
+					/*clear monster data*/
+					/*for i*/
+					player_ATK.GY = 0;
+					player_DEF.monster = 0;
+					/*add monster to GY1 and GY2*/
+				} else if (magic.effect_type == destroy_enemy) {
+					/*clear monster enemy data*/
+					player_DEF.monster = 0;
+				} else if (magic.effect_type == reborn) {
+					/*reborn from GY*/
+
+				} else if (magic.effect_type == summon) {
+					/*place > level 5 in some RFID by touch the card*/
+				} else if (magic.effect_type == change_position) {
+					/*change enemy monster def to atk*/
+					if (magic.monster == defense) {
+						/*change*/
+					}
 				}
 			}
-
-		} else if (trap.Down) {
-			/*nothing*/
+			MAIN = check_card;
+			break;
+		case set_trap:
+			player_ATK.trapAndSpell[card.position] = trap;
+			break;
 		}
 		break;
 	case Battle_Phase:
 		/*After card touch check monster than*/
-		battle(monster1, monster2);
-		break;
-	}
-
-}
-
-void battle( Monster_ATK, Monster_DEF) {
-	switch (BATTLE) {
-	case selection:
-		if (Monster_ATK.position == ATK) {
-			if (Monster_DEF.position == DEF) {
-				/*flip*/
-				Monster_DEF.positon == DEF_Up;
-			}
-			BATTLE = counter1;
-		}
-		break;
-	case counter1:
-		/*check RFID*/
-		if (monster.effect = no_damage) {
-			monster.attacker = 1;
-			monster.status = GY;
-			BATTLE = selection;
-		} else if (trap.position == Up) {
-			if (trap.turn == 1) {
-				if (trap.type = gain_point) {
-					player.life_point += player.monster * 300;
-					BATTLE = selection;
-				} else if (trap.type = negate_atk) {
-					STATE = End_Phase;
+		if (RFID_Read) {
+			switch (BATTLE) {
+			case selection:
+				if (RFID_Read) {
+					Monster_ATK, Monster_DEF = read;
+					if (Monster_ATK.position == ATK) {
+						if (Monster_DEF.position == DEF) {
+							/*flip*/
+							Monster_DEF.positon == DEF_Up;
+						}
+						BATTLE = counter1;
+					} else {
+						print("this monster is not in ATK position");
+					}
+				} else if (button) {
+					STATE = Drawn_Phase;
+					if (player_state == first_player) {
+						player_state = second_player;
+					} else {
+						player_state = first_player;
+					}
 				}
+				break;
+			case counter1:
+				/*check RFID*/
+				if (monster.effect = no_damage) {
+					monster.attacker = 1;
+					monster.status = GY;
+					BATTLE = selection;
+				} else if (trap.position == Up) {
+					if (trap.turn == 1) {
+						if (trap.type = gain_point) {
+							player.life_point += player.monster * 300;
+							BATTLE = selection;
+						} else if (trap.type = negate_atk) {
+							STATE = End_Phase;
+						}
+					}
+				}
+				break;
+			case calculate:
+				if (Monster_DEF.position == DEF_Up) {
+					uint16_t result = Monster_ATK.attack - Monster_DEF.defense;
+					if (result > 0) {
+						Monster_DEF.status = GY2;
+					} else if (result < 0) {
+						Monster_ATK.status = GY1;
+					} else {
+						Monster_ATK.status = GY1;
+						Monster_DEF.status = GY2;
+					}
+				} else if (Monster_DEF.position == ATK) {
+					uint16_t result = Monster_ATK.attack - Monster_DEF.attack;
+					if (result > 0) {
+						player_DEF->life_point -= result;
+						Monster_DEF.status = GY2;
+					} else if (result < 0) {
+						Monster_ATK.status = GY1;
+					} else {
+						Monster_ATK.status = GY1;
+						Monster_DEF.status = GY2;
+					}
+
+				}
+
 			}
 		}
 		break;
-	case calculate:
-		if (Monster_DEF.position == DEF_Up) {
-			uint16_t result = Monster_ATK.attack - Monster_DEF.defense;
-			if (result > 0) {
-				Monster_DEF.status = GY2;
-			} else if (result < 0) {
-				Monster_ATK.status = GY1;
-			} else {
-				Monster_ATK.status = GY1;
-				Monster_DEF.status = GY2;
-			}
-		} else if (Monster_DEF.position == ATK) {
-			uint16_t result = Monster_ATK.attack - Monster_DEF.attack;
-			if (result > 0) {
-				Monster_DEF.status = GY2;
-			} else if (result < 0) {
-				Monster_ATK.status = GY1;
-			} else {
-				Monster_ATK.status = GY1;
-				Monster_DEF.status = GY2;
-			}
+	case Chain_Phase:
+		/**/
+		if (button_DEF) {
 
 		}
-
 	}
-	break;
 
 }
 
-void chain()
+//void battle( Monster_ATK, Monster_DEF) {
+//	switch (BATTLE) {
+//	case selection:
+//		if (Monster_ATK.position == ATK) {
+//			if (Monster_DEF.position == DEF) {
+//				/*flip*/
+//				Monster_DEF.positon == DEF_Up;
+//			}
+//			BATTLE = counter1;
+//		}
+//		break;
+//	case counter1:
+//		/*check RFID*/
+//		if (monster.effect = no_damage) {
+//			monster.attacker = 1;
+//			monster.status = GY;
+//			BATTLE = selection;
+//		} else if (trap.position == Up) {
+//			if (trap.turn == 1) {
+//				if (trap.type = gain_point) {
+//					player.life_point += player.monster * 300;
+//					BATTLE = selection;
+//				} else if (trap.type = negate_atk) {
+//					STATE = End_Phase;
+//				}
+//			}
+//		}
+//		break;
+//	case calculate:
+//		if (Monster_DEF.position == DEF_Up) {
+//			uint16_t result = Monster_ATK.attack - Monster_DEF.defense;
+//			if (result > 0) {
+//				Monster_DEF.status = GY2;
+//			} else if (result < 0) {
+//				Monster_ATK.status = GY1;
+//			} else {
+//				Monster_ATK.status = GY1;
+//				Monster_DEF.status = GY2;
+//			}
+//		} else if (Monster_DEF.position == ATK) {
+//			uint16_t result = Monster_ATK.attack - Monster_DEF.attack;
+//			if (result > 0) {
+//				Monster_DEF.status = GY2;
+//			} else if (result < 0) {
+//				Monster_ATK.status = GY1;
+//			} else {
+//				Monster_ATK.status = GY1;
+//				Monster_DEF.status = GY2;
+//			}
+//
+//		}
+//
+//	}
+//	break;
+
+//}
+
+//void chain() {
+//	uint8_t i = 0;
+//	switch (CHAIN) {
+//	case player1_chain:
+//		if (button_DEF == yes) {
+//			/*read RFID ifRFID is trap and turn == 1 stack += 1*/
+//			stack_chain[i] = name;
+//			i += 1;
+//		} else {
+//			i = 0;
+//		}
+//		break;
+//	case player2_chain:
+//		if(button)
+//	}
+//}
 /* USER CODE END 4 */
 
 /**
