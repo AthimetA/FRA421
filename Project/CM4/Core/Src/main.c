@@ -95,8 +95,6 @@ uint16_t slave_num = 0;
 uint8_t status, cardstr[MAX_LEN+1];
 uint8_t card_data[MAX_LEN+1];
 
-uint32_t testvar;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -197,7 +195,6 @@ int main(void)
 		//		RFIDMain.RFID[11].status = status;
 		//		RFIDMain.RFID[i].status = 1;
 	}
-	testvar = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -255,7 +252,6 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		if(HAL_GetTick() - timemsM4_LED > 1000)
 		{
-			testvar += 1;
 			timemsM4_LED = HAL_GetTick();
 			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 		}

@@ -23,11 +23,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include <stdlib.h>
-#include "ST7735.h"
-#include "Uart.h"
-#include "BMPUartDecode.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,11 +79,6 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 uint32_t timemsM7= 0;
 
 uint32_t timemsM7_LED = 0;
-
-LCDHandle ST7735 = { 0 };
-UARTStucrture UART2 ={ 0 };
-
-uint32_t testCountM7= 0;
 
 /* USER CODE END PV */
 
@@ -176,20 +166,6 @@ HSEM notification */
   MX_USB_OTG_FS_PCD_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-	ST7735.hspi = &hspi2;
-	ST7735.CSPort = GPIOE;
-	ST7735.CSPin = GPIO_PIN_6;
-	ST7735.DCPort = GPIOB;
-	ST7735.DCPin = GPIO_PIN_11;
-	ST7735.RstPort = GPIOE;
-	ST7735.RstPin = GPIO_PIN_15;
-	LCD_init(&ST7735);
-	LCD_flush(&ST7735);
-	UART2.huart = &huart3;
-	UART2.RxLen =255;
-	UART2.TxLen =255;
-	UARTInit(&UART2);
-	UARTResetStart(&UART2);
 
   /* USER CODE END 2 */
 
@@ -203,7 +179,6 @@ HSEM notification */
 		{
 			timemsM7_LED = HAL_GetTick();
 			HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-			//          HAL_GPIO_TogglePin(Test_Sig_GPIO_Port, Test_Sig_Pin);
 		}
 
 
@@ -211,12 +186,6 @@ HSEM notification */
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		int16_t read = UARTReadChar(&UART2) ;
-		if(read != -1)
-		{
-			testCountM7 +=1;
-			BMPDecoder(read, LCDBufferAddr());
-		}
 
 	}
   /* USER CODE END 3 */
