@@ -14,18 +14,18 @@
 #define ST7735_MADCTL_MH  0x04
 
 /*** Redefine if necessary ***/
-#define ST7735_SPI_PORT hspi2
+#define ST7735_SPI_PORT hspi3
 extern SPI_HandleTypeDef ST7735_SPI_PORT;
 
-#define ST7735_RES_Pin       GPIO_PIN_7
-#define ST7735_RES_GPIO_Port GPIOC
-#define ST7735_CS_Pin        GPIO_PIN_6
-#define ST7735_CS_GPIO_Port  GPIOB
-#define ST7735_DC_Pin        GPIO_PIN_9
-#define ST7735_DC_GPIO_Port  GPIOA
+#define ST7735_RES_Pin       GPIO_PIN_12
+#define ST7735_RES_GPIO_Port GPIOG
+#define ST7735_CS_Pin        GPIO_PIN_14
+#define ST7735_CS_GPIO_Port  GPIOE
+#define ST7735_DC_Pin        GPIO_PIN_11
+#define ST7735_DC_GPIO_Port  GPIOE
 
-#define ST7735_CS_Pin1        GPIO_PIN_7
-#define ST7735_CS_GPIO_Port1  GPIOA
+#define ST7735_CS_Pin1        GPIO_PIN_13
+#define ST7735_CS_GPIO_Port1  GPIOE
 
 // AliExpress/eBay 1.8" display, default orientation
 /*
