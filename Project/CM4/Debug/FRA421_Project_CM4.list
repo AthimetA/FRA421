@@ -31,13 +31,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  13 .debug_macro  0003a57b  00000000  00000000  000323b0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_line   0000e778  00000000  00000000  0006c92b  2**0
+ 14 .debug_line   0000e775  00000000  00000000  0006c92b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_str    0017b783  00000000  00000000  0007b0a3  2**0
+ 15 .debug_str    0017b783  00000000  00000000  0007b0a0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .comment      00000050  00000000  00000000  001f6826  2**0
+ 16 .comment      00000050  00000000  00000000  001f6823  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  00002878  00000000  00000000  001f6878  2**2
+ 17 .debug_frame  00002878  00000000  00000000  001f6874  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2294,14 +2294,11 @@ int main(void)
  8101080:	4a10      	ldr	r2, [pc, #64]	; (81010c4 <main+0x340>)
  8101082:	78d2      	ldrb	r2, [r2, #3]
  8101084:	70da      	strb	r2, [r3, #3]
-//							ptrYugiohCardMEM->cardData = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardData;
-//							ptrYugiohCardMEM->cardSignature = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardSignature;
-//							ptrYugiohCardMEM->cardState = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardState;
-//							ptrYugiohCardMEM->cardType = RFIDMain.RFID[RFIDMain.slaveNum].bufferCard[i-1].cardType;
-//						}
+						// Update Card Memory
 						YUGIOH_card_Buffer_Update(&RFIDMain);
  8101086:	4814      	ldr	r0, [pc, #80]	; (81010d8 <main+0x354>)
  8101088:	f7ff f984 	bl	8100394 <YUGIOH_card_Buffer_Update>
+						// Update New Card
 						YUGIOH_card_register(&RFIDMain);
  810108c:	4812      	ldr	r0, [pc, #72]	; (81010d8 <main+0x354>)
  810108e:	f7ff f956 	bl	810033e <YUGIOH_card_register>
