@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// RFID Handle Function
 void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst)
 {
 	dst->cardData = src->cardData;
@@ -16,121 +17,99 @@ void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst)
 	dst->cardState = src->cardState;
 	dst->cardType = src->cardType;
 }
-
 void RFID_Clear_Card_Bufffer(RFID *rfid)
 {
 	YUGIOH_Card buffCard = {0};
 	YUGIOH_Card *ptrYUGIOHCard = rfid->bufferCard;
-
 	for (uint8_t i = 0; i < CARD_BUFF_LEN ; ++i)
 	{
 		YUGIOH_card_copy(&buffCard, ptrYUGIOHCard);
 		ptrYUGIOHCard++;
 	}
 }
-
 void YUGIOH_card_register(RFIDHandle *rfidmain)
 {
 	RFID *ptrRFID = rfidmain->RFID;
 	Fra421_Card *ptrCard;
 	YUGIOH_Card *ptrYUGIOHCard;
-
 	ptrRFID = &rfidmain->RFID[rfidmain->slaveNum];
 	ptrCard = &ptrRFID->detectedCard;
 	ptrYUGIOHCard = ptrRFID->bufferCard;
-
 	// For now fix number
 	ptrYUGIOHCard->cardData = ptrCard->data;
-	ptrYUGIOHCard->cardSignature = 1 % 256;
-	ptrYUGIOHCard->cardState = 0 % 3;
-	ptrYUGIOHCard->cardType = 0 % 2;
-
+	// Load Data from Hash
+	YUGIOH_card_Load_Data(ptrYUGIOHCard);
 }
-
 void YUGIOH_card_Buffer_Update(RFIDHandle *rfidmain)
 {
 	// Assign RFID
 	RFID *ptrRFID = rfidmain->RFID;
 	ptrRFID = &rfidmain->RFID[rfidmain->slaveNum];
-
 	// Buffer Card src
 	YUGIOH_Card *ptrYugiohCard_Buffer_src = ptrRFID->bufferCard;
 	ptrYugiohCard_Buffer_src = &ptrRFID->bufferCard[CARD_BUFF_LEN-2];
-
 	// Buffer Card dst
 	YUGIOH_Card *ptrYugiohCard_Buffer_dst = ptrRFID->bufferCard;
 	ptrYugiohCard_Buffer_dst = &ptrRFID->bufferCard[CARD_BUFF_LEN-1];
-
 	for (int i = CARD_BUFF_LEN; i >= 1 ; i--)
 	{
 		YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
 		ptrYugiohCard_Buffer_src--;
 		ptrYugiohCard_Buffer_dst--;
 	}
+}
+// Card Hash Function
+const uint8_t archive_yugioh_card_sig[256] = {
+		 0,  0,  0,  0,  0,  0,  0,  0,  2,  0,  0, 16,  0,  0,  0,
+		13, 17,  8,  0,  0,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0, 18,  0,  0,  0,  0,  0,  0,  0,  1,  0, 15,  0,  0,
+		 0,  0, 19,  0,  0,  0, 12,  0,  0,  0,  0,  0, 20,  0,  0,
+		 0,  0,  0,  0,  0,  0, 11,  0,  0,  0,  0,  0,  0, 12,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  9,  0,
+		 0,  0,  3,  0,  0,  0,  0,  0,  6,  0,  0,  0,  0,  0,  0,
+		 0,  3,  0,  0,  0,  0,  0,  9,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 13,  0, 20,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0, 17,  0,  0,  4,  0,  0,  0,  0,
+		 0,  0,  0,  8,  0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0, 15,  0,  0,  0,  0,  0,  0,  0,  5,  0,
+		 0, 16,  0, 14,  0,  4,  0,  0,  0,  0,  5,  0,  0,  0,  0,
+		 0,  0,  0,  1,  0,  0,  0,  0,  6,  0,  0,  0,  0,  0, 10,
+		 0,  0,  0,  0,  0,  0,  7,  0, 19,  0, 11,  2,  0,  0,  0,
+		};
 
+const uint8_t archive_yugioh_card_type[256] = {
+		 0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  2,  0,  0,  0,
+		 2,  2,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  1,  0,  2,  0,  0,
+		 0,  0,  2,  0,  0,  0,  2,  0,  0,  0,  0,  0,  3,  0,  0,
+		 0,  0,  0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  2,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,
+		 0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,
+		 0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  0,  3,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  2,  0,  0,  1,  0,  0,  0,  0,
+		 0,  0,  0,  1,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  1,  0,
+		 0,  2,  0,  2,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,
+		 0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,
+		 0,  0,  0,  0,  0,  0,  1,  0,  2,  0,  2,  1,  0,  0,  0,
+		};
+
+uint8_t CardHash_Encode(uint32_t key)
+{
+	key = ((key >> 16) ^ key) * 0x45d9f3b;
+	key = ((key >> 16) ^ key) * 0x45d9f3b;
+	key = (key >> 16) ^ key;
+  return (uint8_t)(key & 0xff);
 }
 
-void YUGIOH_card_Management(RFIDHandle *rfidmain)
+void YUGIOH_card_Load_Data(YUGIOH_Card *card)
 {
-	// Assign RFID
-	RFID *ptrRFID = rfidmain->RFID;
-	ptrRFID = &rfidmain->RFID[rfidmain->slaveNum];
-
-	// Current Card
-	YUGIOH_Card *ptrYugiohCard_Current;
-	ptrYugiohCard_Current = &ptrRFID->bufferCard[0];
-
-	// Main Card
-	YUGIOH_Card *ptrYugiohCard_Main;
-	ptrYugiohCard_Main = &ptrRFID->mainCard;
-
-	/*  Action State (Can not use Switch Case TT)
-	 * https://stackoverflow.com/questions/2308323/why-no-switch-on-pointers
-	 * 		- 0 = No Card
-	 * 		- 1 = Card in Play
-	 * 		- 2 = Card Played
-	 * 		- 255 = Action error clear all buffer
-	 *  */
-	if (ptrRFID->action == 0) // Main Card is not assign
-	{
-		YUGIOH_card_copy(ptrYugiohCard_Current, ptrYugiohCard_Main);
-		RFID_Clear_Card_Bufffer(ptrRFID);
-		ptrRFID->action = 1;
-	}
-	else if (ptrRFID->action == 1)
-	{
-		/* Card Type
-		 * 		- 0 = Monster
-		 * 		- 1 = Spell
-		 * 		- 2 = Trap
-		 *  */
-		if (ptrYugiohCard_Main->cardType == 0 || ptrYugiohCard_Main->cardType == 1)
-		{
-			if (ptrYugiohCard_Current->cardData == ptrYugiohCard_Main->cardData)
-			{
-				ptrYugiohCard_Main->cardState = 1;
-				RFID_Clear_Card_Bufffer(ptrRFID);
-				ptrRFID->action = 2;
-			}
-			else
-			{
-				ptrRFID->action = 255;
-			}
-		}
-		else if (ptrYugiohCard_Main->cardType == 2)
-		{
-			ptrRFID->action = 2;
-		}
-	}
-	else if (ptrRFID->action == 2)
-	{
-		// AFK
-	}
-	else if (ptrRFID->action == 255)
-	{
-		RFID_Clear_Card_Bufffer(ptrRFID);
-		YUGIOH_Card buffCard = {0};
-		YUGIOH_card_copy(&buffCard, ptrYugiohCard_Main);
-		ptrRFID->action = 0;
-	}
+	card->cardSignature = archive_yugioh_card_sig[CardHash_Encode(card->cardData)];
+	card->cardType = archive_yugioh_card_type[CardHash_Encode(card->cardData)];
+	card->cardState = 0;
 }
