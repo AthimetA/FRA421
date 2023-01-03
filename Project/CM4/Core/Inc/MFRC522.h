@@ -10,18 +10,20 @@
 
 #include "main.h"
 #include "stm32h7xx_hal.h"
-#include "../../../Common/Src/FRA421_Yugioh.h"
+//#include "../../../Common/Src/FRA421_Yugioh.h"
 
 #define MC14515USE
 
 // SPI
-
 #define MFRC522_PORT hspi1
 extern SPI_HandleTypeDef MFRC522_PORT;
 
 // Global Reset Pin
 #define MFRC522_GLOBAL_RST_PORT GPIOB
 #define MFRC522_GLOBAL_RST_PIN GPIO_PIN_5
+
+//Maximum length of the array
+#define MAX_LEN 16
 
 #ifdef MNSS
 

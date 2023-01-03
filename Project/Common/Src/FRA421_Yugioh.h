@@ -66,6 +66,7 @@ typedef struct _YUGIOH_CARD_HASH
 }YUGIOH_Hash;
 
 // RFID Handle Function
+void RFID_Main_init(RFIDHandle *rfidmain);
 void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst);
 void RFID_Clear_Card_Bufffer(RFID *rfid);
 void YUGIOH_card_register(RFIDHandle *rfidmain);
@@ -73,6 +74,5 @@ void YUGIOH_card_Buffer_Update(RFIDHandle *rfidmain);
 // Card Hash Function
 uint8_t CardHash_Encode(uint32_t key);
 void YUGIOH_card_Load_Data(YUGIOH_Card *card);
-
 
 #endif /* INC_FRA421_YUGIOH_H_ */

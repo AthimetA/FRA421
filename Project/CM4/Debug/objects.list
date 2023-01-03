@@ -1,5 +1,5 @@
-"./Common/Src/FRA421_Yugioh.o"
 "./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o"
+"./Core/Src/FRA421_Yugioh.o"
 "./Core/Src/MC14515.o"
 "./Core/Src/MFRC522.o"
 "./Core/Src/main.o"

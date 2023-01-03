@@ -27,6 +27,7 @@
 #include "MC14515.h"
 #include "MFRC522.h"
 #include "../../../Common/Src/FRA421_Yugioh.h"
+#include "../../../Common/Src/FRA421_sharedMemory.h"
 
 /* USER CODE END Includes */
 
@@ -77,10 +78,9 @@ DMA_HandleTypeDef hdma_spi1_tx;
 /* USER CODE BEGIN PV */
 
 MC14515Handle MC14515;
-RFIDHandle RFIDMain;
+RFIDHandle *ptrRFIDCheck;
 
 // PTR for data edit
-RFIDHandle *ptrRFIDMain;
 RFID *ptrRFID;
 YUGIOH_Card *ptrYugiohCard;
 Fra421_Card *ptrCard;
@@ -94,6 +94,8 @@ uint32_t timemsM4_LED = 0;
 uint16_t slave_num = 0;
 uint8_t status, cardstr[MAX_LEN+1];
 uint8_t card_data[MAX_LEN+1];
+
+
 
 /* USER CODE END PV */
 
@@ -182,19 +184,11 @@ int main(void)
 	}
 
 	// RFID Handle Init
-	ptrRFIDMain = &RFIDMain;
 	status = MFRC522_Read_Data(VersionReg,slave_num);
-	ptrRFIDMain->status = status;
-	for (uint8_t  i = 0; i < RFID_NUM_MAX; ++i)
-	{
-		ptrRFID = &RFIDMain.RFID[i];
-		ptrRFID->slaveAddr = i;
-		ptrRFID->status = status;
-		ptrRFID->action = 0;
-		//		RFIDMain.RFID[i].status = status;
-		//		RFIDMain.RFID[11].status = status;
-		//		RFIDMain.RFID[i].status = 1;
-	}
+	RFIDMain->status = status;
+	RFID_Main_init(RFIDMain);
+	ptrRFIDCheck = RFIDMain;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -206,41 +200,41 @@ int main(void)
 			timemsM4 = HAL_GetTick();
 			// Update Slave number and Update RFID PTR
 			slave_num = (slave_num + 1) % MFRC522_SLAVE_MAX ;
-			ptrRFIDMain->slaveNum = slave_num;
-			ptrRFID = &RFIDMain.RFID[RFIDMain.slaveNum];
+			RFIDMain->slaveNum = slave_num;
+			ptrRFID = &RFIDMain->RFID[RFIDMain->slaveNum];
 			if(hspi1.State == HAL_SPI_STATE_READY)
 			{
 				for (int i = 0; i < 16; i++)
 				{
 					// Clear cardstr
 					cardstr[i] = 0;
-					ptrRFIDMain->cardStr[i] = cardstr[i];
+					RFIDMain->cardStr[i] = cardstr[i];
 				}
 				status = 99;
-				ptrRFIDMain->status = status;
+				RFIDMain->status = status;
 				ptrRFID->status =status;
 				// Find cards
 				status = MFRC522_Request(PICC_REQIDL, cardstr,slave_num);
-				ptrRFIDMain->status = status;
+				RFIDMain->status = status;
 				ptrRFID->status =status;
 				if(status == MI_OK)
 				{
 					status = MFRC522_Anticoll(cardstr,slave_num);
-					ptrRFIDMain->status = status;
+					RFIDMain->status = status;
 					ptrRFID->status =status;
 					if(status == MI_OK)
 					{
 						// Update Card PTR
-						ptrCard =  &RFIDMain.RFID[RFIDMain.slaveNum].detectedCard;
+						ptrCard = &RFIDMain->RFID[RFIDMain->slaveNum].detectedCard;
 						// Update detected Card
 						ptrCard->Cardbit.bit0 = cardstr[0];
 						ptrCard->Cardbit.bit1 = cardstr[1];
 						ptrCard->Cardbit.bit2 = cardstr[2];
 						ptrCard->Cardbit.bit3 = cardstr[3];
 						// Update Card Memory
-						YUGIOH_card_Buffer_Update(&RFIDMain);
+						YUGIOH_card_Buffer_Update(RFIDMain);
 						// Update New Card
-						YUGIOH_card_register(&RFIDMain);
+						YUGIOH_card_register(RFIDMain);
 						// Example Card Management
 //						YUGIOH_card_Management(&RFIDMain);
 					}

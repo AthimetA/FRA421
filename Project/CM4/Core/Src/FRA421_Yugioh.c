@@ -5,11 +5,25 @@
  *      Author: AthimetA
  */
 
-#include "FRA421_Yugioh.h"
+#include "../../../Common/Src/FRA421_Yugioh.h"
 #include <stdlib.h>
 #include <string.h>
 
 // RFID Handle Function
+void RFID_Main_init(RFIDHandle *rfidmain)
+{
+	RFID *ptrRFID = rfidmain->RFID;
+
+	for (uint8_t i = 0;  i < RFID_NUM_MAX; ++i)
+	{
+		ptrRFID = &rfidmain->RFID[i];
+		ptrRFID->slaveAddr = i;
+		ptrRFID->status = 0;
+		ptrRFID->action = 0;
+		RFID_Clear_Card_Bufffer(ptrRFID);
+	}
+}
+
 void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst)
 {
 	dst->cardData = src->cardData;

@@ -1,6 +1,0 @@
-D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.c:13:6:YUGIOH_card_copy	16	static
-D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.c:20:6:RFID_Clear_Card_Bufffer	32	static
-D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.c:30:6:YUGIOH_card_register	32	static
-D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.c:43:6:YUGIOH_card_Buffer_Update	32	static
-D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.c:102:9:CardHash_Encode	16	static
-D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.c:110:6:YUGIOH_card_Load_Data	16	static
