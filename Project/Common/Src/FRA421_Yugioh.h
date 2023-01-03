@@ -9,6 +9,7 @@
 #define INC_FRA421_YUGIOH_H_
 
 #include <stdint.h>
+
 //Maximum length of the array
 #define MAX_LEN 16
 
