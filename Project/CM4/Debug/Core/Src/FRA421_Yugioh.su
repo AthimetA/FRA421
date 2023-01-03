@@ -1,7 +1,0 @@
-../Core/Src/FRA421_Yugioh.c:13:6:RFID_Main_init	24	static
-../Core/Src/FRA421_Yugioh.c:27:6:YUGIOH_card_copy	16	static
-../Core/Src/FRA421_Yugioh.c:37:6:RFID_Clear_Card_Bufffer	40	static
-../Core/Src/FRA421_Yugioh.c:47:6:YUGIOH_card_register	32	static
-../Core/Src/FRA421_Yugioh.c:60:6:YUGIOH_card_Buffer_Update	32	static
-../Core/Src/FRA421_Yugioh.c:179:9:CardHash_Encode	16	static
-../Core/Src/FRA421_Yugioh.c:187:6:YUGIOH_card_Load_Data	24	static
