@@ -10,7 +10,7 @@
 
 #include "main.h"
 #include "stm32h7xx_hal.h"
-#include "FRA421_Yugioh.h"
+#include "../../../Common/Src/FRA421_Yugioh.h"
 
 #define MC14515USE
 

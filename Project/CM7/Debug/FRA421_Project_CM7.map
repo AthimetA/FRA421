@@ -45,6 +45,95 @@ Discarded input sections
  .ARM.exidx     0x0000000000000000       0x10 d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
  .ARM.attributes
                 0x0000000000000000       0x1c d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .text          0x0000000000000000        0x0 ./Common/Src/FRA421_Yugioh.o
+ .data          0x0000000000000000        0x0 ./Common/Src/FRA421_Yugioh.o
+ .bss           0x0000000000000000        0x0 ./Common/Src/FRA421_Yugioh.o
+ .text.YUGIOH_card_copy
+                0x0000000000000000       0x36 ./Common/Src/FRA421_Yugioh.o
+ .text.RFID_Clear_Card_Bufffer
+                0x0000000000000000       0x46 ./Common/Src/FRA421_Yugioh.o
+ .text.YUGIOH_card_register
+                0x0000000000000000       0x46 ./Common/Src/FRA421_Yugioh.o
+ .text.YUGIOH_card_Buffer_Update
+                0x0000000000000000       0x6c ./Common/Src/FRA421_Yugioh.o
+ .rodata.archive_yugioh_card_sig
+                0x0000000000000000      0x100 ./Common/Src/FRA421_Yugioh.o
+ .rodata.archive_yugioh_card_type
+                0x0000000000000000      0x100 ./Common/Src/FRA421_Yugioh.o
+ .text.CardHash_Encode
+                0x0000000000000000       0x48 ./Common/Src/FRA421_Yugioh.o
+ .text.YUGIOH_card_Load_Data
+                0x0000000000000000       0x4c ./Common/Src/FRA421_Yugioh.o
+ .debug_info    0x0000000000000000      0x478 ./Common/Src/FRA421_Yugioh.o
+ .debug_abbrev  0x0000000000000000      0x165 ./Common/Src/FRA421_Yugioh.o
+ .debug_aranges
+                0x0000000000000000       0x48 ./Common/Src/FRA421_Yugioh.o
+ .debug_ranges  0x0000000000000000       0x38 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000      0x173 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000      0xa96 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x22 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x8e ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x51 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000      0x103 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x6a ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000      0x1df ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x1d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x52 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x3c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x34 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000      0x10e ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x8d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x43 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x34 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x10 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x58 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x71 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x1c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000      0x12a ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000      0x341 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x29 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x35 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000000       0x20 ./Common/Src/FRA421_Yugioh.o
+ .debug_line    0x0000000000000000      0x69a ./Common/Src/FRA421_Yugioh.o
+ .debug_str     0x0000000000000000     0x7134 ./Common/Src/FRA421_Yugioh.o
+ .comment       0x0000000000000000       0x51 ./Common/Src/FRA421_Yugioh.o
+ .debug_frame   0x0000000000000000       0xf0 ./Common/Src/FRA421_Yugioh.o
+ .ARM.attributes
+                0x0000000000000000       0x32 ./Common/Src/FRA421_Yugioh.o
  .group         0x0000000000000000        0xc ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
  .group         0x0000000000000000        0xc ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
  .group         0x0000000000000000        0xc ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
@@ -116,6 +205,26 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
  .text.SystemCoreClockUpdate
                 0x0000000000000000      0x2f4 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000      0xa96 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x22 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x8e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x51 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000      0x103 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x6a ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000      0x1df ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x52 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x1d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x3c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x34 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x16 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x43 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x34 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x10 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x58 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x71 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000       0x1c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000      0x12a ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000000      0x341 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
  .group         0x0000000000000000        0xc ./Core/Src/fonts.o
  .group         0x0000000000000000        0xc ./Core/Src/fonts.o
  .group         0x0000000000000000        0xc ./Core/Src/fonts.o
@@ -288,6 +397,9 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x248 ./Core/Src/main.o
  .debug_macro   0x0000000000000000       0x90 ./Core/Src/main.o
  .debug_macro   0x0000000000000000      0x798 ./Core/Src/main.o
+ .debug_macro   0x0000000000000000       0x16 ./Core/Src/main.o
+ .debug_macro   0x0000000000000000       0x35 ./Core/Src/main.o
+ .debug_macro   0x0000000000000000       0x20 ./Core/Src/main.o
  .group         0x0000000000000000        0xc ./Core/Src/st7735.o
  .group         0x0000000000000000        0xc ./Core/Src/st7735.o
  .group         0x0000000000000000        0xc ./Core/Src/st7735.o
@@ -6128,6 +6240,7 @@ Linker script and memory map
 LOAD d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crti.o
 LOAD d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
 LOAD d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
+LOAD ./Common/Src/FRA421_Yugioh.o
 LOAD ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
 LOAD ./Core/Src/fonts.o
 LOAD ./Core/Src/main.o
@@ -7113,115 +7226,92 @@ LOAD d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.i
  .debug_ranges  0x0000000000001050       0x90 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart_ex.o
  .debug_ranges  0x00000000000010e0      0x190 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_usb.o
 
-.debug_macro    0x0000000000000000    0x3bc47
+.debug_macro    0x0000000000000000    0x3a62d
  .debug_macro   0x0000000000000000      0x2e6 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000002e6      0xa96 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000000d7c       0x2e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000000daa       0x49 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000000df3       0x22 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000000e15       0x8e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000000ea3       0x51 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000000ef4      0x103 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000000ff7       0x6a ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000001061      0x1df ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000001240       0x1c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000000125c       0x22 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000000127e       0xfb ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000001379     0x1305 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000000267e      0x11f ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000000279d       0x27 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000027c4    0x26d42 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000029506       0x6d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000029573      0x244 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000297b7     0x3d22 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d4d9      0x174 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d64d       0x52 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d69f       0x1d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d6bc       0x3c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d6f8       0x34 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d72c       0x16 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d742       0x43 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d785       0x34 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d7b9       0x10 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d7c9       0x58 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d821       0x71 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d892       0x1c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d8ae      0x12a ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002d9d8      0x341 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002dd19      0x19b ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002deb4       0x5d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000002df11     0x3a9d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000319ae     0x1048 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000329f6      0x14d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000032b43      0x130 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000032c73      0x3be ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000033031       0xac ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000330dd      0x72d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000003380a      0x228 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000033a32       0x66 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000033a98      0x3bb ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000033e53      0xa95 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000348e8      0x129 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000034a11      0x407 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000034e18      0x27c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000035094      0x3ca ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000003545e      0x4a2 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000035900       0x51 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000035951       0x4a ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000003599b      0x22c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000035bc7       0x67 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000035c2e       0xa5 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000035cd3      0x218 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000035eeb      0x2ea ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000361d5       0x35 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000003620a      0x5e4 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000367ee       0x9e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x000000000003688c      0x67e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000036f0a       0xa6 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000036fb0      0x248 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000371f8       0x90 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000037288      0x798 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x0000000000037a20       0x6d ./Core/Src/fonts.o
- .debug_macro   0x0000000000037a8d      0x412 ./Core/Src/main.o
- .debug_macro   0x0000000000037e9f       0x70 ./Core/Src/main.o
- .debug_macro   0x0000000000037f0f       0x16 ./Core/Src/main.o
- .debug_macro   0x0000000000037f25       0x35 ./Core/Src/main.o
- .debug_macro   0x0000000000037f5a       0x20 ./Core/Src/main.o
- .debug_macro   0x0000000000037f7a       0x22 ./Core/Src/main.o
- .debug_macro   0x0000000000037f9c      0x1d7 ./Core/Src/main.o
- .debug_macro   0x0000000000038173       0x1c ./Core/Src/main.o
- .debug_macro   0x000000000003818f       0x10 ./Core/Src/main.o
- .debug_macro   0x000000000003819f       0x10 ./Core/Src/main.o
- .debug_macro   0x00000000000381af       0x1c ./Core/Src/main.o
- .debug_macro   0x00000000000381cb       0x52 ./Core/Src/main.o
- .debug_macro   0x000000000003821d       0x22 ./Core/Src/main.o
- .debug_macro   0x000000000003823f       0x10 ./Core/Src/main.o
- .debug_macro   0x000000000003824f       0x52 ./Core/Src/main.o
- .debug_macro   0x00000000000382a1       0xd5 ./Core/Src/main.o
- .debug_macro   0x0000000000038376       0x1c ./Core/Src/main.o
- .debug_macro   0x0000000000038392       0x3d ./Core/Src/main.o
- .debug_macro   0x00000000000383cf       0x16 ./Core/Src/main.o
- .debug_macro   0x00000000000383e5      0x145 ./Core/Src/main.o
- .debug_macro   0x000000000003852a      0x35f ./Core/Src/st7735.o
- .debug_macro   0x0000000000038889       0x10 ./Core/Src/st7735.o
- .debug_macro   0x0000000000038899       0x3c ./Core/Src/st7735.o
- .debug_macro   0x00000000000388d5      0x2f5 ./Core/Src/stm32h7xx_hal_msp.o
- .debug_macro   0x0000000000038bca      0x2ff ./Core/Src/stm32h7xx_it.o
- .debug_macro   0x0000000000038ec9      0x310 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
- .debug_macro   0x00000000000391d9      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
- .debug_macro   0x00000000000394bf      0x339 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
- .debug_macro   0x00000000000397f8      0x37a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_eth.o
- .debug_macro   0x0000000000039b72      0x2fa ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
- .debug_macro   0x0000000000039e6c      0x2f8 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
- .debug_macro   0x000000000003a164      0x2f2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd.o
- .debug_macro   0x000000000003a456      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd_ex.o
- .debug_macro   0x000000000003a73c      0x31f ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
- .debug_macro   0x000000000003aa5b      0x30a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
- .debug_macro   0x000000000003ad65      0x304 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc_ex.o
- .debug_macro   0x000000000003b069      0x2f5 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
- .debug_macro   0x000000000003b35e      0x311 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart.o
- .debug_macro   0x000000000003b66f      0x2f2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart_ex.o
- .debug_macro   0x000000000003b961      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_usb.o
+ .debug_macro   0x00000000000002e6       0x2e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000314       0x49 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000000035d       0x1c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000379       0x22 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000000039b       0xfb ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000000496     0x1305 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000000179b      0x11f ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000018ba       0x27 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000018e1    0x26d42 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000028623       0x6d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000028690      0x244 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000288d4     0x3d22 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000002c5f6      0x174 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000002c76a      0x19b ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000002c905       0x5d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000002c962     0x3a9d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000303ff     0x1048 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000031447      0x14d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000031594      0x130 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000316c4      0x3be ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000031a82       0xac ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000031b2e      0x72d ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000003225b      0x228 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000032483       0x66 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000324e9      0x3bb ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000328a4      0xa95 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000033339      0x129 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000033462      0x407 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000033869      0x27c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000033ae5      0x3ca ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000033eaf      0x4a2 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000034351       0x51 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000343a2       0x4a ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000343ec      0x22c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000034618       0x67 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000003467f       0xa5 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000034724      0x218 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000003493c      0x2ea ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000034c26       0x35 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000034c5b      0x5e4 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000003523f       0x9e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x00000000000352dd      0x67e ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x000000000003595b       0xa6 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000035a01      0x248 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000035c49       0x90 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000035cd9      0x798 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000036471       0x6d ./Core/Src/fonts.o
+ .debug_macro   0x00000000000364de      0x412 ./Core/Src/main.o
+ .debug_macro   0x00000000000368f0       0x70 ./Core/Src/main.o
+ .debug_macro   0x0000000000036960       0x22 ./Core/Src/main.o
+ .debug_macro   0x0000000000036982      0x1d7 ./Core/Src/main.o
+ .debug_macro   0x0000000000036b59       0x1c ./Core/Src/main.o
+ .debug_macro   0x0000000000036b75       0x10 ./Core/Src/main.o
+ .debug_macro   0x0000000000036b85       0x10 ./Core/Src/main.o
+ .debug_macro   0x0000000000036b95       0x1c ./Core/Src/main.o
+ .debug_macro   0x0000000000036bb1       0x52 ./Core/Src/main.o
+ .debug_macro   0x0000000000036c03       0x22 ./Core/Src/main.o
+ .debug_macro   0x0000000000036c25       0x10 ./Core/Src/main.o
+ .debug_macro   0x0000000000036c35       0x52 ./Core/Src/main.o
+ .debug_macro   0x0000000000036c87       0xd5 ./Core/Src/main.o
+ .debug_macro   0x0000000000036d5c       0x1c ./Core/Src/main.o
+ .debug_macro   0x0000000000036d78       0x3d ./Core/Src/main.o
+ .debug_macro   0x0000000000036db5       0x16 ./Core/Src/main.o
+ .debug_macro   0x0000000000036dcb      0x145 ./Core/Src/main.o
+ .debug_macro   0x0000000000036f10      0x35f ./Core/Src/st7735.o
+ .debug_macro   0x000000000003726f       0x10 ./Core/Src/st7735.o
+ .debug_macro   0x000000000003727f       0x3c ./Core/Src/st7735.o
+ .debug_macro   0x00000000000372bb      0x2f5 ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_macro   0x00000000000375b0      0x2ff ./Core/Src/stm32h7xx_it.o
+ .debug_macro   0x00000000000378af      0x310 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_macro   0x0000000000037bbf      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_macro   0x0000000000037ea5      0x339 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_macro   0x00000000000381de      0x37a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_eth.o
+ .debug_macro   0x0000000000038558      0x2fa ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_macro   0x0000000000038852      0x2f8 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_macro   0x0000000000038b4a      0x2f2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd.o
+ .debug_macro   0x0000000000038e3c      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd_ex.o
+ .debug_macro   0x0000000000039122      0x31f ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_macro   0x0000000000039441      0x30a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_macro   0x000000000003974b      0x304 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc_ex.o
+ .debug_macro   0x0000000000039a4f      0x2f5 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+ .debug_macro   0x0000000000039d44      0x311 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart.o
+ .debug_macro   0x000000000003a055      0x2f2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart_ex.o
+ .debug_macro   0x000000000003a347      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_usb.o
 
 .debug_line     0x0000000000000000    0x1aabe
  .debug_line    0x0000000000000000      0xaeb ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o

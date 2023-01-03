@@ -26,8 +26,7 @@
 #include "stdio.h"
 #include "MC14515.h"
 #include "MFRC522.h"
-#include "FRA421_Yugioh.h"
-
+#include "../../../Common/Src/FRA421_Yugioh.h"
 
 /* USER CODE END Includes */
 
