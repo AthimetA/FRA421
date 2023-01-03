@@ -30,6 +30,9 @@ void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst)
 	dst->cardSignature = src->cardSignature;
 	dst->cardState = src->cardState;
 	dst->cardType = src->cardType;
+	dst->cardLevel = src->cardLevel;
+	dst->cardAtk = src->cardAtk;
+	dst->cardDef = src->cardDef;
 }
 void RFID_Clear_Card_Bufffer(RFID *rfid)
 {
