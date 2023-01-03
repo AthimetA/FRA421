@@ -35,8 +35,8 @@ typedef struct _YUGIOH_CARD
 	uint8_t cardType;
 	uint8_t cardState;
 	uint8_t cardLevel;
-	uint16_t cardAtk;
-	uint16_t cardDef;
+	uint8_t cardAtk;
+	uint8_t cardDef;
 	uint32_t cardData;
 }YUGIOH_Card;
 
