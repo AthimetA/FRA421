@@ -145,5 +145,6 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_CARD_PLAYED(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_Main_Management(RFIDHandle *RFIDmain,State_game *state_game);
+void YUGIOH_Clear_Card_Enemy_Player(Player *player);
 
 #endif /* INC_FRA421_YUGIOH_H_ */

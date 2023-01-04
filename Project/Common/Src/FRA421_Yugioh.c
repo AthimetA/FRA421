@@ -274,6 +274,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 
 	switch (STATE) {
 	case Drawn_Phase:
+		ST7735_FillScreen(ST7735_BLACK);
+		ST7735_FillScreen1(ST7735_BLACK);
 		if (HAL_GPIO_ReadPin(TURN_BUTTON_PORT, TURN_BUTTON_PIN)
 				== GPIO_PIN_RESET) {
 			state_game->STATE = Main_Phase;
@@ -346,7 +348,6 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 			else if (state_game->action == 2)
 			{
 				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
-				YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
 				state_game->action = 3;
 				state_game->MAIN = check_card_type;
 			}
@@ -376,11 +377,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 				else if (ptrYugiohCard_src->cardType == 2)
 				{
 					//check if activate now or just set
-					state_game->count_chain = 0;
+					state_game->count_chain = 1;
 					if(ptrYugiohCard_src->actionPositon == 1){
 						state_game->test = 33;
 						YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
 						state_game->action = 4;
+
 						ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
 						state_game->MAIN = chaining_main_DEF;
 					}
@@ -400,8 +402,10 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 				}
 				else if (ptrYugiohCard_src->cardType == 1)
 				{
+					state_game->test = 2;
 					if (ptrYugiohCard_src->cardLevel < 7)
 					{
+						state_game->test = 1;
 						// Add card to board
 						uint8_t idx = ptrYugiohCard_src->actionPositon % 6;
 						ptrYugiohCard_dst = &ptrPlayerAtk->cardOnBoard[idx];
@@ -490,23 +494,22 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 					state_game->MAIN = activate_effect;
 				}
 			}
-			else if ((state_game->action == 5 )&& (ptrYugiohCard_dst->cardType == 3)){
-				ptrYugiohCard_dst++;
+			else if ((state_game->action == 5 )){
+//				ptrYugiohCard_dst++;
 				state_game->count_chain += 1;
 				state_game->MAIN = chaining_main_ATK;
 				state_game->action = 4;
 			}
 			break;
 		case chaining_main_ATK:
-			ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
 			if(state_game->action == 4)
 			{
 				Player_Reading_Card(RFIDmain,state_game,ptrPlayerAtk);
-				if(HAL_GPIO_ReadPin(NO2_PORT, NO2_PIN) == GPIO_PIN_RESET){
+				if(HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET){
 					state_game->MAIN = activate_effect;
 				}
 			}
-			else if ((state_game->action == 5 )&& (ptrYugiohCard_dst->cardType == 3)){
+			else if ((state_game->action == 5 )){
 				state_game->count_chain += 1;
 				state_game->MAIN = chaining_main_DEF;
 				state_game->action = 4;
@@ -515,13 +518,13 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 		case activate_effect:
 			if(state_game->count_chain%2 == 0){
 				uint8_t counthing = state_game->count_chain;
-//				ptrYugiohCard_chain = &ptrPlayerAtk->ChainBuffer;
-				state_game->test = 14;
 				for (int i = 0; i <= counthing; i++) {
-//					if(ptrYugiohCard_dst->cardSignature == 11){
-//						YUGIOH_Clear_Card_Enemy_Player(ptrPlayerAtk);
-//					}
-//					ptrYugiohCard_chain++;
+					if(ptrYugiohCard_dst->cardSignature == 11){
+						state_game->test = 14;
+						YUGIOH_Clear_Card_Enemy_Player(ptrPlayerAtk);
+					}
+//					else if()
+					ptrYugiohCard_dst++;
 				}
 			}
 			break;
@@ -562,7 +565,8 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 
 void YUGIOH_Clear_Card_Enemy_Player(Player *player) {
 	YUGIOH_Card buffCard = { 0 };
-	YUGIOH_Card *ptrYUGIOHCard = player->cardOnBoard;
+	YUGIOH_Card *ptrYUGIOHCard;
+	ptrYUGIOHCard = &player->cardOnBoard[3];
 	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
 		YUGIOH_card_copy(&buffCard, ptrYUGIOHCard);
 		ptrYUGIOHCard++;
