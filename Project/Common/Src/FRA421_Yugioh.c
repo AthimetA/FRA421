@@ -13,6 +13,9 @@
 #include "../../../CM7/Core/Inc/st7735.h"
 #include "../../../CM7/Core/Inc/fonts.h"
 
+char C_LP1[4] = "";
+char C_LP2[4] = "";
+
 // RFID Handle Function
 void RFID_Main_init(RFIDHandle *rfidmain) {
 	RFID *ptrRFID = rfidmain->RFID;
@@ -237,8 +240,25 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 		}
 		break;
 	case first_player:
+		// CLEAR Screen
+//		ST7735_FillScreen(ST7735_BLACK);
+//		ST7735_FillScreen1(ST7735_BLACK);
+//		// START display for draw phase state
+//		ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+//		ST7735_WriteString(0, 15, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+//		ST7735_WriteString(25, 35, "You are", Font_11x18, ST7735_MAGENTA, ST7735_BLACK);
+//		ST7735_WriteString(33, 60, "SECOND", Font_11x18, ST7735_CYAN, ST7735_BLACK);
+//		ST7735_WriteString(0, 75, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+//		ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+//		ST7735_WriteString1(0, 15, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+//		ST7735_WriteString1(25, 35, "You are", Font_11x18, ST7735_MAGENTA, ST7735_BLACK);
+//		ST7735_WriteString1(37, 60, "FIRST", Font_11x18, ST7735_CYAN, ST7735_BLACK);
+//		ST7735_WriteString1(0, 75, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+//		HAL_Delay(3000);
 		GAME_PLAY_Phase_Management(RFIDmain,state_game);
+		break;
 	case second_player:
+
 		GAME_PLAY_Phase_Management(RFIDmain,state_game);
 		break;
 	}
@@ -276,6 +296,19 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 	case Drawn_Phase:
 		ST7735_FillScreen(ST7735_BLACK);
 		ST7735_FillScreen1(ST7735_BLACK);
+		// MAIN display for draw phase state
+		MainGUI();
+		sprintf(C_LP2, "%d",ptrPlayerDef -> life_point);
+		ST7735_WriteString( 90, 20, C_LP2, Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		ST7735_WriteString(60, 35, "|Phase:DP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
+		ST7735_WriteString( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		ST7735_WriteString(5, 90, "Wait a minute", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		sprintf(C_LP1, "%d",ptrPlayerAtk -> life_point);
+		ST7735_WriteString1( 90, 20, C_LP1, Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		ST7735_WriteString1(60, 35, "|Phase:DP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
+		ST7735_WriteString1( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		ST7735_WriteString1(5, 90, "Draw a CARD", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		// END display for draw phase state
 		if (HAL_GPIO_ReadPin(TURN_BUTTON_PORT, TURN_BUTTON_PIN)
 				== GPIO_PIN_RESET) {
 			state_game->STATE = Main_Phase;
@@ -490,7 +523,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 			{
 				Player_Reading_Card(RFIDmain,state_game,ptrPlayerAtk);
 				state_game->test = 35;
-				if(HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET){
+				if(HAL_GPIO_ReadPin(NO2_PORT, NO2_PIN) == GPIO_PIN_RESET){
 					state_game->MAIN = activate_effect;
 				}
 			}
@@ -520,8 +553,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 				uint8_t counthing = state_game->count_chain;
 				for (int i = 0; i <= counthing; i++) {
 					if(ptrYugiohCard_dst->cardSignature == 11){
-						state_game->test = 14;
-						YUGIOH_Clear_Card_Enemy_Player(ptrPlayerAtk);
+						state_game->test = 11;
+						YUGIOH_Clear_Card_Enemy_Player_Raigeki(ptrPlayerAtk);
+					}
+					else if(ptrYugiohCard_dst->cardSignature == 12){
+						state_game->test = 12;
+//						YUGIOH_Clear_Card_Enemy_Player(ptrPlayerAtk);
 					}
 //					else if()
 					ptrYugiohCard_dst++;
@@ -563,7 +600,7 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 	}
 }
 
-void YUGIOH_Clear_Card_Enemy_Player(Player *player) {
+void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player) {
 	YUGIOH_Card buffCard = { 0 };
 	YUGIOH_Card *ptrYUGIOHCard;
 	ptrYUGIOHCard = &player->cardOnBoard[3];
@@ -571,6 +608,19 @@ void YUGIOH_Clear_Card_Enemy_Player(Player *player) {
 		YUGIOH_card_copy(&buffCard, ptrYUGIOHCard);
 		ptrYUGIOHCard++;
 	}
+}
+
+void MainGUI(){
+    ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+    ST7735_WriteString1(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(5, 35, "Turns:X", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+    ST7735_WriteString(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(5, 35, "Turns:X", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
 }
 
 //void GAME_PLAY_CARD_PLAYED(RFIDHandle *RFIDmain, State_game *state_game) {

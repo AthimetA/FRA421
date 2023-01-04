@@ -21,23 +21,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000030  00000000  00000000  00020010  2**0
                   CONTENTS, READONLY
-  9 .debug_info   0000f7c2  00000000  00000000  00020040  2**0
+  9 .debug_info   0000f856  00000000  00000000  00020040  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_abbrev 00002289  00000000  00000000  0002f802  2**0
+ 10 .debug_abbrev 000022cf  00000000  00000000  0002f896  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_aranges 00000a90  00000000  00000000  00031a90  2**3
+ 11 .debug_aranges 00000a98  00000000  00000000  00031b68  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_ranges 00000998  00000000  00000000  00032520  2**3
+ 12 .debug_ranges 000009a0  00000000  00000000  00032600  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_macro  0003aae3  00000000  00000000  00032eb8  2**0
+ 13 .debug_macro  0003aae3  00000000  00000000  00032fa0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_line   0000ec7f  00000000  00000000  0006d99b  2**0
+ 14 .debug_line   0000ecbd  00000000  00000000  0006da83  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_str    0017c2c2  00000000  00000000  0007c61a  2**0
+ 15 .debug_str    0017c2de  00000000  00000000  0007c740  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .comment      00000050  00000000  00000000  001f88dc  2**0
+ 16 .comment      00000050  00000000  00000000  001f8a1e  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  000029a0  00000000  00000000  001f892c  2**2
+ 17 .debug_frame  000029c4  00000000  00000000  001f8a70  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -71,9 +71,9 @@ Disassembly of section .text:
  81002d4:	08105198 	.word	0x08105198
 
 081002d8 <RFID_Main_init>:
-#include <stdio.h>
-#include "../../../CM7/Core/Inc/st7735.h"
-#include "../../../CM7/Core/Inc/fonts.h"
+
+char C_LP1[4] = "";
+char C_LP2[4] = "";
 
 // RFID Handle Function
 void RFID_Main_init(RFIDHandle *rfidmain) {
