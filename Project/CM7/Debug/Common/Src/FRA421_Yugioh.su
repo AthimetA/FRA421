@@ -8,7 +8,8 @@ D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:162:6:YUGIOH_card
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:172:6:YUGIOH_Clear_Card_Bufffer_Player	40	static
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:181:6:YUGIOH_card_Buffer_Update_Player	32	static
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:196:6:GAME_PLAY_Management	48	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:267:6:GAME_PLAY_Phase_Management	64	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:578:6:Player_Reading_Card	40	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:603:6:YUGIOH_Clear_Card_Enemy_Player_Raigeki	40	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:613:6:MainGUI	24	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:282:6:GAME_PLAY_Phase_Management	64	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:596:6:Player_Reading_Card	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:621:6:YUGIOH_Clear_Card_Enemy_Player_Raigeki	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:631:6:YUGIOH_Clear_Card_Enemy_Player_Dark_Hole	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:649:6:MainGUI	24	static
