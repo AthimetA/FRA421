@@ -37,7 +37,10 @@ Common/Src/FRA421_Yugioh.o: \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
- ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h
+ ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
+ ../Core/Inc/../../../CM7/Core/Inc/st7735.h \
+ ../Core/Inc/../../../CM7/Core/Inc/fonts.h \
+ ../Core/Inc/../../../CM7/Core/Inc/fonts.h
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -76,3 +79,6 @@ D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
+../Core/Inc/../../../CM7/Core/Inc/st7735.h:
+../Core/Inc/../../../CM7/Core/Inc/fonts.h:
+../Core/Inc/../../../CM7/Core/Inc/fonts.h:

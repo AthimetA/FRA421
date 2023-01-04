@@ -93,6 +93,21 @@ Discarded input sections
  .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
  .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
  .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
+ .group         0x0000000000000000        0xc ./Common/Src/FRA421_Yugioh.o
  .text          0x0000000000000000        0x0 ./Common/Src/FRA421_Yugioh.o
  .data          0x0000000000000000        0x0 ./Common/Src/FRA421_Yugioh.o
  .bss           0x0000000000000000        0x0 ./Common/Src/FRA421_Yugioh.o
@@ -101,9 +116,9 @@ Discarded input sections
  .text.YUGIOH_card_Buffer_Update_Player
                 0x0000000000000000       0x58 ./Common/Src/FRA421_Yugioh.o
  .text.GAME_PLAY_Management
-                0x0000000000000000       0x90 ./Common/Src/FRA421_Yugioh.o
+                0x0000000000000000       0xa0 ./Common/Src/FRA421_Yugioh.o
  .text.GAME_PLAY_Phase_Management
-                0x0000000000000000      0x558 ./Common/Src/FRA421_Yugioh.o
+                0x0000000000000000      0x540 ./Common/Src/FRA421_Yugioh.o
  .text.Player_Reading_Card
                 0x0000000000000000       0x6c ./Common/Src/FRA421_Yugioh.o
  .group         0x0000000000000000        0xc ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
@@ -468,8 +483,21 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x341 ./Core/Src/MFRC522.o
  .debug_macro   0x0000000000000000       0x16 ./Core/Src/MFRC522.o
  .debug_macro   0x0000000000000000       0x29 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x1c ./Core/Src/MFRC522.o
  .debug_macro   0x0000000000000000       0x35 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x10 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x10 ./Core/Src/MFRC522.o
  .debug_macro   0x0000000000000000       0x6a ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x1c ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x52 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x22 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x10 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x52 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0xd5 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x1c ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x3d ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000       0x16 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000000000      0x145 ./Core/Src/MFRC522.o
  .debug_macro   0x0000000000000000       0x16 ./Core/Src/MFRC522.o
  .debug_macro   0x0000000000000000       0x20 ./Core/Src/MFRC522.o
  .debug_macro   0x0000000000000000      0x103 ./Core/Src/MFRC522.o
@@ -5776,41 +5804,41 @@ LOAD d:/stm32cubeide_1.10.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.extern
 LOAD d:/stm32cubeide_1.10.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a
 LOAD d:/stm32cubeide_1.10.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard\libgcc.a
 
-.debug_info     0x0000000000000000     0xf616
- .debug_info    0x0000000000000000      0xb5e ./Common/Src/FRA421_Yugioh.o
- .debug_info    0x0000000000000b5e      0x779 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_info    0x00000000000012d7      0x303 ./Core/Src/MC14515.o
- .debug_info    0x00000000000015da      0xdc7 ./Core/Src/MFRC522.o
- .debug_info    0x00000000000023a1     0x2b06 ./Core/Src/main.o
- .debug_info    0x0000000000004ea7     0x21b9 ./Core/Src/stm32h7xx_hal_msp.o
- .debug_info    0x0000000000007060      0x8d5 ./Core/Src/stm32h7xx_it.o
- .debug_info    0x0000000000007935       0x22 ./Core/Startup/startup_stm32h745zitx.o
- .debug_info    0x0000000000007957     0x1865 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
- .debug_info    0x00000000000091bc      0xfac ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
- .debug_info    0x000000000000a168      0xce8 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
- .debug_info    0x000000000000ae50      0xde0 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
- .debug_info    0x000000000000bc30      0x3fd ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
- .debug_info    0x000000000000c02d     0x10d3 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
- .debug_info    0x000000000000d100      0xf48 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
- .debug_info    0x000000000000e048     0x15ce ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+.debug_info     0x0000000000000000     0xf653
+ .debug_info    0x0000000000000000      0xb9b ./Common/Src/FRA421_Yugioh.o
+ .debug_info    0x0000000000000b9b      0x779 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_info    0x0000000000001314      0x303 ./Core/Src/MC14515.o
+ .debug_info    0x0000000000001617      0xdc7 ./Core/Src/MFRC522.o
+ .debug_info    0x00000000000023de     0x2b06 ./Core/Src/main.o
+ .debug_info    0x0000000000004ee4     0x21b9 ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_info    0x000000000000709d      0x8d5 ./Core/Src/stm32h7xx_it.o
+ .debug_info    0x0000000000007972       0x22 ./Core/Startup/startup_stm32h745zitx.o
+ .debug_info    0x0000000000007994     0x1865 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_info    0x00000000000091f9      0xfac ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_info    0x000000000000a1a5      0xce8 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_info    0x000000000000ae8d      0xde0 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_info    0x000000000000bc6d      0x3fd ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_info    0x000000000000c06a     0x10d3 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_info    0x000000000000d13d      0xf48 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_info    0x000000000000e085     0x15ce ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
 
-.debug_abbrev   0x0000000000000000     0x2210
- .debug_abbrev  0x0000000000000000      0x293 ./Common/Src/FRA421_Yugioh.o
- .debug_abbrev  0x0000000000000293      0x136 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_abbrev  0x00000000000003c9      0x13d ./Core/Src/MC14515.o
- .debug_abbrev  0x0000000000000506      0x23b ./Core/Src/MFRC522.o
- .debug_abbrev  0x0000000000000741      0x33e ./Core/Src/main.o
- .debug_abbrev  0x0000000000000a7f      0x23e ./Core/Src/stm32h7xx_hal_msp.o
- .debug_abbrev  0x0000000000000cbd      0x182 ./Core/Src/stm32h7xx_it.o
- .debug_abbrev  0x0000000000000e3f       0x12 ./Core/Startup/startup_stm32h745zitx.o
- .debug_abbrev  0x0000000000000e51      0x292 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
- .debug_abbrev  0x00000000000010e3      0x329 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
- .debug_abbrev  0x000000000000140c      0x239 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
- .debug_abbrev  0x0000000000001645      0x1ec ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
- .debug_abbrev  0x0000000000001831      0x1d0 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
- .debug_abbrev  0x0000000000001a01      0x2bc ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
- .debug_abbrev  0x0000000000001cbd      0x2b8 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
- .debug_abbrev  0x0000000000001f75      0x29b ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+.debug_abbrev   0x0000000000000000     0x2252
+ .debug_abbrev  0x0000000000000000      0x2d5 ./Common/Src/FRA421_Yugioh.o
+ .debug_abbrev  0x00000000000002d5      0x136 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_abbrev  0x000000000000040b      0x13d ./Core/Src/MC14515.o
+ .debug_abbrev  0x0000000000000548      0x23b ./Core/Src/MFRC522.o
+ .debug_abbrev  0x0000000000000783      0x33e ./Core/Src/main.o
+ .debug_abbrev  0x0000000000000ac1      0x23e ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_abbrev  0x0000000000000cff      0x182 ./Core/Src/stm32h7xx_it.o
+ .debug_abbrev  0x0000000000000e81       0x12 ./Core/Startup/startup_stm32h745zitx.o
+ .debug_abbrev  0x0000000000000e93      0x292 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_abbrev  0x0000000000001125      0x329 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_abbrev  0x000000000000144e      0x239 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_abbrev  0x0000000000001687      0x1ec ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_abbrev  0x0000000000001873      0x1d0 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_abbrev  0x0000000000001a43      0x2bc ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_abbrev  0x0000000000001cff      0x2b8 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_abbrev  0x0000000000001fb7      0x29b ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
 
 .debug_aranges  0x0000000000000000      0xa88
  .debug_aranges
@@ -5864,166 +5892,168 @@ LOAD d:/stm32cubeide_1.10.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.extern
  .debug_ranges  0x0000000000000788       0x78 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
  .debug_ranges  0x0000000000000800      0x190 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
 
-.debug_macro    0x0000000000000000    0x3a7f7
- .debug_macro   0x0000000000000000      0x323 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000000323      0xa7e ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000000da1       0x22 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000000dc3       0x8e ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000000e51       0x51 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000000ea2      0x103 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000000fa5       0x6a ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000000100f      0x1df ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000011ee      0x238 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000001426       0x2e ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000001454       0x3b ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000000148f       0x1c ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000014ab       0x22 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000014cd       0xfb ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000015c8     0x1011 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000025d9      0x11f ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000026f8    0x26d3b ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000029433       0x6d ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000294a0     0x3d22 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d1c2      0x174 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d336       0x52 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d388       0x1e ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d3a6       0x3c ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d3e2       0x34 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d416       0x16 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d42c       0x43 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d46f       0x34 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d4a3       0x10 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d4b3       0x58 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d50b       0x71 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d57c       0x1c ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d598      0x12a ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002d6c2      0x341 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002da03      0x19b ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002db9e       0x5d ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000002dbfb     0x3a9d ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000031698     0x1048 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000326e0      0x14d ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000003282d      0x130 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000003295d      0x3be ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000032d1b       0xac ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000032dc7      0x72d ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000334f4      0x228 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000003371c       0x66 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000033782      0x3bb ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000033b3d      0xa95 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000345d2      0x129 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000346fb      0x407 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000034b02      0x244 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000034d46      0x3ca ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000035110      0x4a2 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000355b2       0x51 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000035603       0x4a ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000003564d      0x22c ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000035879       0x67 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000358e0       0xa5 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000035985      0x218 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000035b9d      0x2ea ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000035e87       0x35 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000035ebc      0x5e4 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x00000000000364a0       0x9e ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x000000000003653e      0x798 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036cd6       0x64 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036d3a       0x16 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036d50       0x35 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036d85       0x16 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036d9b       0x29 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036dc4       0x16 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036dda       0x20 ./Common/Src/FRA421_Yugioh.o
- .debug_macro   0x0000000000036dfa      0x2b0 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_macro   0x00000000000370aa      0x2c9 ./Core/Src/MC14515.o
- .debug_macro   0x0000000000037373       0x7c ./Core/Src/MC14515.o
- .debug_macro   0x00000000000373ef      0x418 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037807       0x4c ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037853       0x94 ./Core/Src/MFRC522.o
- .debug_macro   0x00000000000378e7      0x10e ./Core/Src/MFRC522.o
- .debug_macro   0x00000000000379f5       0x8d ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037a82       0x57 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037ad9       0x1c ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037af5       0x10 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037b05       0x10 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037b15       0x1c ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037b31       0x52 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037b83       0x22 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037ba5       0x10 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037bb5       0x52 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037c07       0xd5 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037cdc       0x1c ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037cf8       0x3d ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037d35       0x16 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037d4b      0x145 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000037e90      0x1e5 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000038075      0x460 ./Core/Src/MFRC522.o
- .debug_macro   0x00000000000384d5       0x22 ./Core/Src/MFRC522.o
- .debug_macro   0x00000000000384f7      0x230 ./Core/Src/MFRC522.o
- .debug_macro   0x0000000000038727      0x427 ./Core/Src/main.o
- .debug_macro   0x0000000000038b4e       0x28 ./Core/Src/main.o
- .debug_macro   0x0000000000038b76       0x6a ./Core/Src/main.o
- .debug_macro   0x0000000000038be0      0x2bf ./Core/Src/stm32h7xx_hal_msp.o
- .debug_macro   0x0000000000038e9f      0x2c9 ./Core/Src/stm32h7xx_it.o
- .debug_macro   0x0000000000039168      0x2da ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
- .debug_macro   0x0000000000039442      0x2b0 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
- .debug_macro   0x00000000000396f2      0x303 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
- .debug_macro   0x00000000000399f5      0x2c4 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
- .debug_macro   0x0000000000039cb9      0x2c2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
- .debug_macro   0x0000000000039f7b      0x2e9 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
- .debug_macro   0x000000000003a264      0x2d4 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
- .debug_macro   0x000000000003a538      0x2bf ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+.debug_macro    0x0000000000000000    0x3aad7
+ .debug_macro   0x0000000000000000      0x40a ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000000040a      0xa7e ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000e88       0x22 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000eaa       0x8e ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000f38       0x51 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000000f89      0x103 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000000108c       0x6a ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000010f6      0x1df ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000012d5      0x238 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000000150d       0x2e ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000000153b       0x3b ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000001576       0x1c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000001592       0x22 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000015b4       0xfb ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000016af     0x1011 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000026c0      0x11f ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000027df    0x26d3b ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002951a       0x6d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000029587     0x3d22 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d2a9      0x174 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d41d       0x52 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d46f       0x1e ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d48d       0x3c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d4c9       0x34 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d4fd       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d513       0x43 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d556       0x34 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d58a       0x10 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d59a       0x58 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d5f2       0x71 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d663       0x1c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d67f      0x12a ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002d7a9      0x341 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002daea      0x19b ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002dc85       0x5d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000002dce2     0x3a9d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000003177f     0x1048 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000327c7      0x14d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000032914      0x130 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000032a44      0x3be ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000032e02       0xac ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000032eae      0x72d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000335db      0x228 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000033803       0x66 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000033869      0x3bb ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000033c24      0xa95 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000346b9      0x129 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000347e2      0x407 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000034be9      0x244 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000034e2d      0x3ca ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000351f7      0x4a2 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000035699       0x51 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000356ea       0x4a ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000035734      0x22c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000035960       0x67 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000359c7       0xa5 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000035a6c      0x218 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000035c84      0x2ea ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000035f6e       0x35 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000035fa3      0x5e4 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036587       0x9e ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036625      0x798 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036dbd       0x64 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036e21       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036e37       0x35 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036e6c       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036e82       0x29 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036eab       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036ec1       0x20 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036ee1       0x1c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036efd       0x10 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036f0d       0x10 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036f1d       0x1c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036f39       0x52 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036f8b       0x22 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036fad       0x10 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000036fbd       0x52 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000003700f       0xd5 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000370e4       0x1c ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000037100       0x3d ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x000000000003713d       0x16 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000037153      0x145 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000037298       0x22 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x00000000000372ba      0x1d7 ./Common/Src/FRA421_Yugioh.o
+ .debug_macro   0x0000000000037491      0x2b0 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_macro   0x0000000000037741      0x2c9 ./Core/Src/MC14515.o
+ .debug_macro   0x0000000000037a0a       0x7c ./Core/Src/MC14515.o
+ .debug_macro   0x0000000000037a86      0x418 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000037e9e       0x4c ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000037eea       0x94 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000037f7e      0x10e ./Core/Src/MFRC522.o
+ .debug_macro   0x000000000003808c       0x8d ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000038119       0x57 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000038170      0x1e5 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000038355      0x460 ./Core/Src/MFRC522.o
+ .debug_macro   0x00000000000387b5       0x22 ./Core/Src/MFRC522.o
+ .debug_macro   0x00000000000387d7      0x230 ./Core/Src/MFRC522.o
+ .debug_macro   0x0000000000038a07      0x427 ./Core/Src/main.o
+ .debug_macro   0x0000000000038e2e       0x28 ./Core/Src/main.o
+ .debug_macro   0x0000000000038e56       0x6a ./Core/Src/main.o
+ .debug_macro   0x0000000000038ec0      0x2bf ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_macro   0x000000000003917f      0x2c9 ./Core/Src/stm32h7xx_it.o
+ .debug_macro   0x0000000000039448      0x2da ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_macro   0x0000000000039722      0x2b0 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_macro   0x00000000000399d2      0x303 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_macro   0x0000000000039cd5      0x2c4 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_macro   0x0000000000039f99      0x2c2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_macro   0x000000000003a25b      0x2e9 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_macro   0x000000000003a544      0x2d4 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_macro   0x000000000003a818      0x2bf ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
 
-.debug_line     0x0000000000000000     0xeb02
- .debug_line    0x0000000000000000      0xde7 ./Common/Src/FRA421_Yugioh.o
- .debug_line    0x0000000000000de7      0x9b6 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_line    0x000000000000179d      0x8d8 ./Core/Src/MC14515.o
- .debug_line    0x0000000000002075      0xbf4 ./Core/Src/MFRC522.o
- .debug_line    0x0000000000002c69      0xc36 ./Core/Src/main.o
- .debug_line    0x000000000000389f      0x932 ./Core/Src/stm32h7xx_hal_msp.o
- .debug_line    0x00000000000041d1      0x951 ./Core/Src/stm32h7xx_it.o
- .debug_line    0x0000000000004b22       0x88 ./Core/Startup/startup_stm32h745zitx.o
- .debug_line    0x0000000000004baa      0xf77 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
- .debug_line    0x0000000000005b21      0xe27 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
- .debug_line    0x0000000000006948     0x275e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
- .debug_line    0x00000000000090a6      0xcda ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
- .debug_line    0x0000000000009d80      0x9d7 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
- .debug_line    0x000000000000a757     0x1042 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
- .debug_line    0x000000000000b799     0x1383 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
- .debug_line    0x000000000000cb1c     0x1fe6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+.debug_line     0x0000000000000000     0xebfc
+ .debug_line    0x0000000000000000      0xee1 ./Common/Src/FRA421_Yugioh.o
+ .debug_line    0x0000000000000ee1      0x9b6 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_line    0x0000000000001897      0x8d8 ./Core/Src/MC14515.o
+ .debug_line    0x000000000000216f      0xbf4 ./Core/Src/MFRC522.o
+ .debug_line    0x0000000000002d63      0xc36 ./Core/Src/main.o
+ .debug_line    0x0000000000003999      0x932 ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_line    0x00000000000042cb      0x951 ./Core/Src/stm32h7xx_it.o
+ .debug_line    0x0000000000004c1c       0x88 ./Core/Startup/startup_stm32h745zitx.o
+ .debug_line    0x0000000000004ca4      0xf77 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_line    0x0000000000005c1b      0xe27 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_line    0x0000000000006a42     0x275e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_line    0x00000000000091a0      0xcda ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_line    0x0000000000009e7a      0x9d7 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_line    0x000000000000a851     0x1042 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_line    0x000000000000b893     0x1383 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_line    0x000000000000cc16     0x1fe6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
 
-.debug_str      0x0000000000000000   0x17bbec
- .debug_str     0x0000000000000000   0x17480d ./Common/Src/FRA421_Yugioh.o
-                                     0x174cb5 (size before relaxing)
- .debug_str     0x000000000017480d      0x365 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+.debug_str      0x0000000000000000   0x17c22d
+ .debug_str     0x0000000000000000   0x175df3 ./Common/Src/FRA421_Yugioh.o
+                                     0x17629b (size before relaxing)
+ .debug_str     0x0000000000175df3      0x365 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
                                      0x17479e (size before relaxing)
- .debug_str     0x0000000000174b72      0x2f4 ./Core/Src/MC14515.o
+ .debug_str     0x0000000000176158      0x2f4 ./Core/Src/MC14515.o
                                      0x174776 (size before relaxing)
- .debug_str     0x0000000000174e66     0x2d43 ./Core/Src/MFRC522.o
+ .debug_str     0x000000000017644c     0x1d9e ./Core/Src/MFRC522.o
                                      0x17764f (size before relaxing)
- .debug_str     0x0000000000177ba9     0x13fa ./Core/Src/main.o
+ .debug_str     0x00000000001781ea     0x13fa ./Core/Src/main.o
                                      0x177ecb (size before relaxing)
- .debug_str     0x0000000000178fa3       0xc8 ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_str     0x00000000001795e4       0xc8 ./Core/Src/stm32h7xx_hal_msp.o
                                      0x176133 (size before relaxing)
- .debug_str     0x000000000017906b      0x12f ./Core/Src/stm32h7xx_it.o
+ .debug_str     0x00000000001796ac      0x12f ./Core/Src/stm32h7xx_it.o
                                      0x174d60 (size before relaxing)
- .debug_str     0x000000000017919a       0x36 ./Core/Startup/startup_stm32h745zitx.o
+ .debug_str     0x00000000001797db       0x36 ./Core/Startup/startup_stm32h745zitx.o
                                          0x64 (size before relaxing)
- .debug_str     0x00000000001791d0      0xa76 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_str     0x0000000000179811      0xa76 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
                                      0x175b05 (size before relaxing)
- .debug_str     0x0000000000179c46      0x359 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_str     0x000000000017a287      0x359 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
                                      0x175253 (size before relaxing)
- .debug_str     0x0000000000179f9f      0x870 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_str     0x000000000017a5e0      0x870 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
                                      0x175102 (size before relaxing)
- .debug_str     0x000000000017a80f      0x115 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_str     0x000000000017ae50      0x115 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
                                      0x1749f3 (size before relaxing)
- .debug_str     0x000000000017a924      0x1c4 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_str     0x000000000017af65      0x1c4 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
                                      0x17467e (size before relaxing)
- .debug_str     0x000000000017aae8      0x6c3 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_str     0x000000000017b129      0x6c3 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
                                      0x174e49 (size before relaxing)
- .debug_str     0x000000000017b1ab      0x527 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_str     0x000000000017b7ec      0x527 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
                                      0x174d74 (size before relaxing)
- .debug_str     0x000000000017b6d2      0x51a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+ .debug_str     0x000000000017bd13      0x51a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
                                      0x175077 (size before relaxing)
 
 .comment        0x0000000000000000       0x50

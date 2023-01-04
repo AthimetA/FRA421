@@ -8,6 +8,10 @@
 #include "FRA421_Yugioh.h"
 #include <stdlib.h>
 #include <string.h>
+//tuta include
+#include <stdio.h>
+#include "../../../CM7/Core/Inc/st7735.h"
+#include "../../../CM7/Core/Inc/fonts.h"
 
 // RFID Handle Function
 void RFID_Main_init(RFIDHandle *rfidmain) {
@@ -200,6 +204,8 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 
 	switch (player_state) {
 	case ready:
+		ST7735_FillScreen(ST7735_GREEN);
+		ST7735_FillScreen1(ST7735_RED);
 		if (HAL_GPIO_ReadPin(START_BUTTON_PORT, START_BUTTON_PIN)
 				== GPIO_PIN_RESET) {
 			ptrPlayer1->life_point = 4000;
@@ -452,39 +458,37 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 
 			break;
 		case chaining_main_DEF:
+			ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
 			state_game->test = 34;
-			if(HAL_GPIO_ReadPin(YES2_PORT, YES2_PIN) == GPIO_PIN_RESET)
+			if(state_game->action == 4)
 			{
-				state_game->test = 35;
-				state_game->action = 5;
 				Player_Reading_Card(RFIDmain,state_game,ptrPlayerAtk);
-				if((state_game->action == 6 )&& (ptrYugiohCard_dst->cardType == 3)){
-					state_game->MAIN = chaining_main_ATK;
-					state_game->action = 4;
+				state_game->test = 35;
+				if(HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET){
+					state_game->MAIN = activate_effect;
 				}
 			}
-			else if ((HAL_GPIO_ReadPin(NO2_PORT, NO2_PIN) == GPIO_PIN_RESET))
-			{
-				state_game->MAIN = activate_effect;
+			else if ((state_game->action == 5 )&& (ptrYugiohCard_dst->cardType == 3)){
+				state_game->MAIN = chaining_main_ATK;
+				state_game->action = 4;
 			}
 			break;
 		case chaining_main_ATK:
-			if(HAL_GPIO_ReadPin(YES1_PORT, YES1_PIN) == GPIO_PIN_RESET)
+			ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
+			if(state_game->action == 4)
 			{
-				state_game->action = 5;
 				Player_Reading_Card(RFIDmain,state_game,ptrPlayerAtk);
-				ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
-				if((state_game->action == 6 )&& (ptrYugiohCard_dst->cardType == 3)){
-					state_game->MAIN = chaining_main_DEF;
-					state_game->action = 4;
+				if(HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET){
+					state_game->MAIN = activate_effect;
 				}
 			}
-			else if (HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET)
-			{
-				state_game->MAIN = activate_effect;
+			else if ((state_game->action == 5 )&& (ptrYugiohCard_dst->cardType == 3)){
+				state_game->MAIN = chaining_main_ATK;
+				state_game->action = 4;
 			}
 			break;
 		case activate_effect:
+
 			break;
 		}
 		break;
