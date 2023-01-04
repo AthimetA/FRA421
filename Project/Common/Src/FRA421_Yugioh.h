@@ -121,7 +121,7 @@ typedef struct _state_game
     uint8_t count_chain;
 	Player player[2];
     enum _player_state {ready, first_player, second_player} player_state;
-    enum _STATE {Drawn_Phase, Main_Phase, Battle_Phase, Chain_Phase} STATE;
+    enum _STATE {Drawn_Phase, Main_Phase, Battle_Phase, Winner} STATE;
     enum _BATTLE {
     	selection, counter_ATK,counter_DEF, chain_effect,calculate_damage, after_calculate
     } BATTLE;
@@ -155,6 +155,7 @@ void GAME_PLAY_Main_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player);
 void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2);
 void YUGIOH_To_GY(Player *player,YUGIOH_Card *card);
+void YUGIOH_Clear_Card_All(Player *player);
 
 //tuta display
 void MainGUI();
