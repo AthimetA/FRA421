@@ -18,8 +18,11 @@
 #define RFID_NUM_MAX 12
 #define CARD_BUFF_LEN 4
 
-//Number od ChainBuffer
+//Number of ChainBuffer
 #define CHAIN_BUFF_LEN 6
+
+//Number of monster in area
+#define MON_BUFF_LEN 3
 
 // user button
 #define START_BUTTON_PORT GPIOA
@@ -110,6 +113,7 @@ typedef struct _Player
 typedef struct _state_game
 {
 	uint8_t action;
+    uint8_t count_chain;
 	Player player[2];
     enum _player_state {ready, first_player, second_player} player_state;
     enum _STATE {Drawn_Phase, Main_Phase, Battle_Phase, Chain_Phase} STATE;

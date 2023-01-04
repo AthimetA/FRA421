@@ -194,6 +194,7 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 
 	Player *ptrPlayer1 = state_game->player;
 	Player *ptrPlayer2 = state_game->player;
+
 	ptrPlayer1 = &state_game->player[0];
 	ptrPlayer2 = &state_game->player[1];
 
@@ -204,8 +205,28 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 
 	switch (player_state) {
 	case ready:
-		ST7735_FillScreen(ST7735_GREEN);
-		ST7735_FillScreen1(ST7735_RED);
+		// START display for ready state
+		//player 2
+		ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString(0, 15, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString(8, 35, "Hit button", Font_11x18, ST7735_MAGENTA, ST7735_BLACK);
+		ST7735_WriteString(25, 60, "to DUEL", Font_11x18, ST7735_CYAN, ST7735_BLACK);
+		ST7735_WriteString(0, 75, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString(0, 90, "Initial LP: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString(93, 90, "4000", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		ST7735_WriteString(0, 105, "Initial Timer: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString(100, 105, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		//player 1
+		ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString1(0, 15, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString1(8, 35, "Hit button", Font_11x18, ST7735_MAGENTA, ST7735_BLACK);
+		ST7735_WriteString1(20, 60, "to DUEL", Font_11x18, ST7735_CYAN, ST7735_BLACK);
+		ST7735_WriteString1(0, 75, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString1(0, 90, "Initial LP: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString1(93, 90, "4000", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		ST7735_WriteString1(0,105, "Initial Timer: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+		ST7735_WriteString1(100, 105, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+		//END display for ready state
 		if (HAL_GPIO_ReadPin(START_BUTTON_PORT, START_BUTTON_PIN)
 				== GPIO_PIN_RESET) {
 			ptrPlayer1->life_point = 4000;
@@ -355,10 +376,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 				else if (ptrYugiohCard_src->cardType == 2)
 				{
 					//check if activate now or just set
+					state_game->count_chain = 0;
 					if(ptrYugiohCard_src->actionPositon == 1){
 						state_game->test = 33;
 						YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
 						state_game->action = 4;
+						ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
 						state_game->MAIN = chaining_main_DEF;
 					}
 					else{
@@ -458,7 +481,6 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 
 			break;
 		case chaining_main_DEF:
-			ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
 			state_game->test = 34;
 			if(state_game->action == 4)
 			{
@@ -469,6 +491,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 				}
 			}
 			else if ((state_game->action == 5 )&& (ptrYugiohCard_dst->cardType == 3)){
+				ptrYugiohCard_dst++;
+				state_game->count_chain += 1;
 				state_game->MAIN = chaining_main_ATK;
 				state_game->action = 4;
 			}
@@ -478,17 +502,28 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 			if(state_game->action == 4)
 			{
 				Player_Reading_Card(RFIDmain,state_game,ptrPlayerAtk);
-				if(HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET){
+				if(HAL_GPIO_ReadPin(NO2_PORT, NO2_PIN) == GPIO_PIN_RESET){
 					state_game->MAIN = activate_effect;
 				}
 			}
 			else if ((state_game->action == 5 )&& (ptrYugiohCard_dst->cardType == 3)){
-				state_game->MAIN = chaining_main_ATK;
+				state_game->count_chain += 1;
+				state_game->MAIN = chaining_main_DEF;
 				state_game->action = 4;
 			}
 			break;
 		case activate_effect:
-
+			if(state_game->count_chain%2 == 0){
+				uint8_t counthing = state_game->count_chain;
+//				ptrYugiohCard_chain = &ptrPlayerAtk->ChainBuffer;
+				state_game->test = 14;
+				for (int i = 0; i <= counthing; i++) {
+//					if(ptrYugiohCard_dst->cardSignature == 11){
+//						YUGIOH_Clear_Card_Enemy_Player(ptrPlayerAtk);
+//					}
+//					ptrYugiohCard_chain++;
+				}
+			}
 			break;
 		}
 		break;
@@ -522,6 +557,15 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 		ptrRFID->action = 0;
 
 		state_game->action += 1;
+	}
+}
+
+void YUGIOH_Clear_Card_Enemy_Player(Player *player) {
+	YUGIOH_Card buffCard = { 0 };
+	YUGIOH_Card *ptrYUGIOHCard = player->cardOnBoard;
+	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
+		YUGIOH_card_copy(&buffCard, ptrYUGIOHCard);
+		ptrYUGIOHCard++;
 	}
 }
 

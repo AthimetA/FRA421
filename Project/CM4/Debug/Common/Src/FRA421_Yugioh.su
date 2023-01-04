@@ -7,6 +7,7 @@ D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:152:9:CardHash_En
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:159:6:YUGIOH_card_Load_Data	24	static
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:169:6:YUGIOH_Clear_Card_Bufffer_Player	40	static
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:178:6:YUGIOH_card_Buffer_Update_Player	32	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:193:6:GAME_PLAY_Management	32	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:226:6:GAME_PLAY_Phase_Management	40	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:503:6:Player_Reading_Card	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:193:6:GAME_PLAY_Management	48	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:247:6:GAME_PLAY_Phase_Management	56	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:538:6:Player_Reading_Card	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:563:6:YUGIOH_Clear_Card_Enemy_Player	40	static

@@ -173,8 +173,8 @@ HSEM notification */
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
 	ST7735_Init();
+	ST7735_FillScreen1(ST7735_BLACK);
 	ST7735_FillScreen(ST7735_BLACK);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
