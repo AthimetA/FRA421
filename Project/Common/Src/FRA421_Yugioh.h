@@ -66,7 +66,8 @@ typedef struct _YUGIOH_CARD
 	uint8_t cardLevel;
 	uint8_t cardAtk;
 	uint8_t cardDef;
-	uint8_t actionPositon;
+	uint8_t standPosition;
+	uint8_t targetPosition;
 	uint32_t cardData;
 }YUGIOH_Card;
 
@@ -100,6 +101,7 @@ typedef struct _YUGIOH_CARD_HASH
 
 typedef struct _Player
 {
+	uint8_t displayNSS;
     uint16_t life_point;
     //MAIN Buffer
     YUGIOH_Card cardOnBoard [6];
