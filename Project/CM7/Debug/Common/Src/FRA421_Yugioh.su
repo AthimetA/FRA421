@@ -3,10 +3,10 @@ D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:25:6:YUGIOH_card_
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:35:6:RFID_Clear_Card_Bufffer	40	static
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:44:6:YUGIOH_card_register	32	static
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:59:6:YUGIOH_card_Buffer_Update	32	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:141:9:CardHash_Encode	16	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:148:6:YUGIOH_card_Load_Data	24	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:158:6:YUGIOH_Clear_Card_Bufffer_Player	40	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:167:6:YUGIOH_card_Buffer_Update_Player	32	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:182:6:GAME_PLAY_Management	32	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:213:6:GAME_PLAY_Phase_Management	40	static
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:430:6:Player_Reading_Card	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:148:9:CardHash_Encode	16	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:155:6:YUGIOH_card_Load_Data	24	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:165:6:YUGIOH_Clear_Card_Bufffer_Player	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:174:6:YUGIOH_card_Buffer_Update_Player	32	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:189:6:GAME_PLAY_Management	32	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:220:6:GAME_PLAY_Phase_Management	40	static
+D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c:499:6:Player_Reading_Card	40	static

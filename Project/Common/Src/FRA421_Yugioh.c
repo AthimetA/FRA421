@@ -86,18 +86,25 @@ const uint8_t archive_yugioh_card_sig[256] = { 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
 		5, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0,
 		0, 0, 7, 0, 19, 0, 11, 2, 0, 0, 0, };
 
-const uint8_t archive_yugioh_card_type[256] = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-		2, 0, 0, 0, 2, 2, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
-		0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 0,
-		0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-		1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
-		0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-		0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 2,
-		1, 0, 0, 0, };
+const uint8_t archive_yugioh_card_type[256] = {
+		 0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  2,  0,  0,  0,
+		 2,  2,  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  1,  0,  3,  0,  0,
+		 0,  0,  2,  0,  0,  0,  2,  0,  0,  0,  0,  0,  3,  0,  0,
+		 0,  0,  0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  2,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,
+		 0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,
+		 0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  0,  3,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  2,  0,  0,  1,  0,  0,  0,  0,
+		 0,  0,  0,  1,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		 0,  0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  1,  0,
+		 0,  2,  0,  3,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,
+		 0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  1,
+		 0,  0,  0,  0,  0,  0,  1,  0,  2,  0,  2,  1,  0,  0,  0,
+		};
 
 const uint8_t archive_yugioh_card_level[256] = { 0, 0, 0, 0, 0, 0, 0, 0, 4, 0,
 		0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -218,7 +225,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 	STATE = state_game->STATE;
 
 	enum _MAIN {
-		await,select_position, check_card_type, advance_summon, activate_effect
+		await,select_position, check_card_type, advance_summon, activate_effect,chaining_main_ATK,chaining_main_DEF
 	} MAIN;
 	MAIN = state_game->MAIN;
 
@@ -283,6 +290,14 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 						ptrYugiohCard_src->cardState = 0;
 						state_game->action = 2;
 					}
+					else if (HAL_GPIO_ReadPin(NO2_PORT, NO2_PIN) == GPIO_PIN_RESET)
+					{
+						state_game->test = 22;
+					}
+					else if (HAL_GPIO_ReadPin(YES2_PORT, YES2_PIN) == GPIO_PIN_RESET)
+					{
+						state_game->test = 33;
+					}
 
 				}
 				else if (state_game->player_state == second_player)
@@ -333,7 +348,26 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 				}
 				else if (ptrYugiohCard_src->cardType == 2)
 				{
-					//Pass
+					//check if activate now or just set
+					if(ptrYugiohCard_src->actionPositon == 1){
+						state_game->test = 33;
+						YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
+						state_game->action = 4;
+						state_game->MAIN = chaining_main_DEF;
+					}
+					else{
+						// Add card to board
+						uint8_t idx = ptrYugiohCard_src->actionPositon % 6;
+						ptrYugiohCard_dst = &ptrPlayerAtk->cardOnBoard[idx];
+
+						YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+						YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
+						YUGIOH_card_copy(&ptrPlayerAtk->ChainBuffer[0], ptrYugiohCard_src);
+
+						state_game->action = 0;
+						state_game->MAIN = await;
+					}
 				}
 				else if (ptrYugiohCard_src->cardType == 1)
 				{
@@ -400,6 +434,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 					YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
 					YUGIOH_card_copy(&ptrPlayerAtk->ChainBuffer[0], ptrYugiohCard_src);
 
+
+
 					state_game->action = 0;
 					state_game->MAIN = await;
 				}
@@ -414,6 +450,39 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 
 			else
 
+			break;
+		case chaining_main_DEF:
+			state_game->test = 34;
+			if(HAL_GPIO_ReadPin(YES2_PORT, YES2_PIN) == GPIO_PIN_RESET)
+			{
+				state_game->test = 35;
+				state_game->action = 5;
+				Player_Reading_Card(RFIDmain,state_game,ptrPlayerAtk);
+				if((state_game->action == 6 )&& (ptrYugiohCard_dst->cardType == 3)){
+					state_game->MAIN = chaining_main_ATK;
+					state_game->action = 4;
+				}
+			}
+			else if ((HAL_GPIO_ReadPin(NO2_PORT, NO2_PIN) == GPIO_PIN_RESET))
+			{
+				state_game->MAIN = activate_effect;
+			}
+			break;
+		case chaining_main_ATK:
+			if(HAL_GPIO_ReadPin(YES1_PORT, YES1_PIN) == GPIO_PIN_RESET)
+			{
+				state_game->action = 5;
+				Player_Reading_Card(RFIDmain,state_game,ptrPlayerAtk);
+				ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
+				if((state_game->action == 6 )&& (ptrYugiohCard_dst->cardType == 3)){
+					state_game->MAIN = chaining_main_DEF;
+					state_game->action = 4;
+				}
+			}
+			else if (HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET)
+			{
+				state_game->MAIN = activate_effect;
+			}
 			break;
 		case activate_effect:
 			break;

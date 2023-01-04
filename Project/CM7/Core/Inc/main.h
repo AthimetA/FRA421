@@ -59,6 +59,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define TURN_BUTTON_Pin GPIO_PIN_0
 #define TURN_BUTTON_GPIO_Port GPIOC
+#define YES2_Pin GPIO_PIN_2
+#define YES2_GPIO_Port GPIOC
 #define YES1_Pin GPIO_PIN_3
 #define YES1_GPIO_Port GPIOC
 #define START_BUTTON_Pin GPIO_PIN_3
