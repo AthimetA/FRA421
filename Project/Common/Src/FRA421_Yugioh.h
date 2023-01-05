@@ -116,7 +116,7 @@ typedef struct _Player
 
 //    enum _button{button1,button2} button;
 
-    enum _turn{first,second} turn;
+    enum _turn{first,second} turnSignature;
 }Player;
 
 typedef struct _state_game
@@ -162,6 +162,7 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_CARD_PLAYED(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Player *playerAtk,Player *playerDef);
 void GAME_PLAY_Main_Management(RFIDHandle *RFIDmain,State_game *state_game);
+void GAME_PLAY_Add_ATK_Point(Player *player);
 void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player);
 void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2);
 void YUGIOH_To_GY(Player *player,YUGIOH_Card *card);
