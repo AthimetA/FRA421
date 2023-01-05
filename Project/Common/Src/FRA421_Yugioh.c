@@ -569,22 +569,17 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				if (ptrYugiohCard_src->cardType == 3)
 				{
 					// Add card to board
-					//					uint8_t idx = ptrYugiohCard_src->standPosition % 6;
-					//					ptrYugiohCard_dst = &playerAtk->cardOnBoard[idx];
-					//
-					//					YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
-					//
-					//					YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
-					//					YUGIOH_card_copy(&playerAtk->ChainBuffer[0], ptrYugiohCard_src);
+					uint8_t idx = ptrYugiohCard_src->standPosition % 6;
+					ptrYugiohCard_dst = &playerAtk->cardOnBoard[idx];
 
-					//					state_game->action = 0;
-					//					state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
+					YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
 
-					//for check
-					YUGIOH_Gift_of_the_Mystical_Elf(playerAtk,playerDef);
+					YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
+					YUGIOH_card_copy(&playerAtk->ChainBuffer[0], ptrYugiohCard_src);
 
 					state_game->action = 0;
 					state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
+
 
 				}
 				else if (ptrYugiohCard_src->cardType == 2)
@@ -706,12 +701,9 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				}
 			}
 			else if ((state_game->action == 5 )){
-				//				state_game->count_chain += 1;
-				//				state_game->PlyerAction_Main_Substate = chaining_main_ATK;
-				//				state_game->action = 4;
-				YUGIOH_Ancient_Rules(playerAtk);
-				state_game->action = 0;
-				state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
+				state_game->count_chain += 1;
+				state_game->PlyerAction_Main_Substate = chaining_main_ATK;
+				state_game->action = 4;
 			}
 			break;
 		case chaining_main_ATK:
