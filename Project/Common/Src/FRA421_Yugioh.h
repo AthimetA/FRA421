@@ -104,6 +104,8 @@ typedef struct _YUGIOH_CARD_HASH
 typedef struct _Player
 {
 	uint8_t displayNSS;
+	GPIO_PinState yesBTN;
+	GPIO_PinState noBTN;
     uint16_t life_point;
     //MAIN Buffer
     YUGIOH_Card cardOnBoard [6];
@@ -122,14 +124,19 @@ typedef struct _state_game
 	uint8_t action;
     uint8_t count_chain;
 	Player player[2];
-    enum _player_state {ready, first_player, second_player} player_state;
-    enum _STATE {Drawn_Phase, Main_Phase, Battle_Phase, Winner} STATE;
-    enum _BATTLE {
-    	selection, counter_ATK,counter_DEF, chain_effect,calculate_damage, after_calculate
-    } BATTLE;
+    enum _player_state {
+    	Game_not_start,Game_init, first_player, second_player,Game_Ended
+    } MainGame_State;
+    enum _STATE {
+    	PS_AFK,Drawn_Phase, Main_Phase, Battle_Phase
+    } PlyerAction_State;
     enum _MAIN {
-    	await,select_position, check_card_type, advance_summon, activate_effect
-    } MAIN;
+    	PMS_AFK, PMS_ActionAwait, select_position, check_card_type, advance_summon,
+		activate_effect, chaining_main_ATK, chaining_main_DEF
+    } PlyerAction_Main_Substate;
+    enum _BATTLE {
+    	PBS_AFK, PBS_ActionAwait, counter_ATK,counter_DEF, chain_effect,calculate_damage, after_calculate
+    } PlyerAction_Battle_Substate;
     uint8_t test;
     uint8_t F_flag;
     uint8_t S_flag;
@@ -153,7 +160,7 @@ void YUGIOH_card_Buffer_Update_Player(Player *player);
 void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 void GAME_PLAY_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_CARD_PLAYED(RFIDHandle *RFIDmain,State_game *state_game);
-void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game);
+void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Player *playerAtk,Player *playerDef);
 void GAME_PLAY_Main_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player);
 void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2);
