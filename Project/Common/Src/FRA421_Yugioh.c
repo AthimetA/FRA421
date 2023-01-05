@@ -775,6 +775,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					{
 						state_game->action = 5;
 					}
+					else if((ptrYugiohCard_src->cardSignature == 18)||(ptrYugiohCard_src->cardSignature == 19))
+					{
+						if ((*ptrUser)->yesBTN == GPIO_PIN_RESET){
+							state_game->count_chain++;
+						}
+					}
 				}
 				else
 				{
@@ -911,21 +917,26 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				break;
 			case counter_DEF:
 				//action 52
-				//				state_game->test = 34;
 				if(state_game->action == 52)
 				{
-					Player_Reading_Card(RFIDmain,state_game,playerDef);
-					//					state_game->test = 35;
 					if (playerDef->noBTN == GPIO_PIN_RESET){
-						state_game->PlyerAction_Battle_Substate = calculate_damage;
+						state_game->PlyerAction_Battle_Substate = chain_effect;
+						state_game->count_chain = 0;
 					}
+					Player_Reading_Card(RFIDmain,state_game,playerDef);
 				}
 				else if ((state_game->action == 53 )){
-					//				ptrYugiohCard_dst++;
-					state_game->count_chain += 1;
+					ptrYugiohCard_src = &playerDef->ActtionBuffer[0];
+					YUGIOH_card_Buffer_Update_Chain(state_game);
+					YUGIOH_card_copy(ptrYugiohCard_src, &state_game->ChainBuffer[0]);
+					state_game->ptrChainUser[0] = playerDef;
+					state_game->ptrChainOpponent[0] = playerAtk;
+					state_game->ChainCount++;
+
 					state_game->PlyerAction_Battle_Substate = counter_ATK;
 					state_game->action = 54;
 				}
+
 				break;
 			case counter_ATK:
 				//action 54
@@ -933,17 +944,63 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				{
 					Player_Reading_Card(RFIDmain,state_game,playerAtk);
 					if (playerAtk->noBTN == GPIO_PIN_RESET){
-						state_game->PlyerAction_Battle_Substate = calculate_damage;
+						//affect
+						state_game->PlyerAction_Battle_Substate = chain_effect;
+						state_game->count_chain = 0;
 					}
 				}
 				else if ((state_game->action == 55 )){
-					state_game->count_chain += 1;
+					ptrYugiohCard_src = &playerAtk->ActtionBuffer[0];
+					YUGIOH_card_Buffer_Update_Chain(state_game);
+					YUGIOH_card_copy(ptrYugiohCard_src, &state_game->ChainBuffer[0]);
+					state_game->ptrChainUser[0] = playerAtk;
+					state_game->ptrChainOpponent[0] = playerDef;
+					state_game->ChainCount++;
+
 					state_game->PlyerAction_Battle_Substate = counter_DEF;
-					state_game->action = 52;
+					state_game->action = 54;
 				}
+
 				break;
 			case chain_effect:
+				ptrUser = &state_game->ptrChainUser[state_game->count_chain];
+				ptrOpponent = &state_game->ptrChainOpponent[state_game->count_chain];
 
+				if(state_game->action == 54)
+				{
+					// Base use to check Card Eff
+					if (state_game->count_chain < state_game->ChainCount)
+					{
+						state_game->test = 165;
+
+						ptrYugiohCard_src = &state_game->ChainBuffer[state_game->count_chain];
+
+						if (ptrYugiohCard_src->cardSignature == 11)
+						{
+							YUGIOH_Clear_Card_Enemy_Player_Raigeki(*ptrOpponent);
+							state_game->count_chain++;
+						}
+						else if (ptrYugiohCard_src->cardSignature == 12)
+						{
+							YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(*ptrUser,*ptrOpponent);
+							state_game->count_chain++;
+						}
+						else if(ptrYugiohCard_src->cardSignature == 14 || ptrYugiohCard_src->cardSignature == 15)
+						{
+							state_game->test = 133;
+							YUGIOH_Gift_of_the_Mystical_Elf(*ptrUser,*ptrOpponent);
+							state_game->count_chain++;
+
+						}
+					}
+					else
+					{
+						// All Chain Clear
+						state_game->action = 50;
+						state_game->PlyerAction_Battle_Substate = calculate_damage;
+					}
+
+				}
 				break;
 			case  calculate_damage:
 				ptrYugiohCard_src = &playerAtk->CardInPlayed;
