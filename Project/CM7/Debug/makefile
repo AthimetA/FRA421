@@ -61,8 +61,8 @@ all: main-build
 main-build: FRA421_Project_CM7.elf secondary-outputs
 
 # Tool invocations
-FRA421_Project_CM7.elf FRA421_Project_CM7.map: $(OBJS) $(USER_OBJS) D:\STM32project\FRA421\Project\CM7\STM32H745ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "FRA421_Project_CM7.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"D:\STM32project\FRA421\Project\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FRA421_Project_CM7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+FRA421_Project_CM7.elf FRA421_Project_CM7.map: $(OBJS) $(USER_OBJS) D:\work\MBED_Project\FRA421\Project\CM7\STM32H745ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "FRA421_Project_CM7.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"D:\work\MBED_Project\FRA421\Project\CM7\STM32H745ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FRA421_Project_CM7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

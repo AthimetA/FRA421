@@ -111,7 +111,7 @@ typedef struct _Player
     YUGIOH_Card cardOnBoard [6];
     YUGIOH_Card GY [20];
     //buffer
-    YUGIOH_Card ChainBuffer [CHAIN_BUFF_LEN] ;
+    YUGIOH_Card ActtionBuffer [CHAIN_BUFF_LEN] ;
     YUGIOH_Card CardInPlayed;
 
 //    enum _button{button1,button2} button;
@@ -137,6 +137,15 @@ typedef struct _state_game
     enum _BATTLE {
     	PBS_AFK, PBS_ActionAwait, counter_ATK,counter_DEF, chain_effect,calculate_damage, after_calculate
     } PlyerAction_Battle_Substate;
+
+    enum _CHAIN {
+    	PCS_AFK, PCS_ActionAwait, Action
+    }  PlyerAction_Chain_Substate;
+
+    YUGIOH_Card ChainBuffer [CHAIN_BUFF_LEN] ;
+    Player *ptrChainUser [CHAIN_BUFF_LEN] ;
+    Player *ptrChainOpponent [CHAIN_BUFF_LEN] ;
+    uint8_t ChainCount;
     uint8_t test;
     uint8_t F_flag;
     uint8_t S_flag;
@@ -157,6 +166,7 @@ void YUGIOH_card_Load_Data(YUGIOH_Card *card);
 //Game play hadler function
 void YUGIOH_Clear_Card_Bufffer_Player(Player *player);
 void YUGIOH_card_Buffer_Update_Player(Player *player);
+void YUGIOH_card_Buffer_Update_Chain(State_game * state_game);
 void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 void GAME_PLAY_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_CARD_PLAYED(RFIDHandle *RFIDmain,State_game *state_game);
@@ -166,6 +176,12 @@ void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player);
 void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2);
 void YUGIOH_To_GY(Player *player,YUGIOH_Card *card);
 void YUGIOH_Clear_Card_All(Player *player);
+void YUGIOH_Reborn(Player *player);
+void YUGIOH_Ancient_Rules(Player *player);
+void YUGIOH_Gift_of_the_Mystical_Elf(Player *player1,Player *player2);
+void YUGIOH_Stop_Defense(Player *player1,Player *player2);
+
+void Test_EFF(Player *playerUser,Player *playerOpponent);
 
 //tuta display
 void MainGUI();
