@@ -15,13 +15,17 @@
 #include "stm32h7xx_hal.h"
 #include "../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h"
 #include "../../../CM7/Core/Inc/stm32h7xx_it.h"
+
 char C_LP1[4] = "";
 char C_LP2[4] = "";
 char C_LP_ATK[4] = "";
 char C_LP_DEF[4] = "";
+char c_turn[2] = "";
+char t_c[3] = "";
+
 uint16_t timeinit = 180;
 uint16_t time = 0;
-char t_c[3] = "";
+uint8_t turn = 0;
 
 // RFID Handle Function
 void RFID_Main_init(RFIDHandle *rfidmain) {
@@ -482,6 +486,7 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 			ST7735_FillRectangle1(0, 90, 128,128-90,ST7735_BLACK);
 			state_game->F_flag += 1;
 			state_game->S_flag = 0;
+			turn += 1;
 		}
 		ptrPlayerAtk = &state_game->player[0];
 		ptrPlayerDef = &state_game->player[1];
@@ -494,6 +499,7 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 			ST7735_FillRectangle(0, 90, 128,128-90,ST7735_BLACK);
 			state_game->S_flag += 1;
 			state_game->F_flag = 0;
+			turn += 1;
 		}
 		ptrPlayerAtk = &state_game->player[1];
 		ptrPlayerDef = &state_game->player[0];
@@ -540,8 +546,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 	case Drawn_Phase:
 		HAL_TIM_Base_Start_IT(&TIM7_PORT);
 		LCDvalue(playerAtk,playerDef);
-		ST7735_WriteString(60, 35, "|Phase:DP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
-		ST7735_WriteString1(60, 35, "|Phase:DP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
+		ST7735_WriteString(110, 35, "DP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
+		ST7735_WriteString1(110, 35, "DP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
 		ST7735_WriteStringNSS(5, 90, "Wait a minute", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 		ST7735_WriteStringNSS(5, 90, "Draw a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
 		// END display for draw phase state
@@ -560,18 +566,19 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 		break;
 	case Main_Phase:
 		LCDvalue(playerAtk,playerDef);
-		ST7735_WriteString(60, 35, "|Phase:MP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
-		ST7735_WriteString1(60, 35, "|Phase:MP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
-		ST7735_WriteStringNSS(5, 90, "Wait a minute", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
-		ST7735_WriteStringNSS(5, 90, "Place a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
 
 		switch (PMS)
 		{
 		case PMS_AFK:
 			break;
 		case PMS_ActionAwait:
+
 			if (state_game->action == 0)
 			{
+				ST7735_WriteString(110, 35, "MP", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+				ST7735_WriteString1(110, 35, "MP", Font_7x10, ST7735_GREEN, ST7735_BLACK);
+				//    ST7735_WriteStringNSS(5, 90, "Wait a minute", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+				//    ST7735_WriteStringNSS(5, 90, "Place a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
 				// Reading Until RFID action = 1 Mean Card Detected
 				if(HAL_GPIO_ReadPin(TURN_BUTTON_PORT, TURN_BUTTON_PIN)
 						== GPIO_PIN_RESET){
@@ -616,6 +623,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			}
 			else if (state_game->action == 2)
 			{
+				ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
 				state_game->action = 3;
 				state_game->PlyerAction_Main_Substate = check_card_type;
@@ -630,6 +639,9 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			{
 				if (ptrYugiohCard_src->cardType == 3)
 				{
+					ST7735_WriteStringNSS(5, 90, "You set a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 90, "Opponent set", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 
 					ptrYugiohCard_src->cardState = 0;
 
@@ -651,6 +663,13 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					//check if activate now or just set
 					state_game->count_chain = 1;
 					if(ptrYugiohCard_src->cardState == 1){
+						ST7735_WriteStringNSS(5, 90, "You activate", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(5, 90, "Opponent activate", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+
+						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+
 						state_game->action = 4;
 
 						// Add card + Player to chain
@@ -666,6 +685,10 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						state_game->PlyerAction_Main_Substate = chaining_main_DEF;
 					}
 					else{
+
+						ST7735_WriteStringNSS(5, 90, "You set a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(5, 90, "Opponent set", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 						// Add card to board
 						uint8_t idx = ptrYugiohCard_src->standPosition % 6;
 						ptrYugiohCard_dst = &playerAtk->cardOnBoard[idx];
@@ -684,6 +707,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					state_game->test = 2;
 					if (ptrYugiohCard_src->cardLevel < 7)
 					{
+						ST7735_WriteStringNSS(5, 90, "You summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "a MONSTER", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+
+						ST7735_WriteStringNSS(5, 90, "Opponent summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "a MONSTER", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
+
 						state_game->test = 1;
 						// Add card to board
 						uint8_t idx = ptrYugiohCard_src->standPosition % 6;
@@ -699,6 +728,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					}
 					else
 					{
+
+
 						YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
 						state_game->action = 4;
 						state_game->PlyerAction_Main_Substate = advance_summon;
@@ -708,6 +739,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			break;
 		case advance_summon:
 			// Current state_game->action = 4
+
+
 
 			ptrYugiohCard_src = &playerAtk->CardInPlayed;
 
@@ -758,20 +791,31 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					YUGIOH_card_copy(&playerAtk->ActtionBuffer[0], &playerAtk->CardInPlayed);
 				}
 			}
+
+			ST7735_WriteStringNSS(5, 90, "You summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+			ST7735_WriteStringNSS(5, 105, "a MONSTER", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+
+			ST7735_WriteStringNSS(5, 90, "Opponent summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+			ST7735_WriteStringNSS(5, 105, "a MONSTER", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
 			break;
 		case chaining_main_DEF:
 
 			// Current state_game->action = 4
 
+			//    ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+			ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 			if(state_game->action == 4)
 			{
+
 				if (playerDef->noBTN == GPIO_PIN_RESET){
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 					state_game->PlyerAction_Main_Substate = activate_effect;
 					state_game->count_chain = 0;
 				}
 				Player_Reading_Card(RFIDmain,state_game,playerDef);
 			}
 			else if ((state_game->action == 5 )){
+				ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 				ptrYugiohCard_src = &playerDef->ActtionBuffer[0];
 
 				uint8_t idx = YUGIOH_Check_Trap_On_board(playerDef, ptrYugiohCard_src);
@@ -797,10 +841,14 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			}
 			break;
 		case chaining_main_ATK:
+			ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+			//ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 			if(state_game->action == 4)
 			{
 				Player_Reading_Card(RFIDmain,state_game,playerAtk);
 				if (playerAtk->noBTN == GPIO_PIN_RESET){
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 					state_game->PlyerAction_Main_Substate = activate_effect;
 					state_game->count_chain = 0;
 				}
@@ -831,6 +879,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			}
 			break;
 		case activate_effect:
+			ST7735_WriteStringNSS(5, 90, "Opponent chain a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+			ST7735_WriteStringNSS(5, 90, "You chain a card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 			// Current Action = 4
 			ptrUser = &state_game->ptrChainUser[state_game->count_chain];
 			ptrOpponent = &state_game->ptrChainOpponent[state_game->count_chain];
@@ -888,6 +938,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				}
 				else
 				{
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 					// All Chain Clear
 					state_game->action = 0;
 					state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
@@ -954,11 +1006,11 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 		break;
 		case Battle_Phase:
 			LCDvalue(playerAtk,playerDef);
-			ST7735_WriteString(60, 35, "|Phase:BP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
-			ST7735_WriteString1(60, 35, "|Phase:BP", Font_7x10, ST7735_CYAN, ST7735_BLACK);
+			LCDvalue(playerAtk,playerDef);
+			ST7735_WriteString(110, 35, "BP", Font_7x10, ST7735_YELLOW, ST7735_BLACK);
+			ST7735_WriteString1(110, 35, "BP", Font_7x10, ST7735_YELLOW, ST7735_BLACK);
 			ST7735_WriteStringNSS(5, 90, "Time to defend", Font_7x10, ST7735_WHITE, ST7735_BLACK, playerDef->displayNSS);
 			ST7735_WriteStringNSS(5, 90, "Time to battle", Font_7x10, ST7735_WHITE, ST7735_BLACK, playerAtk->displayNSS);
-
 			switch(PBS){
 			case PBS_AFK:
 				break;
@@ -1034,10 +1086,10 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 
 					if (check_def_mon < 3)
 					{
-						 if (playerDef->cardOnBoard[targetpos].cardData == 0)
-						 {
-							 flag_can_atk = 1;
-						 }
+						if (playerDef->cardOnBoard[targetpos].cardData == 0)
+						{
+							flag_can_atk = 1;
+						}
 					}
 
 					if (flag_can_atk == 2) {
@@ -1437,53 +1489,58 @@ void YUGIOH_Monster_Activated(Player *player)
 
 
 void MainGUI(){
-	ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
-	ST7735_WriteString1(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString1(5, 35, "Turns:X", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString1(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString1(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
-	ST7735_WriteString(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(5, 35, "Turns:X", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+    ST7735_WriteString1(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(5, 35, "Turns:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+    ST7735_WriteString(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(5, 35, "Turns: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString1(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+    ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
 }
 
 void LCDvalue(Player *playerAtk, Player *playerDef){
-	uint16_t a = 0 ;
-	time = timeinit;
-	a = _micro / 1000000;
-	time -= a;
-	sprintf(t_c, "%d",time);
-	for (int i = 0 ; i < 3 ; i++){
-		if(t_c[i] == 0){
-			t_c[i] = 32;
-			t_c[i+1] = 32;
-		}
-	}
-	if(time == 0){
-		HAL_TIM_Base_Stop_IT(&TIM7_PORT);
-		time = 0;
-	}
+    uint16_t a = 0 ;
+    time = timeinit;
+    a = _micro / 1000000;
+    time -= a;
+    sprintf(t_c, "%d",time);
+    for (int i = 0 ; i < 3 ; i++){
+        if(t_c[i] == 0){
+            t_c[i] = 32;
+            t_c[i+1] = 32;
+        }
+    }
+    if(time == 0){
+        HAL_TIM_Base_Stop_IT(&TIM7_PORT);
+        time = 0;
+    }
 
-	sprintf(C_LP_ATK, "%d",playerAtk->life_point);
-	if(C_LP_ATK[3] == 0){
-		C_LP_ATK[3] = C_LP_ATK[2];
-		C_LP_ATK[2] = C_LP_ATK[1];
-		C_LP_ATK[1] = C_LP_ATK[0];
-		C_LP_ATK[0] = 32;
-	}
+    sprintf(C_LP_ATK, "%d",playerAtk->life_point);
+    if(C_LP_ATK[3] == 0){
+        C_LP_ATK[3] = C_LP_ATK[2];
+        C_LP_ATK[2] = C_LP_ATK[1];
+        C_LP_ATK[1] = C_LP_ATK[0];
+        C_LP_ATK[0] = 32;
+    }
 
-	ST7735_WriteStringNSS( 90, 20, C_LP_ATK, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
-	ST7735_WriteStringNSS( 105, 50, t_c, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
-	sprintf(C_LP_DEF, "%d",playerDef->life_point);
-	if(C_LP_DEF[3] == 0){
-		C_LP_DEF[3] = C_LP_DEF[2];
-		C_LP_DEF[2] = C_LP_DEF[1];
-		C_LP_DEF[1] = C_LP_DEF[0];
-		C_LP_DEF[0] = 32;
-	}
-	ST7735_WriteStringNSS( 90, 20, C_LP_DEF, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
-	ST7735_WriteStringNSS( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+    ST7735_WriteStringNSS( 90, 20, C_LP_ATK, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+    ST7735_WriteStringNSS( 105, 50, t_c, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+    sprintf(C_LP_DEF, "%d",playerDef->life_point);
+    if(C_LP_DEF[3] == 0){
+        C_LP_DEF[3] = C_LP_DEF[2];
+        C_LP_DEF[2] = C_LP_DEF[1];
+        C_LP_DEF[1] = C_LP_DEF[0];
+        C_LP_DEF[0] = 32;
+    }
+    ST7735_WriteStringNSS( 90, 20, C_LP_DEF, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+    ST7735_WriteStringNSS( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+    sprintf(c_turn, "%d",turn);
+    ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,0);
+    ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,1);
 
 }
