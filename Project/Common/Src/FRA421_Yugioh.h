@@ -68,6 +68,8 @@ typedef struct _YUGIOH_CARD
 	uint8_t cardDef;
 	uint8_t standPosition;
 	uint8_t targetPosition;
+	uint8_t actionPoint_Atk;
+	uint8_t actionPoint_Eff;
 	uint32_t cardData;
 }YUGIOH_Card;
 
@@ -137,6 +139,7 @@ typedef struct _state_game
 // RFID Handle Function
 void RFID_Main_init(RFIDHandle *rfidmain);
 void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst);
+void YUGIOH_card_clear(YUGIOH_Card *card);
 void RFID_Clear_Card_Bufffer(RFID *rfid);
 void YUGIOH_card_register(RFIDHandle *rfidmain);
 void YUGIOH_card_Buffer_Update(RFIDHandle *rfidmain);

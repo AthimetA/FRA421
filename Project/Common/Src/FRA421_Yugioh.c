@@ -39,12 +39,20 @@ void YUGIOH_card_copy(YUGIOH_Card *src, YUGIOH_Card *dst) {
 	dst->cardDef = src->cardDef;
 	dst->standPosition = src->standPosition;
 	dst->targetPosition = src->targetPosition;
+	dst->actionPoint_Atk = src->actionPoint_Atk;
+	dst->actionPoint_Eff = src->actionPoint_Eff;
 }
+
+void YUGIOH_card_clear(YUGIOH_Card *card)
+{
+	YUGIOH_Card buff = {0};
+	YUGIOH_card_copy(&buff, card);
+}
+
 void RFID_Clear_Card_Bufffer(RFID *rfid) {
-	YUGIOH_Card buffCard = { 0 };
 	YUGIOH_Card *ptrYUGIOHCard = rfid->bufferCard;
 	for (uint8_t i = 0; i < CARD_BUFF_LEN; ++i) {
-		YUGIOH_card_copy(&buffCard, ptrYUGIOHCard);
+		YUGIOH_card_clear(ptrYUGIOHCard);
 		ptrYUGIOHCard++;
 	}
 }
@@ -168,6 +176,41 @@ void YUGIOH_card_Load_Data(YUGIOH_Card *card) {
 	card->cardLevel = archive_yugioh_card_level[idx];
 	card->cardAtk = archive_yugioh_card_atk[idx];
 	card->cardDef = archive_yugioh_card_def[idx];
+	card->actionPoint_Atk = 0;
+	card->actionPoint_Eff = 0;
+	// Stand Position and target Position Will be assign outside this function
+	card->standPosition = 255;
+	card->targetPosition = 255;
+}
+
+void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *player)
+{
+	// Assign RFID
+	RFID *ptrRFID = RFIDmain->RFID;
+	ptrRFID = &RFIDmain->RFID[RFIDmain->slaveNum];
+
+	YUGIOH_Card *ptrYugiohCard_src;
+	ptrYugiohCard_src = &ptrRFID->bufferCard[0];
+
+	YUGIOH_Card *ptrYugiohCard_dst;
+	ptrYugiohCard_dst = &player->ChainBuffer[0];
+
+	if (ptrRFID->action == 1) // Card Detected
+	{
+		// Update buffer
+		YUGIOH_card_Buffer_Update_Player(player);
+		YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+		// Mod standPosition in case off 2 player
+		ptrYugiohCard_dst->standPosition= ptrYugiohCard_dst->standPosition % 6;
+		// Card Reading So it can't attack
+		ptrYugiohCard_dst->actionPoint_Atk = 0;
+		// Card Reading Then it can use it Effect
+		ptrYugiohCard_dst->actionPoint_Eff = 1;
+		RFID_Clear_Card_Bufffer(ptrRFID);
+		ptrRFID->action = 0;
+		state_game->action += 1;
+	}
 }
 
 void YUGIOH_Clear_Card_Bufffer_Player(Player *player) {
@@ -215,6 +258,33 @@ void YUGIOH_card_Buffer_Update_Player(Player *player) {
 		ptrYugiohCard_Buffer_src--;
 		ptrYugiohCard_Buffer_dst--;
 	}
+}
+
+void YUGIOH_To_GY(Player *player,YUGIOH_Card *card){
+	YUGIOH_Card buffCard = { 0 };
+
+
+	// Buffer Card src
+	YUGIOH_Card *ptrYugiohCard_Buffer_src = player->GY;
+	ptrYugiohCard_Buffer_src = &player->GY[GY_BUFF_LEN - 2];
+	// Buffer Card dst
+	YUGIOH_Card *ptrYugiohCard_Buffer_dst = player->GY;
+	ptrYugiohCard_Buffer_dst = &player->GY[GY_BUFF_LEN - 1];
+	for (int i = GY_BUFF_LEN; i >= 1; i--) {
+		//			if(){
+		//
+		//			}
+		YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
+		ptrYugiohCard_Buffer_src--;
+		ptrYugiohCard_Buffer_dst--;
+	}
+
+	ptrYugiohCard_Buffer_src = card;
+	ptrYugiohCard_Buffer_dst = &player->GY[0];
+	YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
+	ptrYugiohCard_Buffer_dst = &buffCard;
+	YUGIOH_card_copy(ptrYugiohCard_Buffer_dst, ptrYugiohCard_Buffer_src);
+
 }
 
 
@@ -570,8 +640,6 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 					YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
 					YUGIOH_card_copy(&ptrPlayerAtk->ChainBuffer[0], ptrYugiohCard_src);
 
-
-
 					state_game->action = 0;
 					state_game->MAIN = await;
 				}
@@ -781,6 +849,11 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 				}
 				break;
 			case after_calculate:
+
+				// Clear Card in Played (action ended)
+				ptrYugiohCard_src = &ptrPlayerAtk->CardInPlayed;
+				YUGIOH_card_clear(ptrYugiohCard_src);
+
 				if(ptrPlayerDef->life_point == 0 || ptrPlayerDef->life_point >= 60000){
 					state_game->STATE = Winner;
 				}
@@ -804,31 +877,6 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 	}
 }
 
-void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *player)
-{
-	// Assign RFID
-	RFID *ptrRFID = RFIDmain->RFID;
-	ptrRFID = &RFIDmain->RFID[RFIDmain->slaveNum];
-
-	YUGIOH_Card *ptrYugiohCard_src;
-	ptrYugiohCard_src = &ptrRFID->bufferCard[0];
-
-	YUGIOH_Card *ptrYugiohCard_dst;
-	ptrYugiohCard_dst = &player->ChainBuffer[0];
-
-	if (ptrRFID->action == 1) // Card Detected
-	{
-		// Update buffer
-		YUGIOH_card_Buffer_Update_Player(player);
-		YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
-
-		ptrYugiohCard_dst->targetPosition = 255;
-		RFID_Clear_Card_Bufffer(ptrRFID);
-		ptrRFID->action = 0;
-
-		state_game->action += 1;
-	}
-}
 
 void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player) {
 	YUGIOH_Card buffCard = { 0 };
@@ -858,34 +906,8 @@ void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2) {
 	}
 }
 
-//void YUGIOH_Clear_Card_New_G(Player *player1,Player *player2) {
-
-void YUGIOH_To_GY(Player *player,YUGIOH_Card *card){
-	YUGIOH_Card buffCard = { 0 };
 
 
-	// Buffer Card src
-	YUGIOH_Card *ptrYugiohCard_Buffer_src = player->GY;
-	ptrYugiohCard_Buffer_src = &player->GY[GY_BUFF_LEN - 2];
-	// Buffer Card dst
-	YUGIOH_Card *ptrYugiohCard_Buffer_dst = player->GY;
-	ptrYugiohCard_Buffer_dst = &player->GY[GY_BUFF_LEN - 1];
-	for (int i = GY_BUFF_LEN; i >= 1; i--) {
-		//			if(){
-		//
-		//			}
-		YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
-		ptrYugiohCard_Buffer_src--;
-		ptrYugiohCard_Buffer_dst--;
-	}
-
-	ptrYugiohCard_Buffer_src = card;
-	ptrYugiohCard_Buffer_dst = &player->GY[0];
-	YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
-	ptrYugiohCard_Buffer_dst = &buffCard;
-	YUGIOH_card_copy(ptrYugiohCard_Buffer_dst, ptrYugiohCard_Buffer_src);
-
-}
 
 void MainGUI(){
 	ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
@@ -899,157 +921,3 @@ void MainGUI(){
 	ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
 	ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
 }
-
-//void GAME_PLAY_CARD_PLAYED(RFIDHandle *RFIDmain, State_game *state_game) {
-//	// Assign RFID
-//	RFID *ptrRFID = RFIDmain->RFID;
-//	ptrRFID = &RFIDmain->RFID[RFIDmain->slaveNum];
-//
-//	// Card Play Src
-//	YUGIOH_Card *ptrYugiohCard_src;
-//	ptrYugiohCard_src = &ptrRFID->bufferCard[0];
-//
-//	// Player
-//	Player *ptrPlayer = state_game->player;
-//	if (state_game->player_state == first_player) {
-//		ptrPlayer = &state_game->player[0];
-//	} else if (state_game->player_state == first_player) {
-//		ptrPlayer = &state_game->player[1];
-//	}
-//
-//	// Card Play Dst
-//	YUGIOH_Card *ptrYugiohCard_dst = ptrPlayer->ChainBuffer;
-//
-//	if (ptrRFID->action == 1) {
-//		state_game->actionPos = ptrRFID->slaveAddr;
-//		YUGIOH_card_Buffer_Update2(ptrPlayer);
-//		YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
-//		RFID_Clear_Card_Bufffer(ptrRFID);
-//		ptrRFID->action = 0;
-//		state_game->action = 1; // Action is on
-//	}
-//}
-//
-//void GAME_PLAY_Main_Management(RFIDHandle *RFIDmain, State_game *state_game) {
-//
-//	enum _MAIN {
-//		select_position, check_card_type, advance_summon, activate_effect
-//	} MAIN;
-//	MAIN = state_game->MAIN;
-//
-//	// Assign RFID
-//	RFID *ptrRFID = RFIDmain->RFID;
-//	ptrRFID = &RFIDmain->RFID[RFIDmain->slaveNum];
-//
-//	// Assign Player
-//	Player *ptrPlayer = state_game->player;
-//	if (state_game->player_state == first_player) {
-//		ptrPlayer = &state_game->player[0];
-//	} else if (state_game->player_state == first_player) {
-//		ptrPlayer = &state_game->player[1];
-//	}
-//
-//
-//	// In main phase from draw phase
-//
-//	/*
-//	 *  First await action from RFID current RFID action = 0 mean no card detected
-//	 */
-//
-//	if (ptrRFID->action == 0)
-//	{
-//		// Pass
-//	}
-//	else if (ptrRFID->action == 1) // Card detected from RFID
-//	{
-//
-//	}
-//
-//
-//	Player *ptrPlayer1 = state_game->player;
-//	Player *ptrPlayer2 = state_game->player;
-//	ptrPlayer1 = &state_game->player[0];
-//	ptrPlayer2 = &state_game->player[1];
-//
-//	YUGIOH_Card *ptrYUGIOHCard_src = ptrPlayer1->ChainBuffer;
-//	ptrYUGIOHCard_src = &ptrPlayer1->ChainBuffer[0];
-//
-//	YUGIOH_Card *ptrYUGIOHCard_inplay = ptrPlayer1->CardInPlayed;
-//	ptrYUGIOHCard_inplay = &ptrPlayer1->CardInPlayed;
-//
-//	YUGIOH_Card *ptrYUGIOHCard_dst = ptrPlayer1->cardOnBoard;
-//	uint8_t idx = (state_game->actionPos) % 6;
-//	ptrYUGIOHCard_dst = &ptrPlayer1->cardOnBoard[idx];
-//
-//	enum _MAIN {
-//		select_position, check_card_type, advance_summon, activate_effect
-//	} MAIN;
-//	MAIN = state_game->MAIN;
-//
-//	switch (MAIN) {
-//	case select_position:
-//		if (state_game->action == 1) {
-//			if ((HAL_GPIO_ReadPin(YES1_PORT, YES1_PIN) == GPIO_PIN_RESET)
-//					&& (state_game->player_state == first_player)) {
-//				ptrYUGIOHCard_src->cardState = 1;
-//				YUGIOH_card_copy(ptrYUGIOHCard_src, ptrYUGIOHCard_inplay);
-//				YUGIOH_Clear_Card_Bufffer(ptrPlayer1);
-//				state_game->MAIN = check_card_type;
-//			} else if ((HAL_GPIO_ReadPin(YES2_PORT, YES2_PIN) == GPIO_PIN_RESET)
-//					&& (state_game->player_state == first_player)) {
-//				ptrYUGIOHCard_src->cardState = 1;
-//				YUGIOH_card_copy(ptrYUGIOHCard_src, ptrYUGIOHCard_inplay);
-//				YUGIOH_Clear_Card_Bufffer(ptrPlayer1);
-//				state_game->MAIN = check_card_type;
-//			} else if ((HAL_GPIO_ReadPin(NO1_PORT, NO1_PIN) == GPIO_PIN_RESET)
-//					&& (state_game->player_state == first_player)) {
-//				ptrYUGIOHCard_src->cardState = 0;
-//				YUGIOH_card_copy(ptrYUGIOHCard_src, ptrYUGIOHCard_inplay);
-//				YUGIOH_Clear_Card_Bufffer(ptrPlayer1);
-//				state_game->MAIN = check_card_type;
-//			} else if ((HAL_GPIO_ReadPin(NO2_PORT, NO2_PIN) == GPIO_PIN_RESET)
-//					&& (state_game->player_state == first_player)) {
-//				ptrYUGIOHCard_src->cardState = 0;
-//				YUGIOH_card_copy(ptrYUGIOHCard_src, ptrYUGIOHCard_inplay);
-//				YUGIOH_Clear_Card_Bufffer2(ptrPlayer1);
-//				state_game->MAIN = check_card_type;
-//			}
-//		}
-//		break;
-//	case check_card_type:
-//		state_game->action = 0;
-//		if (ptrYUGIOHCard_src->cardType == 3) {
-//			state_game->MAIN = select_position;
-//		} else if (ptrYUGIOHCard_src->cardType == 2) {
-//			if (ptrYUGIOHCard_src->cardState == 1) {
-//				state_game->MAIN = activate_effect;
-//			} else {
-//				YUGIOH_card_copy(ptrYUGIOHCard_src, ptrYUGIOHCard_dst);
-//				YUGIOH_Clear_Card_Bufffer(ptrPlayer1);
-//				state_game->MAIN = select_position;
-//			}
-//		} else if (ptrYUGIOHCard_src->cardType == 1) {
-//			if (ptrYUGIOHCard_src->cardLevel > 4) {
-//
-////				YUGIOH_card_Buffer_Update2(ptrPlayer1);
-//				state_game->MAIN = advance_summon;
-//			} else {
-//				state_game->MAIN = select_position;
-//			}
-//		}
-//		break;
-//	case advance_summon:
-//		if(state_game->action == 1){
-//			YUGIOH_card_Buffer_Update2(ptrPlayer1);
-//			state_game->action = 0;
-//			if(state_game->action == 1){
-//				YUGIOH_card_Buffer_Update2(ptrPlayer1);
-//				if(ptrYUGIOHCard_src->cardLevel >= 7){
-//
-//						}
-//			}
-//		}
-//
-//
-//	}
-//}
