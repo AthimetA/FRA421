@@ -33,9 +33,13 @@ Common/Src/FRA421_Yugioh.o: \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi_ex.h \
+ ../Core/Inc/../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h \
+ ../Core/Inc/../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
+ ../Core/Inc/../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Core/Inc/../../../CM7/Core/Inc/st7735.h \
  ../Core/Inc/../../../CM7/Core/Inc/fonts.h \
- ../Core/Inc/../../../CM7/Core/Inc/fonts.h
+ ../Core/Inc/../../../CM7/Core/Inc/fonts.h \
+ ../Core/Inc/../../../CM7/Core/Inc/stm32h7xx_it.h
 D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -69,6 +73,10 @@ D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pwr_ex.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_spi_ex.h:
+../Core/Inc/../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h:
+../Core/Inc/../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h:
+../Core/Inc/../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h:
 ../Core/Inc/../../../CM7/Core/Inc/st7735.h:
 ../Core/Inc/../../../CM7/Core/Inc/fonts.h:
 ../Core/Inc/../../../CM7/Core/Inc/fonts.h:
+../Core/Inc/../../../CM7/Core/Inc/stm32h7xx_it.h:

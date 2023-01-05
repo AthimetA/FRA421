@@ -10,6 +10,13 @@
 
 #include <stdint.h>
 #include "stm32h7xx_hal.h"
+#include "../../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h"
+
+//TIM
+
+#define TIM7_PORT htim7
+extern TIM_HandleTypeDef TIM7_PORT;
+extern uint64_t _micro;
 
 //Maximum length of the array
 #define MAX_LEN 16
@@ -185,5 +192,6 @@ void Test_EFF(Player *playerUser,Player *playerOpponent);
 
 //tuta display
 void MainGUI();
+void LCDvalue(Player *playerAtk, Player *playerDef);
 
 #endif /* INC_FRA421_YUGIOH_H_ */
