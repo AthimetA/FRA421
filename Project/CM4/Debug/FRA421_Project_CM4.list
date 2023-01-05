@@ -21,23 +21,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   8 .ARM.attributes 00000030  00000000  00000000  00020010  2**0
                   CONTENTS, READONLY
-  9 .debug_info   0000fbd4  00000000  00000000  00020040  2**0
+  9 .debug_info   0000fe05  00000000  00000000  00020040  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_abbrev 000022a0  00000000  00000000  0002fc14  2**0
+ 10 .debug_abbrev 000022bc  00000000  00000000  0002fe45  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_aranges 00000ac0  00000000  00000000  00031eb8  2**3
+ 11 .debug_aranges 00000ad8  00000000  00000000  00032108  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_ranges 00000a30  00000000  00000000  00032978  2**3
+ 12 .debug_ranges 00000a48  00000000  00000000  00032be0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_macro  0003aaef  00000000  00000000  000333a8  2**0
+ 13 .debug_macro  0003aaef  00000000  00000000  00033628  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_line   0000f425  00000000  00000000  0006de97  2**0
+ 14 .debug_line   0000f581  00000000  00000000  0006e117  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_str    0017c490  00000000  00000000  0007d2bc  2**0
+ 15 .debug_str    0017c57f  00000000  00000000  0007d698  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .comment      00000050  00000000  00000000  001f974c  2**0
+ 16 .comment      00000050  00000000  00000000  001f9c17  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  00002a78  00000000  00000000  001f979c  2**2
+ 17 .debug_frame  00002af0  00000000  00000000  001f9c68  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -71,9 +71,9 @@ Disassembly of section .text:
  81002d4:	081051d0 	.word	0x081051d0
 
 081002d8 <RFID_Main_init>:
-
-char C_LP1[4] = "";
 char C_LP2[4] = "";
+char C_LP_ATK[4] = "";
+char C_LP_DEF[4] = "";
 
 // RFID Handle Function
 void RFID_Main_init(RFIDHandle *rfidmain) {

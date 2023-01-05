@@ -167,8 +167,11 @@ void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player);
 void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2);
 void YUGIOH_To_GY(Player *player,YUGIOH_Card *card);
 void YUGIOH_Clear_Card_All(Player *player);
+void YUGIOH_Gift_of_the_Mystical_Elf(Player *player1,Player *player2);
+void YUGIOH_Ancient_Rules(Player *player);
 
 //tuta display
 void MainGUI();
+void LCDvalue(Player *playerAtk, Player *playerDef);
 
 #endif /* INC_FRA421_YUGIOH_H_ */
