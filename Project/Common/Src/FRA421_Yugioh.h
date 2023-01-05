@@ -192,6 +192,7 @@ uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card);
 uint8_t YUGIOH_Check_Spell_On_board(Player *player,YUGIOH_Card *card);
 void YUGIOH_Trap_Can_Activated(Player *player);
 void YUGIOH_Monster_Activated(Player *player);
+void Player_Reading_Card_Reborn(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 
 void Test_EFF(Player *playerUser,Player *playerOpponent);
 
