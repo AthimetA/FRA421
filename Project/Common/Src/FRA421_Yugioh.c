@@ -213,7 +213,12 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 		// Card Reading So it can't attack
 		ptrYugiohCard_dst->actionPoint_Atk = 0;
 		// Card Reading Then it can use it Effect
-		ptrYugiohCard_dst->actionPoint_Eff = 1;
+		if(ptrYugiohCard_dst->cardType == 3){
+			ptrYugiohCard_dst->actionPoint_Eff = 0;
+		}
+		else{
+			ptrYugiohCard_dst->actionPoint_Eff = 1;
+		}
 		RFID_Clear_Card_Bufffer(ptrRFID);
 		ptrRFID->action = 0;
 		state_game->action += 1;
@@ -559,6 +564,9 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			{
 				if (ptrYugiohCard_src->cardType == 3)
 				{
+
+					ptrYugiohCard_src->cardState = 0;
+
 					// Add card to board
 					uint8_t idx = ptrYugiohCard_src->standPosition % 6;
 					ptrYugiohCard_dst = &playerAtk->cardOnBoard[idx];
@@ -699,14 +707,27 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			}
 			else if ((state_game->action == 5 )){
 				ptrYugiohCard_src = &playerDef->ActtionBuffer[0];
-				YUGIOH_card_Buffer_Update_Chain(state_game);
-				YUGIOH_card_copy(ptrYugiohCard_src, &state_game->ChainBuffer[0]);
-				state_game->ptrChainUser[0] = playerDef;
-				state_game->ptrChainOpponent[0] = playerAtk;
-				state_game->ChainCount++;
 
-				state_game->PlyerAction_Main_Substate = chaining_main_ATK;
-				state_game->action = 4;
+				uint8_t idx = YUGIOH_Check_Trap_On_board(playerDef, ptrYugiohCard_src);
+
+				if (idx != 255)
+				{
+					YUGIOH_card_Buffer_Update_Chain(state_game);
+					ptrYugiohCard_dst = &playerDef->cardOnBoard[idx];
+					ptrYugiohCard_dst->actionPoint_Eff = 0; //Trap is now use
+					YUGIOH_card_copy(ptrYugiohCard_dst, &state_game->ChainBuffer[0]);
+					state_game->ptrChainUser[0] = playerDef;
+					state_game->ptrChainOpponent[0] = playerAtk;
+					state_game->ChainCount++;
+
+					state_game->PlyerAction_Main_Substate = chaining_main_ATK;
+					state_game->action = 4;
+				}
+				else
+				{
+					//display this is not trap card
+					state_game->action = 4;
+				}
 			}
 			break;
 		case chaining_main_ATK:
@@ -720,14 +741,27 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			}
 			else if ((state_game->action == 5 )){
 				ptrYugiohCard_src = &playerAtk->ActtionBuffer[0];
-				YUGIOH_card_Buffer_Update_Chain(state_game);
-				YUGIOH_card_copy(ptrYugiohCard_src, &state_game->ChainBuffer[0]);
-				state_game->ptrChainUser[0] = playerAtk;
-				state_game->ptrChainOpponent[0] = playerDef;
-				state_game->ChainCount++;
 
-				state_game->PlyerAction_Main_Substate = chaining_main_DEF;
-				state_game->action = 4;
+				uint8_t idx = YUGIOH_Check_Trap_On_board(playerAtk, ptrYugiohCard_src);
+
+				if (idx != 255)
+				{
+					YUGIOH_card_Buffer_Update_Chain(state_game);
+					ptrYugiohCard_dst = &playerAtk->cardOnBoard[idx];
+					ptrYugiohCard_dst->actionPoint_Eff = 0; //Trap is now use
+					YUGIOH_card_copy(ptrYugiohCard_dst, &state_game->ChainBuffer[0]);
+					state_game->ptrChainUser[0] = playerAtk;
+					state_game->ptrChainOpponent[0] = playerDef;
+					state_game->ChainCount++;
+
+					state_game->PlyerAction_Main_Substate = chaining_main_ATK;
+					state_game->action = 4;
+				}
+				else
+				{
+					//display this is not trap card
+					state_game->action = 4;
+				}
 			}
 			break;
 		case activate_effect:
@@ -868,6 +902,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 						state_game->action = 0;
+						YUGIOH_Trap_Can_Activated(playerAtk);
 						if(state_game->MainGame_State == first_player){
 							state_game->MainGame_State = second_player;
 						}
@@ -1211,6 +1246,41 @@ void YUGIOH_Stop_Defense(Player *player1,Player *player2){
 //void YUGIOH_Pot_Of_Greed(Player *player){
 //
 //}
+
+
+uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card)
+{
+	YUGIOH_Card *ptrCardCheck;
+	ptrCardCheck = &player->cardOnBoard[0];
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if(card->cardData == ptrCardCheck->cardData)
+		{
+			if(ptrCardCheck->actionPoint_Eff > 0 && ptrCardCheck->cardType == 3)
+			{
+				return i;
+			}
+		}
+		ptrCardCheck++;
+	}
+	return 255;
+}
+
+void YUGIOH_Trap_Can_Activated(Player *player)
+{
+	YUGIOH_Card *ptrCard;
+	ptrCard = &player->cardOnBoard[0];
+	for (int i = 0; i < 3; ++i)
+	{
+		if (ptrCard->cardData != 0)
+		{
+			ptrCard->actionPoint_Eff = 1;
+		}
+		ptrCard++;
+	}
+}
+
 
 void MainGUI(){
 	ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);

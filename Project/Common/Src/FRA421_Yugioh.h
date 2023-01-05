@@ -188,6 +188,9 @@ void YUGIOH_Ancient_Rules(Player *player);
 void YUGIOH_Gift_of_the_Mystical_Elf(Player *player1,Player *player2);
 void YUGIOH_Stop_Defense(Player *player1,Player *player2);
 
+uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card);
+void YUGIOH_Trap_Can_Activated(Player *player);
+
 void Test_EFF(Player *playerUser,Player *playerOpponent);
 
 //tuta display
