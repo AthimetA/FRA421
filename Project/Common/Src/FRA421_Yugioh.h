@@ -189,6 +189,7 @@ void YUGIOH_Gift_of_the_Mystical_Elf(Player *player1,Player *player2);
 void YUGIOH_Stop_Defense(Player *player1,Player *player2);
 
 uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card);
+uint8_t YUGIOH_Check_Spell_On_board(Player *player,YUGIOH_Card *card);
 void YUGIOH_Trap_Can_Activated(Player *player);
 void YUGIOH_Monster_Activated(Player *player);
 

@@ -216,7 +216,7 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 
 		// Check if in Board
 		for (int i  = 0;  i < 6; ++i) {
-			if (ptrYugiohCard_played->cardData == ptrYugiohCard_src->cardData && ptrYugiohCard_played->cardType !=3) {
+			if (ptrYugiohCard_played->cardData == ptrYugiohCard_src->cardData && ptrYugiohCard_played->cardType == 1) {
 				flag_played = 1;
 				break;
 			}
@@ -616,6 +616,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					state_game->action = 2;
 				}
 				else if(playerAtk->yesBTN == GPIO_PIN_RESET) {
+					///
+					uint8_t idxC = YUGIOH_Check_Spell_On_board(playerAtk, ptrYugiohCard_src);
+					///
+					if (idxC != 255) {
+						YUGIOH_card_clear(&playerAtk->cardOnBoard[idxC]);
+					}
 					ptrYugiohCard_src->cardState = 1;
 					state_game->action = 2;
 				}
@@ -1146,15 +1152,31 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				}
 				else if ((state_game->action == 53 )){
 					ptrYugiohCard_src = &playerDef->ActtionBuffer[0];
-					YUGIOH_card_Buffer_Update_Chain(state_game);
-					YUGIOH_card_copy(ptrYugiohCard_src, &state_game->ChainBuffer[0]);
-					state_game->ptrChainUser[0] = playerDef;
-					state_game->ptrChainOpponent[0] = playerAtk;
-					state_game->ChainCount++;
 
-					state_game->PlyerAction_Battle_Substate = counter_ATK;
-					state_game->action = 54;
+					uint8_t idx = YUGIOH_Check_Trap_On_board(playerDef, ptrYugiohCard_src);
+
+					if (idx != 255)
+					{
+						YUGIOH_card_Buffer_Update_Chain(state_game);
+						ptrYugiohCard_dst = &playerDef->cardOnBoard[idx];
+						ptrYugiohCard_dst->actionPoint_Eff = 0; //Trap is now use
+						YUGIOH_card_copy(ptrYugiohCard_dst, &state_game->ChainBuffer[0]);
+						state_game->ptrChainUser[0] = playerDef;
+						state_game->ptrChainOpponent[0] = playerAtk;
+						state_game->ChainCount++;
+
+						state_game->PlyerAction_Main_Substate = chaining_main_ATK;
+						state_game->action = 52;
+					}
+					else
+					{
+						//display this is not trap card
+						state_game->action = 52;
+					}
 				}
+
+
+
 
 				break;
 			case counter_ATK:
@@ -1164,7 +1186,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					Player_Reading_Card(RFIDmain,state_game,playerAtk);
 					if (playerAtk->noBTN == GPIO_PIN_RESET){
 						//affect
-						state_game->PlyerAction_Battle_Substate = chain_effect;
+						state_game->PlyerAction_Battle_Substate = calculate_damage;
 						state_game->count_chain = 0;
 					}
 				}
@@ -1459,6 +1481,25 @@ uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card)
 	return 255;
 }
 
+uint8_t YUGIOH_Check_Spell_On_board(Player *player,YUGIOH_Card *card)
+{
+	YUGIOH_Card *ptrCardCheck;
+	ptrCardCheck = &player->cardOnBoard[0];
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if(card->cardData == ptrCardCheck->cardData)
+		{
+			if(ptrCardCheck->actionPoint_Eff > 0 && ptrCardCheck->cardType == 2)
+			{
+				return i;
+			}
+		}
+		ptrCardCheck++;
+	}
+	return 255;
+}
+
 void YUGIOH_Trap_Can_Activated(Player *player)
 {
 	YUGIOH_Card *ptrCard;
@@ -1489,58 +1530,58 @@ void YUGIOH_Monster_Activated(Player *player)
 
 
 void MainGUI(){
-    ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
-    ST7735_WriteString1(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString1(5, 35, "Turns:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString1(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString1(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
-    ST7735_WriteString(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString(5, 35, "Turns: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString1(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-    ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+	ST7735_WriteString1(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(5, 35, "Turns:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+	ST7735_WriteString(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(5, 35, "Turns: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
 }
 
 void LCDvalue(Player *playerAtk, Player *playerDef){
-    uint16_t a = 0 ;
-    time = timeinit;
-    a = _micro / 1000000;
-    time -= a;
-    sprintf(t_c, "%d",time);
-    for (int i = 0 ; i < 3 ; i++){
-        if(t_c[i] == 0){
-            t_c[i] = 32;
-            t_c[i+1] = 32;
-        }
-    }
-    if(time == 0){
-        HAL_TIM_Base_Stop_IT(&TIM7_PORT);
-        time = 0;
-    }
+	uint16_t a = 0 ;
+	time = timeinit;
+	a = _micro / 1000000;
+	time -= a;
+	sprintf(t_c, "%d",time);
+	for (int i = 0 ; i < 3 ; i++){
+		if(t_c[i] == 0){
+			t_c[i] = 32;
+			t_c[i+1] = 32;
+		}
+	}
+	if(time == 0){
+		HAL_TIM_Base_Stop_IT(&TIM7_PORT);
+		time = 0;
+	}
 
-    sprintf(C_LP_ATK, "%d",playerAtk->life_point);
-    if(C_LP_ATK[3] == 0){
-        C_LP_ATK[3] = C_LP_ATK[2];
-        C_LP_ATK[2] = C_LP_ATK[1];
-        C_LP_ATK[1] = C_LP_ATK[0];
-        C_LP_ATK[0] = 32;
-    }
+	sprintf(C_LP_ATK, "%d",playerAtk->life_point);
+	if(C_LP_ATK[3] == 0){
+		C_LP_ATK[3] = C_LP_ATK[2];
+		C_LP_ATK[2] = C_LP_ATK[1];
+		C_LP_ATK[1] = C_LP_ATK[0];
+		C_LP_ATK[0] = 32;
+	}
 
-    ST7735_WriteStringNSS( 90, 20, C_LP_ATK, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
-    ST7735_WriteStringNSS( 105, 50, t_c, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
-    sprintf(C_LP_DEF, "%d",playerDef->life_point);
-    if(C_LP_DEF[3] == 0){
-        C_LP_DEF[3] = C_LP_DEF[2];
-        C_LP_DEF[2] = C_LP_DEF[1];
-        C_LP_DEF[1] = C_LP_DEF[0];
-        C_LP_DEF[0] = 32;
-    }
-    ST7735_WriteStringNSS( 90, 20, C_LP_DEF, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
-    ST7735_WriteStringNSS( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
-    sprintf(c_turn, "%d",turn);
-    ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,0);
-    ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,1);
+	ST7735_WriteStringNSS( 90, 20, C_LP_ATK, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+	ST7735_WriteStringNSS( 105, 50, t_c, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+	sprintf(C_LP_DEF, "%d",playerDef->life_point);
+	if(C_LP_DEF[3] == 0){
+		C_LP_DEF[3] = C_LP_DEF[2];
+		C_LP_DEF[2] = C_LP_DEF[1];
+		C_LP_DEF[1] = C_LP_DEF[0];
+		C_LP_DEF[0] = 32;
+	}
+	ST7735_WriteStringNSS( 90, 20, C_LP_DEF, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+	ST7735_WriteStringNSS( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+	sprintf(c_turn, "%d",turn);
+	ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,0);
+	ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,1);
 
 }
