@@ -614,26 +614,26 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain, State_game *state_game)
 			}
 			break;
 		case activate_effect:
-			ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
-			if(state_game->count_chain%2 == 0){
-				uint8_t counthing = state_game->count_chain;
-				for (int i = 0; i <= counthing; i++) {
-					if(ptrYugiohCard_dst->cardSignature == 11){
-						state_game->test = 11;
-						YUGIOH_Clear_Card_Enemy_Player_Raigeki(ptrPlayerAtk);
-					}
-					else if(ptrYugiohCard_dst->cardSignature == 12){
-						state_game->test = 12;
-						YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(ptrPlayerAtk,ptrPlayerDef);
-					}
-					//					else if()
-					ptrYugiohCard_dst++;
-				}
-				YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
-				YUGIOH_card_copy(&ptrPlayerAtk->ChainBuffer[0], ptrYugiohCard_src);
-				state_game->action = 0;
-				state_game->MAIN = await;
-			}
+//			ptrYugiohCard_dst = &ptrPlayerAtk->ChainBuffer[0];
+//			if(state_game->count_chain%2 == 0){
+//				uint8_t counthing = state_game->count_chain;
+//				for (int i = 0; i <= counthing; i++) {
+//					if(ptrYugiohCard_dst->cardSignature == 11){
+//						state_game->test = 11;
+//						YUGIOH_Clear_Card_Enemy_Player_Raigeki(ptrPlayerAtk);
+//					}
+//					else if(ptrYugiohCard_dst->cardSignature == 12){
+//						state_game->test = 12;
+//						YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(ptrPlayerAtk,ptrPlayerDef);
+//					}
+//					//					else if()
+//					ptrYugiohCard_dst++;
+//				}
+//				YUGIOH_Clear_Card_Bufffer_Player(ptrPlayerAtk);
+//				YUGIOH_card_copy(&ptrPlayerAtk->ChainBuffer[0], ptrYugiohCard_src);
+//				state_game->action = 0;
+//				state_game->MAIN = await;
+//			}
 			break;
 		}
 		break;
