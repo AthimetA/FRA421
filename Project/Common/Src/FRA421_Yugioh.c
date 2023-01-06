@@ -1640,7 +1640,14 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					}
 					else
 					{
+						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 
+						ST7735_WriteStringNSS(5, 90, "You advance", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+
+						ST7735_WriteStringNSS(5, 90, "Opt advance", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
 
 						YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
 						state_game->action = 4;
@@ -1665,11 +1672,25 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			if (state_game->action == 4)
 			{
 				// Reading Until RFID action += 1 Mean Card Detected
+
+				ST7735_WriteStringNSS(5, 90, "Add 2 monster", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 105, "to summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+
+				ST7735_WriteStringNSS(5, 90, "Opt advance", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+				ST7735_WriteStringNSS(5, 105, "summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
+
 				Player_Reading_Card_Monster_SPS(RFIDmain,state_game,playerAtk);
 			}
 			else if (state_game->action == 5)
 			{
 				// Reading Until RFID action += 1 Mean Card Detected
+
+				ST7735_WriteStringNSS(5, 90, "Add 1 monster", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 105, "to summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+
+				ST7735_WriteStringNSS(5, 90, "Opt advance", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+				ST7735_WriteStringNSS(5, 105, "summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
+
 				Player_Reading_Card_Monster_SPS(RFIDmain,state_game,playerAtk);
 			}
 			else if (state_game->action == 6)
@@ -1700,21 +1721,38 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
 					YUGIOH_card_copy(&playerAtk->ActtionBuffer[0], ptrYugiohCard_src);
 
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+
+					ST7735_WriteStringNSS(5, 90, "You summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "a MONSTER!!", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+
+					ST7735_WriteStringNSS(5, 90, "Opponent summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "a MONSTER!!", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
+
+
 					state_game->action = 0;
 					state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
 				}
 				else
 				{
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+
+					ST7735_WriteStringNSS(5, 90, "You Fail", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+
+					ST7735_WriteStringNSS(5, 90, "Opponent Fail", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "summon", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
+
+
 					YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
 					YUGIOH_card_copy(&playerAtk->ActtionBuffer[0], &playerAtk->CardInPlayed);
+
+					state_game->action = 0;
+					state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
 				}
 			}
-
-			ST7735_WriteStringNSS(5, 90, "You summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-			ST7735_WriteStringNSS(5, 105, "a MONSTER", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
-
-			ST7735_WriteStringNSS(5, 90, "Opponent summon", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
-			ST7735_WriteStringNSS(5, 105, "a MONSTER", Font_7x10, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
 			break;
 		case chaining_main_DEF:
 
