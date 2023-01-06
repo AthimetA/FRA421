@@ -1782,11 +1782,11 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 		case chaining_main_DEF:
 
 			// Current state_game->action = 4
-
-			ST7735_WriteStringNSS(5, 90, "Waiting Opponent Action", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-			ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 			if(state_game->action == 4)
 			{
+
+				ST7735_WriteStringNSS(5, 90, "Waiting Opponent Action", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 
 				if (playerDef->noBTN == GPIO_PIN_RESET){
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
@@ -1796,7 +1796,9 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				Player_Reading_Card_Trap(RFIDmain,state_game,playerDef);
 			}
 			else if ((state_game->action == 5 )){
+
 				ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+
 				ptrYugiohCard_src = &playerDef->ActtionBuffer[0];
 
 				uint8_t idx = YUGIOH_Check_Trap_On_board(playerDef, ptrYugiohCard_src);
@@ -1822,10 +1824,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			}
 			break;
 		case chaining_main_ATK:
-			ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-			ST7735_WriteStringNSS(5, 90, "Waiting Opponent Action", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+
 			if(state_game->action == 4)
 			{
+				ST7735_WriteStringNSS(5, 90, "Do you want to chain card ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 90, "Waiting Opponent Action", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+
 				if (playerAtk->noBTN == GPIO_PIN_RESET){
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
@@ -1860,16 +1864,18 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			}
 			break;
 		case activate_effect:
-			ST7735_WriteStringNSS(5, 90, "You activate", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-			ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
-			ST7735_WriteStringNSS(5, 90, "Opponent activate", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
-			ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+
 			// Current Action = 4
 			ptrUser = &state_game->ptrChainUser[state_game->count_chain];
 			ptrOpponent = &state_game->ptrChainOpponent[state_game->count_chain];
 
 			if(state_game->action == 4)
 			{
+				ST7735_WriteStringNSS(5, 90, "You activate", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 90, "Opponent activate", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+				ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+
 				// Base use to check Card Eff
 				if (state_game->count_chain < state_game->ChainCount)
 				{
@@ -1887,7 +1893,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						ST7735_WriteStringNSS(5, 105, "Raigeki", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 90, "Opponent chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrOpponent)->displayNSS);
-						HAL_Delay(1000);
+						HAL_Delay(2000);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 					}
@@ -1901,7 +1907,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						ST7735_WriteStringNSS(5, 105, "Dark Hole", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 90, "Opponent chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrOpponent)->displayNSS);
-						HAL_Delay(1000);
+						HAL_Delay(2000);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 					}
@@ -1922,7 +1928,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						ST7735_WriteStringNSS(5, 105, "Mystical Elf", Font_7x10, ST7735_MAGENTA, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 90, "Opponent chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "a trap card", Font_7x10, ST7735_MAGENTA, ST7735_BLACK,(*ptrOpponent)->displayNSS);
-						HAL_Delay(1000);
+						HAL_Delay(2000);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 
@@ -1948,6 +1954,10 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				{
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+
+					ST7735_WriteStringNSS(5, 90, "Wait a minute", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+					ST7735_WriteStringNSS(5, 90, "Time to PLAY", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+
 					// All Chain Clear
 					for (int i = 0; i < CHAIN_BUFF_LEN; ++i) {
 						state_game->ptrChainUser[i] = &dummyPlayer;
@@ -2018,7 +2028,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						ST7735_WriteStringNSS(5, 105, "Monster reborn", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 90, "Opponent chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrOpponent)->displayNSS);
-						HAL_Delay(1000);
+						HAL_Delay(2000);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 					}
@@ -2038,7 +2048,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						ST7735_WriteStringNSS(5, 105, "Monster reborn", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 90, "Opponent chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "a spell card", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrOpponent)->displayNSS);
-						HAL_Delay(1000);
+						HAL_Delay(2000);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,(*ptrOpponent)->displayNSS);
 					}
@@ -2516,7 +2526,6 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				break;
 			}
 			break;
-
 	}
 }
 
