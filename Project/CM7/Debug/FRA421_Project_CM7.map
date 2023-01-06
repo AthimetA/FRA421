@@ -156,12 +156,6 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 ./Common/Src/FRA421_Yugioh.o
  .bss.C_LP1     0x0000000000000000        0x4 ./Common/Src/FRA421_Yugioh.o
  .bss.C_LP2     0x0000000000000000        0x4 ./Common/Src/FRA421_Yugioh.o
- .text.RFID_Main_init
-                0x0000000000000000       0x54 ./Common/Src/FRA421_Yugioh.o
- .text.YUGIOH_card_register
-                0x0000000000000000       0x54 ./Common/Src/FRA421_Yugioh.o
- .text.YUGIOH_card_Buffer_Update
-                0x0000000000000000       0x6a ./Common/Src/FRA421_Yugioh.o
  .rodata.archive_yugioh_card_sig
                 0x0000000000000000      0x100 ./Common/Src/FRA421_Yugioh.o
  .rodata.archive_yugioh_card_type
@@ -172,6 +166,12 @@ Discarded input sections
                 0x0000000000000000      0x100 ./Common/Src/FRA421_Yugioh.o
  .rodata.archive_yugioh_card_def
                 0x0000000000000000      0x100 ./Common/Src/FRA421_Yugioh.o
+ .text.RFID_Main_init
+                0x0000000000000000       0x54 ./Common/Src/FRA421_Yugioh.o
+ .text.YUGIOH_card_register
+                0x0000000000000000       0x54 ./Common/Src/FRA421_Yugioh.o
+ .text.YUGIOH_card_Buffer_Update
+                0x0000000000000000       0x6a ./Common/Src/FRA421_Yugioh.o
  .text.CardHash_Encode
                 0x0000000000000000       0x48 ./Common/Src/FRA421_Yugioh.o
  .text.YUGIOH_card_Load_Data
@@ -8146,33 +8146,33 @@ LOAD d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.i
  .debug_macro   0x000000000003d433      0x306 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart_ex.o
  .debug_macro   0x000000000003d739      0x2fa ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_usb.o
 
-.debug_line     0x0000000000000000    0x23ab3
- .debug_line    0x0000000000000000     0x2672 ./Common/Src/FRA421_Yugioh.o
- .debug_line    0x0000000000002672      0xb1c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_line    0x000000000000318e      0x3a7 ./Core/Src/fonts.o
- .debug_line    0x0000000000003535      0xe70 ./Core/Src/main.o
- .debug_line    0x00000000000043a5     0x100a ./Core/Src/st7735.o
- .debug_line    0x00000000000053af      0xb5f ./Core/Src/stm32h7xx_hal_msp.o
- .debug_line    0x0000000000005f0e      0xa55 ./Core/Src/stm32h7xx_it.o
- .debug_line    0x0000000000006963      0x51c ./Core/Src/sysmem.o
- .debug_line    0x0000000000006e7f       0x88 ./Core/Startup/startup_stm32h745zitx.o
- .debug_line    0x0000000000006f07     0x105b ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
- .debug_line    0x0000000000007f62      0xf0e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
- .debug_line    0x0000000000008e70     0x284b ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
- .debug_line    0x000000000000b6bb     0x1c59 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_eth.o
- .debug_line    0x000000000000d314      0xdbf ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
- .debug_line    0x000000000000e0d3      0xabe ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
- .debug_line    0x000000000000eb91     0x16d6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd.o
- .debug_line    0x0000000000010267      0xb1e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd_ex.o
- .debug_line    0x0000000000010d85     0x1129 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
- .debug_line    0x0000000000011eae     0x146a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
- .debug_line    0x0000000000013318     0x1c3c ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc_ex.o
- .debug_line    0x0000000000014f54     0x20cc ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
- .debug_line    0x0000000000017020     0x3fc9 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_tim.o
- .debug_line    0x000000000001afe9     0x1ea2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_tim_ex.o
- .debug_line    0x000000000001ce8b     0x3f55 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart.o
- .debug_line    0x0000000000020de0      0xfda ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart_ex.o
- .debug_line    0x0000000000021dba     0x1cf9 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_usb.o
+.debug_line     0x0000000000000000    0x23ab7
+ .debug_line    0x0000000000000000     0x2676 ./Common/Src/FRA421_Yugioh.o
+ .debug_line    0x0000000000002676      0xb1c ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_line    0x0000000000003192      0x3a7 ./Core/Src/fonts.o
+ .debug_line    0x0000000000003539      0xe70 ./Core/Src/main.o
+ .debug_line    0x00000000000043a9     0x100a ./Core/Src/st7735.o
+ .debug_line    0x00000000000053b3      0xb5f ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_line    0x0000000000005f12      0xa55 ./Core/Src/stm32h7xx_it.o
+ .debug_line    0x0000000000006967      0x51c ./Core/Src/sysmem.o
+ .debug_line    0x0000000000006e83       0x88 ./Core/Startup/startup_stm32h745zitx.o
+ .debug_line    0x0000000000006f0b     0x105b ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_line    0x0000000000007f66      0xf0e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_line    0x0000000000008e74     0x284b ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_line    0x000000000000b6bf     0x1c59 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_eth.o
+ .debug_line    0x000000000000d318      0xdbf ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_line    0x000000000000e0d7      0xabe ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_line    0x000000000000eb95     0x16d6 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd.o
+ .debug_line    0x000000000001026b      0xb1e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pcd_ex.o
+ .debug_line    0x0000000000010d89     0x1129 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_line    0x0000000000011eb2     0x146a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_line    0x000000000001331c     0x1c3c ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc_ex.o
+ .debug_line    0x0000000000014f58     0x20cc ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+ .debug_line    0x0000000000017024     0x3fc9 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_tim.o
+ .debug_line    0x000000000001afed     0x1ea2 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_tim_ex.o
+ .debug_line    0x000000000001ce8f     0x3f55 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart.o
+ .debug_line    0x0000000000020de4      0xfda ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_uart_ex.o
+ .debug_line    0x0000000000021dbe     0x1cf9 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_ll_usb.o
 
 .debug_str      0x0000000000000000   0x1937b4
  .debug_str     0x0000000000000000   0x189708 ./Common/Src/FRA421_Yugioh.o
