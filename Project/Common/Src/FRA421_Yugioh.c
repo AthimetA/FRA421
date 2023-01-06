@@ -281,7 +281,7 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 			// Card Reading So it can't attack
 			ptrYugiohCard_dst->actionPoint_Atk = 0;
 			// Card Reading Then it can use it Effect
-			ptrYugiohCard_dst->actionPoint_Eff = 1;
+			ptrYugiohCard_dst->actionPoint_Eff = 0;
 			RFID_Clear_Card_Bufffer(ptrRFID);
 			ptrRFID->action = 0;
 			state_game->action += 1;
@@ -298,7 +298,14 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 				// Card Reading So it can't attack
 				ptrYugiohCard_dst->actionPoint_Atk = 0;
 				// Card Reading Then it can use it Effect
-				ptrYugiohCard_dst->actionPoint_Eff = 1;
+				if(ptrYugiohCard_dst->cardType == 2)
+				{
+					ptrYugiohCard_dst->actionPoint_Eff = 1;
+				}
+				else
+				{
+					ptrYugiohCard_dst->actionPoint_Eff = 0;
+				}
 				RFID_Clear_Card_Bufffer(ptrRFID);
 				ptrRFID->action = 0;
 				state_game->action += 1;
@@ -306,6 +313,80 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 
 		}
 	}
+}
+
+void Player_Reading_Card_Trap(RFIDHandle *RFIDmain, State_game *state_game ,Player *player)
+{
+	// Assign RFID
+	RFID *ptrRFID = RFIDmain->RFID;
+	ptrRFID = &RFIDmain->RFID[RFIDmain->slaveNum];
+
+	YUGIOH_Card *ptrYugiohCard_src;
+	ptrYugiohCard_src = &ptrRFID->bufferCard[0];
+
+	YUGIOH_Card *ptrYugiohCard_dst;
+	ptrYugiohCard_dst = &player->ActtionBuffer[0];
+
+	YUGIOH_Card *ptrYugiohCard_played;
+	ptrYugiohCard_played = &player->cardOnBoard[0];
+
+	uint8_t flag_played = 1;
+
+	if (ptrRFID->action == 1) // Card Detected
+	{
+
+
+		// Check if in Board
+		for (int i  = 0;  i < 6; ++i) {
+			if (ptrYugiohCard_played->cardData == ptrYugiohCard_src->cardData && ptrYugiohCard_played->cardType == 3
+					&&ptrYugiohCard_played->actionPoint_Eff > 0) {
+				flag_played = 0;
+				break;
+			}
+			ptrYugiohCard_played++;
+		}
+
+		if (player->turn == first && flag_played == 0) {
+
+			if (ptrYugiohCard_src->standPosition < 6)
+			{
+				// Update buffer
+				YUGIOH_card_Buffer_Update_Player(player);
+				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+				// Mod standPosition in case off 2 player
+				ptrYugiohCard_dst->standPosition= ptrYugiohCard_dst->standPosition % 6;
+				// Card Reading So it can't attack
+				ptrYugiohCard_dst->actionPoint_Atk = 0;
+				// Card Reading Then it can use it Effect
+				ptrYugiohCard_dst->actionPoint_Eff = 0;
+				RFID_Clear_Card_Bufffer(ptrRFID);
+				ptrRFID->action = 0;
+				state_game->action += 1;
+			}
+		}
+		else if (player->turn == second && flag_played == 0) {
+			if (ptrYugiohCard_src->standPosition >= 6)
+			{
+				// Update buffer
+				YUGIOH_card_Buffer_Update_Player(player);
+				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+				// Mod standPosition in case off 2 player
+				ptrYugiohCard_dst->standPosition= ptrYugiohCard_dst->standPosition % 6;
+				// Card Reading So it can't attack
+				ptrYugiohCard_dst->actionPoint_Atk = 0;
+				// Card Reading Then it can use it Effect
+				ptrYugiohCard_dst->actionPoint_Eff = 0;
+				RFID_Clear_Card_Bufffer(ptrRFID);
+				ptrRFID->action = 0;
+				state_game->action += 1;
+			}
+
+		}
+
+	}
+
 }
 
 void Player_Reading_Card_Stopdef(RFIDHandle *RFIDmain, State_game *state_game ,Player *player)
@@ -1190,7 +1271,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					state_game->PlyerAction_Main_Substate = activate_effect;
 					state_game->count_chain = 0;
 				}
-				Player_Reading_Card(RFIDmain,state_game,playerDef);
+				Player_Reading_Card_Trap(RFIDmain,state_game,playerDef);
 			}
 			else if ((state_game->action == 5 )){
 				ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
@@ -1230,6 +1311,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					state_game->PlyerAction_Main_Substate = activate_effect;
 					state_game->count_chain = 0;
 				}
+				Player_Reading_Card_Trap(RFIDmain,state_game,playerAtk);
 			}
 			else if ((state_game->action == 5 )){
 				ptrYugiohCard_src = &playerAtk->ActtionBuffer[0];
@@ -1632,7 +1714,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						state_game->action = 54;
 						state_game->count_chain = 0;
 					}
-					Player_Reading_Card(RFIDmain,state_game,playerDef);
+					Player_Reading_Card_Trap(RFIDmain,state_game,playerDef);
 					Player_Reading_Card_Monster_Effect(RFIDmain,state_game,playerDef);
 				}
 				else if ((state_game->action == 53 ))
@@ -1694,7 +1776,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						state_game->count_chain = 0;
 					}
 
-					Player_Reading_Card(RFIDmain,state_game,playerDef);
+					Player_Reading_Card_Trap(RFIDmain,state_game,playerDef);
 					Player_Reading_Card_Monster_Effect(RFIDmain,state_game,playerDef);
 				}
 				else if ((state_game->action == 53 )){
@@ -1788,7 +1870,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						}
 						state_game->ChainCount = 0;
 						state_game->action = 50;
-						state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
+						state_game->PlyerAction_Battle_Substate = calculate_damage;
 					}
 
 				}
