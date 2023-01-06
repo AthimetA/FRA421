@@ -210,7 +210,7 @@ Discarded input sections
  .text.GAME_PLAY_Management
                 0x0000000000000000      0x608 ./Common/Src/FRA421_Yugioh.o
  .text.GAME_PLAY_Phase_Management
-                0x0000000000000000     0x3754 ./Common/Src/FRA421_Yugioh.o
+                0x0000000000000000     0x379c ./Common/Src/FRA421_Yugioh.o
  .group         0x0000000000000000        0xc ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
  .group         0x0000000000000000        0xc ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
  .group         0x0000000000000000        0xc ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
@@ -6284,23 +6284,23 @@ LOAD d:/stm32/cubeide/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.i
  .debug_macro   0x000000000003b2bb      0x2d4 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
  .debug_macro   0x000000000003b58f      0x2bf ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
 
-.debug_line     0x0000000000000000    0x10718
- .debug_line    0x0000000000000000     0x261e ./Common/Src/FRA421_Yugioh.o
- .debug_line    0x000000000000261e      0x9f2 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
- .debug_line    0x0000000000003010      0x919 ./Core/Src/MC14515.o
- .debug_line    0x0000000000003929      0xc35 ./Core/Src/MFRC522.o
- .debug_line    0x000000000000455e      0xcf5 ./Core/Src/main.o
- .debug_line    0x0000000000005253      0x973 ./Core/Src/stm32h7xx_hal_msp.o
- .debug_line    0x0000000000005bc6      0x992 ./Core/Src/stm32h7xx_it.o
- .debug_line    0x0000000000006558       0x88 ./Core/Startup/startup_stm32h745zitx.o
- .debug_line    0x00000000000065e0      0xfb3 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
- .debug_line    0x0000000000007593      0xe63 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
- .debug_line    0x00000000000083f6     0x279a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
- .debug_line    0x000000000000ab90      0xd16 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
- .debug_line    0x000000000000b8a6      0xa13 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
- .debug_line    0x000000000000c2b9     0x107e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
- .debug_line    0x000000000000d337     0x13bf ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
- .debug_line    0x000000000000e6f6     0x2022 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
+.debug_line     0x0000000000000000    0x1072d
+ .debug_line    0x0000000000000000     0x2633 ./Common/Src/FRA421_Yugioh.o
+ .debug_line    0x0000000000002633      0x9f2 ./Common/Src/system_stm32h7xx_dualcore_boot_cm4_cm7.o
+ .debug_line    0x0000000000003025      0x919 ./Core/Src/MC14515.o
+ .debug_line    0x000000000000393e      0xc35 ./Core/Src/MFRC522.o
+ .debug_line    0x0000000000004573      0xcf5 ./Core/Src/main.o
+ .debug_line    0x0000000000005268      0x973 ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_line    0x0000000000005bdb      0x992 ./Core/Src/stm32h7xx_it.o
+ .debug_line    0x000000000000656d       0x88 ./Core/Startup/startup_stm32h745zitx.o
+ .debug_line    0x00000000000065f5      0xfb3 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal.o
+ .debug_line    0x00000000000075a8      0xe63 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_cortex.o
+ .debug_line    0x000000000000840b     0x279a ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_dma.o
+ .debug_line    0x000000000000aba5      0xd16 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_gpio.o
+ .debug_line    0x000000000000b8bb      0xa13 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_hsem.o
+ .debug_line    0x000000000000c2ce     0x107e ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr_ex.o
+ .debug_line    0x000000000000d34c     0x13bf ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_rcc.o
+ .debug_line    0x000000000000e70b     0x2022 ./Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_spi.o
 
 .debug_str      0x0000000000000000   0x18746d
  .debug_str     0x0000000000000000   0x181390 ./Common/Src/FRA421_Yugioh.o

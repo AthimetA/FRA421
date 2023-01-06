@@ -1884,7 +1884,14 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				if((*ptrUser)->noBTN == GPIO_PIN_RESET)
 				{
 					YUGIOH_Clear_Card_Bufffer_Player(*ptrUser);
-					YUGIOH_card_copy(&(*ptrUser)->ActtionBuffer[0],&(*ptrUser)->CardInPlayed);
+					YUGIOH_card_clear(&(*ptrUser)->CardInPlayed);
+					state_game->action = 4;
+					state_game->count_chain++;
+				}
+				else if ((*ptrUser)->yesBTN == GPIO_PIN_RESET)
+				{
+					YUGIOH_Clear_Card_Bufffer_Player(*ptrUser);
+					YUGIOH_card_clear(&(*ptrUser)->CardInPlayed);
 					state_game->action = 4;
 					state_game->count_chain++;
 				}
@@ -2135,7 +2142,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						}
 					}
 					else{
-						// This else = Dont Have card
+						// This else = Dont Have card or Does not atk mon
 						state_game->test = 223;
 						state_game->action = 50;
 						state_game->PlyerAction_Battle_Substate = PBS_ActionAwait;
