@@ -1358,6 +1358,14 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 
 			ptrYugiohCard_src = &playerAtk->CardInPlayed;
 
+			if (playerAtk->noBTN == GPIO_PIN_RESET)
+			{
+				state_game->action = 0;
+				state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
+				YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
+				YUGIOH_card_clear(&playerAtk->CardInPlayed);
+			}
+
 			if (state_game->action == 4)
 			{
 				// Reading Until RFID action += 1 Mean Card Detected
