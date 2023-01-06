@@ -1072,7 +1072,7 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 		ST7735_WriteString1(25, 35, "You are", Font_11x18, ST7735_MAGENTA, ST7735_BLACK);
 		ST7735_WriteString1(37, 60, "FIRST", Font_11x18, ST7735_CYAN, ST7735_BLACK);
 		ST7735_WriteString1(0, 75, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-		HAL_Delay(3000);
+		HAL_Delay(1500);
 		ST7735_FillScreen(ST7735_BLACK);
 		ST7735_FillScreen1(ST7735_BLACK);
 		MainGUI();
@@ -1089,7 +1089,7 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 	case first_player:
 		if (state_game -> F_flag == 0){
 			ST7735_WriteString1(15, 90, "Your TURN", Font_11x18, ST7735_YELLOW, ST7735_BLACK);
-			HAL_Delay(2000);
+			HAL_Delay(1500);
 			ST7735_FillRectangle1(0, 90, 128,128-90,ST7735_BLACK);
 			state_game->F_flag += 1;
 			state_game->S_flag = 0;
@@ -1102,7 +1102,7 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 	case second_player:
 		if (state_game -> S_flag == 0){
 			ST7735_WriteString(15, 90, "Your TURN", Font_11x18, ST7735_YELLOW, ST7735_BLACK);
-			HAL_Delay(2000);
+			HAL_Delay(1500);
 			ST7735_FillRectangle(0, 90, 128,128-90,ST7735_BLACK);
 			state_game->S_flag += 1;
 			state_game->F_flag = 0;

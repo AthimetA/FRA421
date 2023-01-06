@@ -3692,8 +3692,8 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
  8001ae8:	214b      	movs	r1, #75	; 0x4b
  8001aea:	2000      	movs	r0, #0
  8001aec:	f004 ffd9 	bl	8006aa2 <ST7735_WriteString1>
-		HAL_Delay(3000);
- 8001af0:	f640 30b8 	movw	r0, #3000	; 0xbb8
+		HAL_Delay(1500);
+ 8001af0:	f240 50dc 	movw	r0, #1500	; 0x5dc
  8001af4:	f005 fe00 	bl	80076f8 <HAL_Delay>
 		ST7735_FillScreen(ST7735_BLACK);
  8001af8:	2000      	movs	r0, #0
@@ -3749,8 +3749,8 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
  8001b54:	215a      	movs	r1, #90	; 0x5a
  8001b56:	200f      	movs	r0, #15
  8001b58:	f004 ffa3 	bl	8006aa2 <ST7735_WriteString1>
-			HAL_Delay(2000);
- 8001b5c:	f44f 60fa 	mov.w	r0, #2000	; 0x7d0
+			HAL_Delay(1500);
+ 8001b5c:	f240 50dc 	movw	r0, #1500	; 0x5dc
  8001b60:	f005 fdca 	bl	80076f8 <HAL_Delay>
 			ST7735_FillRectangle1(0, 90, 128,128-90,ST7735_BLACK);
  8001b64:	2300      	movs	r3, #0
@@ -3814,8 +3814,8 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
  8001bd2:	215a      	movs	r1, #90	; 0x5a
  8001bd4:	200f      	movs	r0, #15
  8001bd6:	f004 ff1a 	bl	8006a0e <ST7735_WriteString>
-			HAL_Delay(2000);
- 8001bda:	f44f 60fa 	mov.w	r0, #2000	; 0x7d0
+			HAL_Delay(1500);
+ 8001bda:	f240 50dc 	movw	r0, #1500	; 0x5dc
  8001bde:	f005 fd8b 	bl	80076f8 <HAL_Delay>
 			ST7735_FillRectangle(0, 90, 128,128-90,ST7735_BLACK);
  8001be2:	2300      	movs	r3, #0
