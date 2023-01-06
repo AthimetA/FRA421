@@ -23,7 +23,7 @@ char C_LP_DEF[4] = "";
 char c_turn[2] = "";
 char t_c[3] = "";
 
-uint16_t timeinit = 180;
+uint16_t timeinit = 600;
 uint16_t time = 0;
 uint8_t turn = 0;
 
@@ -2249,12 +2249,14 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				break;
 			case counter_DEF:
 				//action 52
-				ST7735_WriteStringNSS(5, 90, "You declared", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(5, 105, "an ATTACK", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(5, 90, "Do you chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
-				ST7735_WriteStringNSS(5, 105, "a CARD ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+
 				if(state_game->action == 52)
 				{
+					ST7735_WriteStringNSS(5, 90, "You declared", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "an ATTACK", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 90, "Do you chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "a CARD ?", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+
 					if (playerDef->noBTN == GPIO_PIN_RESET){
 						state_game->PlyerAction_Battle_Substate = chain_effect;
 						state_game->action = 54;
@@ -2267,6 +2269,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				{
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+
 					ptrYugiohCard_src = &playerDef->ActtionBuffer[0];
 
 					uint8_t idx = YUGIOH_Check_Trap_On_board(playerDef, ptrYugiohCard_src);
@@ -2301,19 +2304,16 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					}
 				}
 
-
-
-
-
 				break;
 			case counter_ATK:
 				//action 54
-				ST7735_WriteStringNSS(5, 90, "Do you chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(5, 105, "a CARD", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(5, 90, "Waiting player", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
-				ST7735_WriteStringNSS(5, 105, "for CHAIN card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+
 				if(state_game->action == 52)
 				{
+					ST7735_WriteStringNSS(5, 90, "Do you chain", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "a CARD", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 90, "Waiting player", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+					ST7735_WriteStringNSS(5, 105, "for CHAIN card", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 
 					if (playerAtk->noBTN == GPIO_PIN_RESET){
 						//affect
@@ -2326,6 +2326,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					Player_Reading_Card_Monster_Effect(RFIDmain,state_game,playerDef);
 				}
 				else if ((state_game->action == 53 )){
+
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 
@@ -2363,14 +2364,15 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 
 				break;
 			case chain_effect:
-				ST7735_WriteStringNSS(5, 90, "Resolve EFFECT", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(5, 90, "Resolve EFFECT", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 
 				ptrUser = &state_game->ptrChainUser[state_game->count_chain];
 				ptrOpponent = &state_game->ptrChainOpponent[state_game->count_chain];
 
 				if(state_game->action == 54)
 				{
+					ST7735_WriteStringNSS(5, 90, "Resolve EFFECT", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(5, 90, "Resolve EFFECT", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+
 					// Base use to check Card Eff
 					if (state_game->count_chain < state_game->ChainCount)
 					{
@@ -2397,7 +2399,19 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						else if(ptrYugiohCard_src->cardSignature == 20){
 
 							YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
+
+							state_game->ChainCount = 0;
 							//							YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+							HAL_TIM_Base_Stop_IT(&TIM7_PORT);
+							_micro = 0;
+							ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+							ST7735_WriteStringNSS(15, 90, "END TURN", Font_11x18, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+							HAL_Delay(2000);
+							ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+							ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+							state_game->action = 0;
+							YUGIOH_Trap_Can_Activated(playerAtk);
+							YUGIOH_Clear_Card_Bufffer_Player(playerAtk);
 							if(state_game->MainGame_State == first_player){
 								state_game->MainGame_State = second_player;
 							}
@@ -2405,6 +2419,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 								state_game->MainGame_State = first_player;
 							}
 							state_game->PlyerAction_State = Drawn_Phase;
+
+
 						}
 
 					}
@@ -2413,10 +2429,17 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						// All Chain Clear
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+
 						for (int i = 0; i < CHAIN_BUFF_LEN; ++i) {
 							state_game->ptrChainUser[i] = &dummyPlayer;
 							state_game->ptrChainOpponent[i] = &dummyPlayer;
 						}
+
+						ST7735_WriteStringNSS(5, 90, "Chain End", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "calculate damage", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(5, 90, "Chain End", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+						ST7735_WriteStringNSS(5, 105, "calculate damage", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+
 						state_game->ChainCount = 0;
 						state_game->action = 50;
 						state_game->PlyerAction_Battle_Substate = calculate_damage;
