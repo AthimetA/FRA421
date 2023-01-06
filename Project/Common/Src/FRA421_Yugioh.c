@@ -910,6 +910,8 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 	Player **ptrUser;
 	Player **ptrOpponent;
 
+	Player dummyPlayer = {0};
+
 	switch (PAS) {
 	case PS_AFK:
 		break;
@@ -1341,6 +1343,11 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
 					// All Chain Clear
+					for (int i = 0; i < CHAIN_BUFF_LEN; ++i) {
+						state_game->ptrChainUser[i] = &dummyPlayer;
+						state_game->ptrChainOpponent[i] = &dummyPlayer;
+					}
+					state_game->ChainCount = 0;
 					state_game->action = 0;
 					state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
 				}
@@ -1775,8 +1782,13 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						// All Chain Clear
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+						for (int i = 0; i < CHAIN_BUFF_LEN; ++i) {
+							state_game->ptrChainUser[i] = &dummyPlayer;
+							state_game->ptrChainOpponent[i] = &dummyPlayer;
+						}
+						state_game->ChainCount = 0;
 						state_game->action = 50;
-						state_game->PlyerAction_Battle_Substate = calculate_damage;
+						state_game->PlyerAction_Main_Substate = PMS_ActionAwait;
 					}
 
 				}
