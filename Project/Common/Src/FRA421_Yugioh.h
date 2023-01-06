@@ -174,7 +174,6 @@ void YUGIOH_card_Load_Data(YUGIOH_Card *card);
 void YUGIOH_Clear_Card_Bufffer_Player(Player *player);
 void YUGIOH_card_Buffer_Update_Player(Player *player);
 void YUGIOH_card_Buffer_Update_Chain(State_game * state_game);
-void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 void GAME_PLAY_Management(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_CARD_PLAYED(RFIDHandle *RFIDmain,State_game *state_game);
 void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Player *playerAtk,Player *playerDef);
@@ -192,7 +191,12 @@ uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card);
 uint8_t YUGIOH_Check_Spell_On_board(Player *player,YUGIOH_Card *card);
 void YUGIOH_Trap_Can_Activated(Player *player);
 void YUGIOH_Monster_Activated(Player *player);
+
+void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 void Player_Reading_Card_Reborn(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
+void Player_Reading_Card_Stopdef(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
+void Player_Reading_Card_Ancient_Rule(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
+void Player_Reading_Card_Monster_Effect(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 
 void Test_EFF(Player *playerUser,Player *playerOpponent);
 

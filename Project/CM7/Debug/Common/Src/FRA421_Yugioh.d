@@ -1,6 +1,6 @@
 Common/Src/FRA421_Yugioh.o: \
- D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.c \
- D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.h \
+ D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.c \
+ D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
@@ -45,7 +45,7 @@ Common/Src/FRA421_Yugioh.o: \
  ../Core/Inc/../../../CM7/Core/Inc/fonts.h \
  ../Core/Inc/../../../CM7/Core/Inc/fonts.h \
  ../Core/Inc/../../../CM7/Core/Inc/stm32h7xx_it.h
-D:/work/MBED_Project/FRA421/Project/Common/Src/FRA421_Yugioh.h:
+D:/STM32project/FRA421/Project/Common/Src/FRA421_Yugioh.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
 ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h:
