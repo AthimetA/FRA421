@@ -1384,12 +1384,19 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 		GAME_PLAY_Phase_Management(RFIDmain,state_game,ptrPlayerAtk,ptrPlayerDef);
 		break;
 	case Game_Ended:
-		ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,1);
-		ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,0);
-		HAL_Delay(200);
-		ST7735_WriteStringNSS(20, 90, "YOU WIN", Font_11x18, ST7735_MAGENTA, ST7735_BLACK,1);
-		ST7735_WriteStringNSS(15, 90, "YOU LOSE", Font_11x18, ST7735_RED, ST7735_BLACK,0);
-		HAL_Delay(200);
+		if (HAL_GPIO_ReadPin(START_BUTTON_PORT, START_BUTTON_PIN)
+				== GPIO_PIN_RESET) {
+			ST7735_FillScreen(ST7735_BLACK);
+			ST7735_FillScreen1(ST7735_BLACK);
+			state_game->MainGame_State = Game_init;
+		}
+		else
+		{
+			state_game->PlyerAction_State = PS_AFK;
+			state_game->PlyerAction_Main_Substate = PMS_AFK;
+			state_game->PlyerAction_Battle_Substate = PBS_AFK;
+			state_game->PlyerAction_Chain_Substate = PCS_AFK;
+		}
 		break;
 	}
 }
@@ -2380,8 +2387,6 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 
 					}
 				}
-
-
 				break;
 			case after_calculate:
 				ST7735_WriteStringNSS(5, 90, "Finish attack", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
@@ -2392,6 +2397,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				YUGIOH_card_clear(ptrYugiohCard_src);
 
 				if(playerDef->life_point == 0 || playerDef->life_point >= 60000){
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,1);
+					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,0);
+					HAL_Delay(200);
+					ST7735_WriteStringNSS(20, 90, "YOU WIN", Font_11x18, ST7735_MAGENTA, ST7735_BLACK,playerAtk->displayNSS);
+					ST7735_WriteStringNSS(15, 90, "YOU LOSE", Font_11x18, ST7735_RED, ST7735_BLACK,playerDef->displayNSS);
+					HAL_Delay(200);
 					state_game->MainGame_State = Game_Ended;
 				}
 				else{
