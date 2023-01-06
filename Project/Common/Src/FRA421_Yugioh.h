@@ -157,6 +157,8 @@ typedef struct _state_game
     uint8_t F_flag;
     uint8_t S_flag;
 
+    uint8_t firstAtk_Turn_Flag;
+
 }State_game;
 
 // RFID Handle Function

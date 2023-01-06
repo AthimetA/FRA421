@@ -23,7 +23,7 @@ char C_LP_DEF[4] = "";
 char c_turn[2] = "";
 char t_c[3] = "";
 
-uint16_t timeinit = 600;
+uint16_t timeinit = 180;
 uint16_t time = 0;
 uint8_t turn = 0;
 
@@ -1371,6 +1371,8 @@ void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 		YUGIOH_Clear_Card_All(ptrPlayer1);
 		YUGIOH_Clear_Card_All(ptrPlayer2);
 
+		state_game->firstAtk_Turn_Flag = 1;
+
 		state_game->MainGame_State = first_player;
 		state_game->PlyerAction_State = Drawn_Phase;
 		break;
@@ -1488,17 +1490,40 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				// Reading Until RFID action = 1 Mean Card Detected
 				if(HAL_GPIO_ReadPin(TURN_BUTTON_PORT, TURN_BUTTON_PIN)
 						== GPIO_PIN_RESET){
-					ST7735_FillScreen(ST7735_BLACK);
-					ST7735_FillScreen1(ST7735_BLACK);
-					MainGUI();
-					state_game->action = 50;
-					state_game->PlyerAction_Main_Substate = PMS_AFK;
-					YUGIOH_Monster_Activated(playerAtk);
-					state_game->PlyerAction_State = Battle_Phase;
-					state_game->PlyerAction_Battle_Substate = PBS_ActionAwait;
-					HAL_Delay(1000);
-					ST7735_WriteStringNSS(5, 90, "Time to defend", Font_7x10, ST7735_WHITE, ST7735_BLACK, playerDef->displayNSS);
-					ST7735_WriteStringNSS(5, 90, "Time to battle", Font_7x10, ST7735_WHITE, ST7735_BLACK, playerAtk->displayNSS);
+					if (state_game->firstAtk_Turn_Flag != 1)
+					{
+						ST7735_FillScreen(ST7735_BLACK);
+						ST7735_FillScreen1(ST7735_BLACK);
+						MainGUI();
+						state_game->action = 50;
+						state_game->PlyerAction_Main_Substate = PMS_AFK;
+						YUGIOH_Monster_Activated(playerAtk);
+						state_game->PlyerAction_State = Battle_Phase;
+						state_game->PlyerAction_Battle_Substate = PBS_ActionAwait;
+						HAL_Delay(1000);
+						ST7735_WriteStringNSS(5, 90, "Time to defend", Font_7x10, ST7735_WHITE, ST7735_BLACK, playerDef->displayNSS);
+						ST7735_WriteStringNSS(5, 90, "Time to battle", Font_7x10, ST7735_WHITE, ST7735_BLACK, playerAtk->displayNSS);
+					}
+					else
+					{
+						state_game->firstAtk_Turn_Flag = 0;
+						HAL_TIM_Base_Stop_IT(&TIM7_PORT);
+						_micro = 0;
+						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_WriteStringNSS(15, 90, "END TURN", Font_11x18, ST7735_YELLOW, ST7735_BLACK,playerAtk->displayNSS);
+						HAL_Delay(2000);
+						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
+						ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
+						state_game->action = 0;
+						YUGIOH_Trap_Can_Activated(playerAtk);
+						if(state_game->MainGame_State == first_player){
+							state_game->MainGame_State = second_player;
+						}
+						else{
+							state_game->MainGame_State = first_player;
+						}
+						state_game->PlyerAction_State = Drawn_Phase;
+					}
 				}
 				Player_Reading_Card(RFIDmain,state_game,playerAtk);
 			}
@@ -1856,7 +1881,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					{
 						YUGIOH_Clear_Card_Enemy_Player_Raigeki(*ptrOpponent);
 						YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser, ptrYugiohCard_src);
-//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+						//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 						state_game->count_chain++;
 						ST7735_WriteStringNSS(5, 90, "Activated spell", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "Raigeki", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -1870,7 +1895,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					{
 						YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(*ptrUser,*ptrOpponent);
 						YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser, ptrYugiohCard_src);
-//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+						//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 						state_game->count_chain++;
 						ST7735_WriteStringNSS(5, 90, "Activated spell", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "Dark Hole", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -1891,7 +1916,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						state_game->test = 133;
 						YUGIOH_Gift_of_the_Mystical_Elf(*ptrUser,*ptrOpponent);
 						YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser, ptrYugiohCard_src);
-//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+						//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 						state_game->count_chain++;
 						ST7735_WriteStringNSS(5, 90, "Act:Gift of the", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "Mystical Elf", Font_7x10, ST7735_MAGENTA, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -1987,7 +2012,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						YUGIOH_Reborn(*ptrUser);
 						state_game->action = 4;
 						YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+						//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 						state_game->count_chain++;
 						ST7735_WriteStringNSS(5, 90, "Activated spell", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "Monster reborn", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -2007,7 +2032,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						YUGIOH_Reborn(*ptrUser);
 						state_game->action = 4;
 						YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+						//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 						state_game->count_chain++;
 						ST7735_WriteStringNSS(5, 90, "Activated spell", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "Monster reborn", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -2032,7 +2057,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						YUGIOH_Ancient_Rules(*ptrUser);
 						state_game->action = 4;
 						YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+						//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 						state_game->count_chain++;
 						ST7735_WriteStringNSS(5, 90, "Activated spell", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "Monster reborn", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -2052,7 +2077,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						YUGIOH_Ancient_Rules(*ptrUser);
 						state_game->action = 4;
 						YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+						//						YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 						state_game->count_chain++;
 						ST7735_WriteStringNSS(5, 90, "Activated spell", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 						ST7735_WriteStringNSS(5, 105, "Monster reborn", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -2070,7 +2095,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 					YUGIOH_Stop_Defense(*ptrUser,*ptrOpponent);
 					state_game->action = 4;
 					YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//					YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+					//					YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 					state_game->count_chain++;
 					ST7735_WriteStringNSS(5, 90, "Activated spell", Font_7x10, ST7735_WHITE, ST7735_BLACK,(*ptrUser)->displayNSS);
 					ST7735_WriteStringNSS(5, 105, "Stop Defense", Font_7x10, ST7735_GREEN, ST7735_BLACK,(*ptrUser)->displayNSS);
@@ -2347,7 +2372,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 						{
 							(*ptrOpponent)->CardInPlayed.targetPosition = 98;
 							YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//							YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+							//							YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 							state_game->count_chain++;
 						}
 						else if(ptrYugiohCard_src->cardSignature == 14 || ptrYugiohCard_src->cardSignature == 15)
@@ -2355,14 +2380,14 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 							state_game->test = 133;
 							YUGIOH_Gift_of_the_Mystical_Elf(*ptrUser,*ptrOpponent);
 							YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//							YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+							//							YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 							state_game->count_chain++;
 
 						}
 						else if(ptrYugiohCard_src->cardSignature == 20){
 
 							YUGIOH_Clear_Card_In_Main_To_GY(*ptrUser,ptrYugiohCard_src);
-//							YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
+							//							YUGIOH_To_GY(*ptrUser, ptrYugiohCard_src);
 							if(state_game->MainGame_State == first_player){
 								state_game->MainGame_State = second_player;
 							}
