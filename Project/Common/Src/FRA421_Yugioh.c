@@ -992,6 +992,277 @@ void YUGIOH_To_GY(Player *player,YUGIOH_Card *card){
 
 }
 
+void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player) {
+	YUGIOH_Card *ptrYUGIOHCard;
+	ptrYUGIOHCard = &player->cardOnBoard[3];
+	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
+		if(ptrYUGIOHCard->cardData != 0){
+			YUGIOH_To_GY(player,ptrYUGIOHCard);
+		}
+		ptrYUGIOHCard++;
+	}
+}
+
+void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2) {
+
+	//player1
+	YUGIOH_Card *ptrYUGIOHCard_player1 = player1->cardOnBoard;
+	ptrYUGIOHCard_player1 = &player1->cardOnBoard[3];
+
+	//player2
+	YUGIOH_Card *ptrYUGIOHCard_player2 = player2->cardOnBoard;
+	ptrYUGIOHCard_player2 = &player2->cardOnBoard[3];
+	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
+		if(ptrYUGIOHCard_player1->cardData != 0){
+			YUGIOH_To_GY(player1,ptrYUGIOHCard_player1);
+		}
+		ptrYUGIOHCard_player1++;
+	}
+	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
+		if(ptrYUGIOHCard_player2->cardData != 0){
+			YUGIOH_To_GY(player2,ptrYUGIOHCard_player2);
+		}
+		ptrYUGIOHCard_player2++;
+	}
+}
+
+void YUGIOH_Reborn(Player *player){
+	uint8_t flag = 0;
+	uint8_t index_GY = 0;
+	// Buffer Card src
+	YUGIOH_Card *ptrYugiohCard_Buffer_src = &player->CardInPlayed;
+	// Buffer Card dst
+	YUGIOH_Card *ptrYugiohCard_Buffer_dst = player->GY;
+	ptrYugiohCard_Buffer_dst = &player->GY[0];
+
+	for (uint8_t i = 0;i < GY_BUFF_LEN ; ++i) {
+		if(ptrYugiohCard_Buffer_src->cardData == ptrYugiohCard_Buffer_dst->cardData){
+			flag = 1;
+			index_GY = i;
+			break;
+		}
+		ptrYugiohCard_Buffer_dst++;
+	}
+
+	ptrYugiohCard_Buffer_dst = &player->cardOnBoard[3];
+
+	if(flag == 1){
+		uint8_t idx = ptrYugiohCard_Buffer_src->standPosition % 6;
+		YUGIOH_card_copy(ptrYugiohCard_Buffer_src, &player->cardOnBoard[idx]);
+
+		ptrYugiohCard_Buffer_src = &player->GY[index_GY+1];
+		ptrYugiohCard_Buffer_dst = &player->GY[index_GY];
+
+		for (int i = index_GY; i < GY_BUFF_LEN ; ++i) {
+			YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
+			ptrYugiohCard_Buffer_src++;
+			ptrYugiohCard_Buffer_dst++;
+		}
+
+
+	}
+}
+
+void YUGIOH_Ancient_Rules(Player *player){
+	YUGIOH_Card *ptrYugiohCard_src = player->ActtionBuffer;
+	ptrYugiohCard_src = &player->ActtionBuffer[0];
+
+	uint8_t idx = ptrYugiohCard_src->standPosition % 6;
+
+	YUGIOH_Card *ptrYugiohCard_dst = player->cardOnBoard;
+	ptrYugiohCard_dst = &player->cardOnBoard[idx];
+
+	YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+}
+
+void YUGIOH_Gift_of_the_Mystical_Elf(Player *player1,Player *player2){
+	YUGIOH_Card *ptrYUGIOHCard_player1 = player1->cardOnBoard;
+	ptrYUGIOHCard_player1 = &player1->cardOnBoard[3];
+
+	//player2
+	YUGIOH_Card *ptrYUGIOHCard_player2 = player2->cardOnBoard;
+	ptrYUGIOHCard_player2 = &player2->cardOnBoard[3];
+
+	uint8_t count_monster = 0;
+	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
+		if(ptrYUGIOHCard_player1->cardType == 1){
+			count_monster += 1;
+		}
+		ptrYUGIOHCard_player1++;
+	}
+	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
+		if(ptrYUGIOHCard_player2->cardType == 1){
+			count_monster += 1;
+		}
+		ptrYUGIOHCard_player2++;
+	}
+
+	player1->life_point += 300*count_monster;
+
+}
+
+void YUGIOH_Stop_Defense(Player *player1,Player *player2){
+	YUGIOH_Card *ptrYugiohCard_src = player1->ActtionBuffer;
+	ptrYugiohCard_src = &player1->ActtionBuffer[0];
+
+	uint8_t idx = ptrYugiohCard_src->standPosition % 6;
+
+	YUGIOH_Card *ptrYUGIOHCard_dst = player2->cardOnBoard;
+	ptrYUGIOHCard_dst = &player2->cardOnBoard[idx];
+
+	if((ptrYUGIOHCard_dst->cardState == 0) && (ptrYUGIOHCard_dst->cardData != 0)){
+		ptrYUGIOHCard_dst->cardState = 1;
+	}
+
+}
+
+uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card)
+{
+	YUGIOH_Card *ptrCardCheck;
+	ptrCardCheck = &player->cardOnBoard[0];
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if(card->cardData == ptrCardCheck->cardData)
+		{
+			if(ptrCardCheck->actionPoint_Eff > 0 && ptrCardCheck->cardType == 3)
+			{
+				return i;
+			}
+		}
+		ptrCardCheck++;
+	}
+	return 255;
+}
+
+uint8_t YUGIOH_Check_Spell_On_board(Player *player,YUGIOH_Card *card)
+{
+	YUGIOH_Card *ptrCardCheck;
+	ptrCardCheck = &player->cardOnBoard[0];
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if(card->cardData == ptrCardCheck->cardData)
+		{
+			if(ptrCardCheck->actionPoint_Eff > 0 && ptrCardCheck->cardType == 2)
+			{
+				return i;
+			}
+		}
+		ptrCardCheck++;
+	}
+	return 255;
+}
+
+void YUGIOH_Trap_Can_Activated(Player *player)
+{
+	YUGIOH_Card *ptrCard;
+	ptrCard = &player->cardOnBoard[0];
+	for (int i = 0; i < 3; ++i)
+	{
+		if (ptrCard->cardData != 0)
+		{
+			ptrCard->actionPoint_Eff = 1;
+		}
+		ptrCard++;
+	}
+}
+
+void YUGIOH_Monster_Activated(Player *player)
+{
+	YUGIOH_Card *ptrCard;
+	ptrCard = &player->cardOnBoard[3];
+	for (int i = 3; i < 6; ++i)
+	{
+		if (ptrCard->cardData != 0)
+		{
+			ptrCard->actionPoint_Atk = 1;
+		}
+		ptrCard++;
+	}
+}
+void MainGUI()
+{
+	ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+	ST7735_WriteString1(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(5, 35, "Turns:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
+	ST7735_WriteString(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(5, 35, "Turns: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString1(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+	ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
+}
+
+void LCDvalue(Player *playerAtk, Player *playerDef){
+	uint16_t a = 0 ;
+	time = timeinit;
+	a = _micro / 1000000;
+	time -= a;
+	sprintf(t_c, "%d",time);
+	for (int i = 0 ; i < 3 ; i++){
+		if(t_c[i] == 0){
+			t_c[i] = 32;
+			t_c[i+1] = 32;
+		}
+	}
+	if(time == 0){
+		HAL_TIM_Base_Stop_IT(&TIM7_PORT);
+		time = 0;
+		ST7735_FillScreen(ST7735_BLACK);
+		ST7735_FillScreen1(ST7735_BLACK);
+		while(time == 0){
+			uint8_t credit = 1;
+			if(credit == 0){
+				ST7735_WriteStringNSS(15, 35, "YOU LOSE", Font_11x18, ST7735_RED, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 60, "player timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(20, 35, "YOU WIN", Font_11x18, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
+				ST7735_WriteStringNSS(0, 60, "opponent timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+			}
+			// Author CREDITTTTTT
+			else if(credit == 1){
+				ST7735_WriteStringNSS(15, 25, "YOU LOSE", Font_11x18, ST7735_RED, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(5, 50, "player timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
+				ST7735_WriteStringNSS(20, 25, "YOU WIN", Font_11x18, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
+				ST7735_WriteStringNSS(0, 50, "opponent timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
+				ST7735_WriteStringNSS(0, 65, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK,0);
+				ST7735_WriteStringNSS(0, 65, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK,1);
+				ST7735_WriteStringNSS(0, 100, "Dev1:TinnZx", Font_7x10, ST7735_CYAN, ST7735_BLACK,0);
+				ST7735_WriteStringNSS(0, 115, "Dev2:Azthorax", Font_7x10, ST7735_GREEN, ST7735_BLACK,0);
+				ST7735_WriteStringNSS(0, 115, "Dev3:FANNUT", Font_7x10, ST7735_YELLOW, ST7735_BLACK,1);
+				ST7735_WriteStringNSS(0, 90, "FRA421 Project", Font_7x10, ST7735_MAGENTA, ST7735_BLACK,1);
+			}
+		}
+	}
+
+	sprintf(C_LP_ATK, "%d",playerAtk->life_point);
+	if(C_LP_ATK[3] == 0){
+		C_LP_ATK[3] = C_LP_ATK[2];
+		C_LP_ATK[2] = C_LP_ATK[1];
+		C_LP_ATK[1] = C_LP_ATK[0];
+		C_LP_ATK[0] = 32;
+	}
+	ST7735_WriteStringNSS( 90, 20, C_LP_ATK, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+	ST7735_WriteStringNSS( 105, 50, t_c, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
+	sprintf(C_LP_DEF, "%d",playerDef->life_point);
+	if(C_LP_DEF[3] == 0){
+		C_LP_DEF[3] = C_LP_DEF[2];
+		C_LP_DEF[2] = C_LP_DEF[1];
+		C_LP_DEF[1] = C_LP_DEF[0];
+		C_LP_DEF[0] = 32;
+	}
+	ST7735_WriteStringNSS( 90, 20, C_LP_DEF, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+	ST7735_WriteStringNSS( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
+	sprintf(c_turn, "%d",turn);
+	ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,0);
+	ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,1);
+
+}
+
 
 void GAME_PLAY_Management(RFIDHandle *RFIDmain, State_game *state_game) {
 
@@ -2140,274 +2411,3 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 	}
 }
 
-
-void YUGIOH_Clear_Card_Enemy_Player_Raigeki(Player *player) {
-	YUGIOH_Card *ptrYUGIOHCard;
-	ptrYUGIOHCard = &player->cardOnBoard[3];
-	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
-		if(ptrYUGIOHCard->cardData != 0){
-			YUGIOH_To_GY(player,ptrYUGIOHCard);
-		}
-		ptrYUGIOHCard++;
-	}
-}
-
-void YUGIOH_Clear_Card_Enemy_Player_Dark_Hole(Player *player1,Player *player2) {
-
-	//player1
-	YUGIOH_Card *ptrYUGIOHCard_player1 = player1->cardOnBoard;
-	ptrYUGIOHCard_player1 = &player1->cardOnBoard[3];
-
-	//player2
-	YUGIOH_Card *ptrYUGIOHCard_player2 = player2->cardOnBoard;
-	ptrYUGIOHCard_player2 = &player2->cardOnBoard[3];
-	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
-		if(ptrYUGIOHCard_player1->cardData != 0){
-			YUGIOH_To_GY(player1,ptrYUGIOHCard_player1);
-		}
-		ptrYUGIOHCard_player1++;
-	}
-	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
-		if(ptrYUGIOHCard_player2->cardData != 0){
-			YUGIOH_To_GY(player2,ptrYUGIOHCard_player2);
-		}
-		ptrYUGIOHCard_player2++;
-	}
-}
-
-void YUGIOH_Reborn(Player *player){
-	uint8_t flag = 0;
-	uint8_t index_GY = 0;
-	// Buffer Card src
-	YUGIOH_Card *ptrYugiohCard_Buffer_src = &player->CardInPlayed;
-	// Buffer Card dst
-	YUGIOH_Card *ptrYugiohCard_Buffer_dst = player->GY;
-	ptrYugiohCard_Buffer_dst = &player->GY[0];
-
-	for (uint8_t i = 0;i < GY_BUFF_LEN ; ++i) {
-		if(ptrYugiohCard_Buffer_src->cardData == ptrYugiohCard_Buffer_dst->cardData){
-			flag = 1;
-			index_GY = i;
-			break;
-		}
-		ptrYugiohCard_Buffer_dst++;
-	}
-
-	ptrYugiohCard_Buffer_dst = &player->cardOnBoard[3];
-
-	if(flag == 1){
-		uint8_t idx = ptrYugiohCard_Buffer_src->standPosition % 6;
-		YUGIOH_card_copy(ptrYugiohCard_Buffer_src, &player->cardOnBoard[idx]);
-
-		ptrYugiohCard_Buffer_src = &player->GY[index_GY+1];
-		ptrYugiohCard_Buffer_dst = &player->GY[index_GY];
-
-		for (int i = index_GY; i < GY_BUFF_LEN ; ++i) {
-			YUGIOH_card_copy(ptrYugiohCard_Buffer_src, ptrYugiohCard_Buffer_dst);
-			ptrYugiohCard_Buffer_src++;
-			ptrYugiohCard_Buffer_dst++;
-		}
-
-
-	}
-}
-
-void YUGIOH_Ancient_Rules(Player *player){
-	YUGIOH_Card *ptrYugiohCard_src = player->ActtionBuffer;
-	ptrYugiohCard_src = &player->ActtionBuffer[0];
-
-	uint8_t idx = ptrYugiohCard_src->standPosition % 6;
-
-	YUGIOH_Card *ptrYugiohCard_dst = player->cardOnBoard;
-	ptrYugiohCard_dst = &player->cardOnBoard[idx];
-
-	YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
-
-}
-
-void YUGIOH_Gift_of_the_Mystical_Elf(Player *player1,Player *player2){
-	YUGIOH_Card *ptrYUGIOHCard_player1 = player1->cardOnBoard;
-	ptrYUGIOHCard_player1 = &player1->cardOnBoard[3];
-
-	//player2
-	YUGIOH_Card *ptrYUGIOHCard_player2 = player2->cardOnBoard;
-	ptrYUGIOHCard_player2 = &player2->cardOnBoard[3];
-
-	uint8_t count_monster = 0;
-	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
-		if(ptrYUGIOHCard_player1->cardType == 1){
-			count_monster += 1;
-		}
-		ptrYUGIOHCard_player1++;
-	}
-	for (uint8_t i = 0; i < MON_BUFF_LEN; ++i) {
-		if(ptrYUGIOHCard_player2->cardType == 1){
-			count_monster += 1;
-		}
-		ptrYUGIOHCard_player2++;
-	}
-
-	player1->life_point += 300*count_monster;
-
-}
-
-void YUGIOH_Stop_Defense(Player *player1,Player *player2){
-	YUGIOH_Card *ptrYugiohCard_src = player1->ActtionBuffer;
-	ptrYugiohCard_src = &player1->ActtionBuffer[0];
-
-	uint8_t idx = ptrYugiohCard_src->standPosition % 6;
-
-	YUGIOH_Card *ptrYUGIOHCard_dst = player2->cardOnBoard;
-	ptrYUGIOHCard_dst = &player2->cardOnBoard[idx];
-
-	if((ptrYUGIOHCard_dst->cardState == 0) && (ptrYUGIOHCard_dst->cardData != 0)){
-		ptrYUGIOHCard_dst->cardState = 1;
-	}
-
-}
-
-uint8_t YUGIOH_Check_Trap_On_board(Player *player,YUGIOH_Card *card)
-{
-	YUGIOH_Card *ptrCardCheck;
-	ptrCardCheck = &player->cardOnBoard[0];
-
-	for (int i = 0; i < 3; ++i)
-	{
-		if(card->cardData == ptrCardCheck->cardData)
-		{
-			if(ptrCardCheck->actionPoint_Eff > 0 && ptrCardCheck->cardType == 3)
-			{
-				return i;
-			}
-		}
-		ptrCardCheck++;
-	}
-	return 255;
-}
-
-uint8_t YUGIOH_Check_Spell_On_board(Player *player,YUGIOH_Card *card)
-{
-	YUGIOH_Card *ptrCardCheck;
-	ptrCardCheck = &player->cardOnBoard[0];
-
-	for (int i = 0; i < 3; ++i)
-	{
-		if(card->cardData == ptrCardCheck->cardData)
-		{
-			if(ptrCardCheck->actionPoint_Eff > 0 && ptrCardCheck->cardType == 2)
-			{
-				return i;
-			}
-		}
-		ptrCardCheck++;
-	}
-	return 255;
-}
-
-void YUGIOH_Trap_Can_Activated(Player *player)
-{
-	YUGIOH_Card *ptrCard;
-	ptrCard = &player->cardOnBoard[0];
-	for (int i = 0; i < 3; ++i)
-	{
-		if (ptrCard->cardData != 0)
-		{
-			ptrCard->actionPoint_Eff = 1;
-		}
-		ptrCard++;
-	}
-}
-
-void YUGIOH_Monster_Activated(Player *player)
-{
-	YUGIOH_Card *ptrCard;
-	ptrCard = &player->cardOnBoard[3];
-	for (int i = 3; i < 6; ++i)
-	{
-		if (ptrCard->cardData != 0)
-		{
-			ptrCard->actionPoint_Atk = 1;
-		}
-		ptrCard++;
-	}
-}
-void MainGUI()
-{
-	ST7735_WriteString1(5, 5, "Player 1: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
-	ST7735_WriteString1(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString1(5, 35, "Turns:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString1(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString1(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(5, 5, "Player 2: ", Font_7x10, ST7735_MAGENTA, ST7735_BLACK);
-	ST7735_WriteString(5, 20, "Life points: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(5, 35, "Turns: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString1(60, 35, "|Phase:", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(0, 50, "Remaining time: ", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-	ST7735_WriteString(0, 60, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK);
-}
-
-void LCDvalue(Player *playerAtk, Player *playerDef){
-	uint16_t a = 0 ;
-	time = timeinit;
-	a = _micro / 1000000;
-	time -= a;
-	sprintf(t_c, "%d",time);
-	for (int i = 0 ; i < 3 ; i++){
-		if(t_c[i] == 0){
-			t_c[i] = 32;
-			t_c[i+1] = 32;
-		}
-	}
-	if(time == 0){
-		HAL_TIM_Base_Stop_IT(&TIM7_PORT);
-		time = 0;
-		ST7735_FillScreen(ST7735_BLACK);
-		ST7735_FillScreen1(ST7735_BLACK);
-		while(time == 0){
-			uint8_t credit = 1;
-			if(credit == 0){
-				ST7735_WriteStringNSS(15, 35, "YOU LOSE", Font_11x18, ST7735_RED, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(5, 60, "player timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(20, 35, "YOU WIN", Font_11x18, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
-				ST7735_WriteStringNSS(0, 60, "opponent timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
-			}
-			// Author CREDITTTTTT
-			else if(credit == 1){
-				ST7735_WriteStringNSS(15, 25, "YOU LOSE", Font_11x18, ST7735_RED, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(5, 50, "player timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerAtk->displayNSS);
-				ST7735_WriteStringNSS(20, 25, "YOU WIN", Font_11x18, ST7735_YELLOW, ST7735_BLACK,playerDef->displayNSS);
-				ST7735_WriteStringNSS(0, 50, "opponent timed out", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
-				ST7735_WriteStringNSS(0, 65, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK,0);
-				ST7735_WriteStringNSS(0, 65, "__________________", Font_7x10, ST7735_WHITE, ST7735_BLACK,1);
-				ST7735_WriteStringNSS(0, 100, "Dev1:TinnZx", Font_7x10, ST7735_CYAN, ST7735_BLACK,0);
-				ST7735_WriteStringNSS(0, 115, "Dev2:Azthorax", Font_7x10, ST7735_GREEN, ST7735_BLACK,0);
-				ST7735_WriteStringNSS(0, 115, "Dev3:FANNUT", Font_7x10, ST7735_YELLOW, ST7735_BLACK,1);
-				ST7735_WriteStringNSS(0, 90, "FRA421 Project", Font_7x10, ST7735_MAGENTA, ST7735_BLACK,1);
-			}
-		}
-	}
-
-	sprintf(C_LP_ATK, "%d",playerAtk->life_point);
-	if(C_LP_ATK[3] == 0){
-		C_LP_ATK[3] = C_LP_ATK[2];
-		C_LP_ATK[2] = C_LP_ATK[1];
-		C_LP_ATK[1] = C_LP_ATK[0];
-		C_LP_ATK[0] = 32;
-	}
-	ST7735_WriteStringNSS( 90, 20, C_LP_ATK, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
-	ST7735_WriteStringNSS( 105, 50, t_c, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerAtk->displayNSS);
-	sprintf(C_LP_DEF, "%d",playerDef->life_point);
-	if(C_LP_DEF[3] == 0){
-		C_LP_DEF[3] = C_LP_DEF[2];
-		C_LP_DEF[2] = C_LP_DEF[1];
-		C_LP_DEF[1] = C_LP_DEF[0];
-		C_LP_DEF[0] = 32;
-	}
-	ST7735_WriteStringNSS( 90, 20, C_LP_DEF, Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
-	ST7735_WriteStringNSS( 105, 50, "180", Font_7x10, ST7735_GREEN, ST7735_BLACK,playerDef->displayNSS);
-	sprintf(c_turn, "%d",turn);
-	ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,0);
-	ST7735_WriteStringNSS(50, 35, c_turn, Font_7x10, ST7735_GREEN, ST7735_BLACK,1);
-
-}
