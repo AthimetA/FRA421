@@ -315,6 +315,161 @@ void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *p
 	}
 }
 
+void Player_Reading_Card_Monster_SPS(RFIDHandle *RFIDmain, State_game *state_game ,Player *player)
+{
+	// Assign RFID
+	RFID *ptrRFID = RFIDmain->RFID;
+	ptrRFID = &RFIDmain->RFID[RFIDmain->slaveNum];
+
+	YUGIOH_Card *ptrYugiohCard_src;
+	ptrYugiohCard_src = &ptrRFID->bufferCard[0];
+
+	YUGIOH_Card *ptrYugiohCard_dst;
+	ptrYugiohCard_dst = &player->ActtionBuffer[0];
+
+	YUGIOH_Card *ptrYugiohCard_played;
+	ptrYugiohCard_played = &player->cardOnBoard[0];
+
+	uint8_t flag_played = 1;
+
+	if (ptrRFID->action == 1) // Card Detected
+	{
+
+
+		// Check if in Monster
+		for (int i  = 0;  i < 6; ++i) {
+			if (ptrYugiohCard_src->cardType == 1) {
+				flag_played = 0;
+				break;
+			}
+			ptrYugiohCard_played++;
+		}
+
+		// Check if in Buffer
+		ptrYugiohCard_played = &player->ActtionBuffer[0];
+		for (int i  = 0;  i < CHAIN_BUFF_LEN-1; ++i) {
+			if (ptrYugiohCard_played->cardData == ptrYugiohCard_src->cardData) {
+				flag_played = 1;
+				break;
+			}
+			ptrYugiohCard_played++;
+		}
+
+		if (player->turn == first && flag_played == 0) {
+
+			if (ptrYugiohCard_src->standPosition < 6)
+			{
+				// Update buffer
+				YUGIOH_card_Buffer_Update_Player(player);
+				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+				// Mod standPosition in case off 2 player
+				ptrYugiohCard_dst->standPosition= ptrYugiohCard_dst->standPosition % 6;
+				// Card Reading So it can't attack
+				ptrYugiohCard_dst->actionPoint_Atk = 0;
+				// Card Reading Then it can use it Effect
+				ptrYugiohCard_dst->actionPoint_Eff = 0;
+				RFID_Clear_Card_Bufffer(ptrRFID);
+				ptrRFID->action = 0;
+				state_game->action += 1;
+			}
+		}
+		else if (player->turn == second && flag_played == 0) {
+			if (ptrYugiohCard_src->standPosition >= 6)
+			{
+				// Update buffer
+				YUGIOH_card_Buffer_Update_Player(player);
+				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+				// Mod standPosition in case off 2 player
+				ptrYugiohCard_dst->standPosition= ptrYugiohCard_dst->standPosition % 6;
+				// Card Reading So it can't attack
+				ptrYugiohCard_dst->actionPoint_Atk = 0;
+				// Card Reading Then it can use it Effect
+				ptrYugiohCard_dst->actionPoint_Eff = 0;
+				RFID_Clear_Card_Bufffer(ptrRFID);
+				ptrRFID->action = 0;
+				state_game->action += 1;
+			}
+
+		}
+
+	}
+}
+
+void Player_Reading_Card_Monster_Battle(RFIDHandle *RFIDmain, State_game *state_game ,Player *player)
+{
+	// Assign RFID
+	RFID *ptrRFID = RFIDmain->RFID;
+	ptrRFID = &RFIDmain->RFID[RFIDmain->slaveNum];
+
+	YUGIOH_Card *ptrYugiohCard_src;
+	ptrYugiohCard_src = &ptrRFID->bufferCard[0];
+
+	YUGIOH_Card *ptrYugiohCard_dst;
+	ptrYugiohCard_dst = &player->ActtionBuffer[0];
+
+	YUGIOH_Card *ptrYugiohCard_played;
+	ptrYugiohCard_played = &player->cardOnBoard[0];
+
+	uint8_t flag_played = 1;
+
+	if (ptrRFID->action == 1) // Card Detected
+	{
+
+
+		// Check if in Monster
+		for (int i  = 0;  i < 6; ++i) {
+			if (ptrYugiohCard_src->cardType == 1 ) {
+				flag_played = 0;
+				break;
+			}
+			ptrYugiohCard_played++;
+		}
+
+		if (player->turn == first && flag_played == 0) {
+
+			if (ptrYugiohCard_src->standPosition < 6)
+			{
+				// Update buffer
+				YUGIOH_card_Buffer_Update_Player(player);
+				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+				// Mod standPosition in case off 2 player
+				ptrYugiohCard_dst->standPosition= ptrYugiohCard_dst->standPosition % 6;
+				// Card Reading So it can't attack
+				ptrYugiohCard_dst->actionPoint_Atk = 0;
+				// Card Reading Then it can use it Effect
+				ptrYugiohCard_dst->actionPoint_Eff = 0;
+				RFID_Clear_Card_Bufffer(ptrRFID);
+				ptrRFID->action = 0;
+				state_game->action += 1;
+			}
+		}
+		else if (player->turn == second && flag_played == 0) {
+			if (ptrYugiohCard_src->standPosition >= 6)
+			{
+				// Update buffer
+				YUGIOH_card_Buffer_Update_Player(player);
+				YUGIOH_card_copy(ptrYugiohCard_src, ptrYugiohCard_dst);
+
+				// Mod standPosition in case off 2 player
+				ptrYugiohCard_dst->standPosition= ptrYugiohCard_dst->standPosition % 6;
+				// Card Reading So it can't attack
+				ptrYugiohCard_dst->actionPoint_Atk = 0;
+				// Card Reading Then it can use it Effect
+				ptrYugiohCard_dst->actionPoint_Eff = 0;
+				RFID_Clear_Card_Bufffer(ptrRFID);
+				ptrRFID->action = 0;
+				state_game->action += 1;
+			}
+
+		}
+
+	}
+
+}
+
 void Player_Reading_Card_Trap(RFIDHandle *RFIDmain, State_game *state_game ,Player *player)
 {
 	// Assign RFID
@@ -1206,12 +1361,12 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			if (state_game->action == 4)
 			{
 				// Reading Until RFID action += 1 Mean Card Detected
-				Player_Reading_Card(RFIDmain,state_game,playerAtk);
+				Player_Reading_Card_Monster_SPS(RFIDmain,state_game,playerAtk);
 			}
 			else if (state_game->action == 5)
 			{
 				// Reading Until RFID action += 1 Mean Card Detected
-				Player_Reading_Card(RFIDmain,state_game,playerAtk);
+				Player_Reading_Card_Monster_SPS(RFIDmain,state_game,playerAtk);
 			}
 			else if (state_game->action == 6)
 			{
@@ -1304,7 +1459,6 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 			ST7735_WriteStringNSS(5, 90, "Waiting Opponent Action", Font_7x10, ST7735_WHITE, ST7735_BLACK,playerDef->displayNSS);
 			if(state_game->action == 4)
 			{
-				Player_Reading_Card(RFIDmain,state_game,playerAtk);
 				if (playerAtk->noBTN == GPIO_PIN_RESET){
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerAtk->displayNSS);
 					ST7735_FillRectangleNSS(0, 90, 128, 128 - 90, ST7735_BLACK,playerDef->displayNSS);
@@ -1583,7 +1737,7 @@ void GAME_PLAY_Phase_Management(RFIDHandle *RFIDmain,State_game *state_game,Play
 				ST7735_WriteString(110, 35, "BP", Font_7x10, ST7735_YELLOW, ST7735_BLACK);
 				ST7735_WriteString1(110, 35, "BP", Font_7x10, ST7735_YELLOW, ST7735_BLACK);
 				if(state_game->action == 50){
-					Player_Reading_Card(RFIDmain, state_game, playerDef);
+					Player_Reading_Card_Monster_Battle(RFIDmain, state_game, playerDef);
 					if(HAL_GPIO_ReadPin(TURN_BUTTON_PORT, TURN_BUTTON_PIN)
 							== GPIO_PIN_RESET){
 						HAL_TIM_Base_Stop_IT(&TIM7_PORT);

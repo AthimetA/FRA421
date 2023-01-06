@@ -193,6 +193,8 @@ void YUGIOH_Trap_Can_Activated(Player *player);
 void YUGIOH_Monster_Activated(Player *player);
 
 void Player_Reading_Card(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
+void Player_Reading_Card_Monster_SPS(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
+void Player_Reading_Card_Monster_Battle(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 void Player_Reading_Card_Trap(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 void Player_Reading_Card_Reborn(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
 void Player_Reading_Card_Stopdef(RFIDHandle *RFIDmain, State_game *state_game ,Player *player);
